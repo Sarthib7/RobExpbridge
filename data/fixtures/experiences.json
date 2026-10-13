@@ -1,0 +1,41 @@
+[
+  {
+    "schemaVersion": "0.1",
+    "id": "exp-001",
+    "contributor": {
+      "organization": "factory-a",
+      "machineId": "arm-a"
+    },
+    "task": "connector_insertion",
+    "context": {
+      "robotModel": "arm-x",
+      "gripper": "parallel-v1",
+      "material": "polymer-demo",
+      "fixture": "fixture-7",
+      "forceLimitN": 12
+    },
+    "failure": {
+      "procedure": "baseline_insert",
+      "outcome": "slip"
+    },
+    "advisory": {
+      "procedure": "reduced_force_insert",
+      "forceN": 8
+    },
+    "evidence": {
+      "level": "simulation-tested",
+      "testId": "fixture-test-1",
+      "attempts": 1,
+      "successes": 1
+    },
+    "rights": {
+      "license": "demo-only",
+      "redistribution": false
+    },
+    "revoked": false,
+    "createdAt": "2026-10-12T12:00:00.000Z",
+    "integrity": {
+      "sha256": "234b5bd2b83f57968bd87a067d4d4248a1035a579920eb800461c83dfed07943"
+    }
+  }
+]

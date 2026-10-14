@@ -42,3 +42,9 @@ VERIFIED source: `scripts/build-public.ts` embeds allowlisted static assets and 
 
 VERIFIED source: `scripts/peaqos-check.ts` validates Agung chain and genesis before using the SDK. Activation checks require matching identity and a current subscription.
 VERIFIED source: the explicit `--activate` path checks capped bond and gas reserve and writes an exclusive attempt journal. CI calls only deterministic guards and never activates.
+
+## Public batch tooling
+
+VERIFIED source: `scripts/batch-runs.ts` validates the network, count and run ID before creating a report. Exclusive report creation rejects reused run IDs before runtime initialization.
+VERIFIED source: report replacement uses a synced temporary file and rename. Rows with blocked or unknown payment outcomes are not reported as successful.
+CI exercises invalid configuration and existing-report paths only; it does not run a funded public batch.

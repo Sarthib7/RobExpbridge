@@ -57,3 +57,12 @@ VERIFIED source before fix: `src/public-worker.ts` called `request.text()` befor
 This bound limits application buffering; a single transport chunk can already exceed the limit before the reader receives it.
 
 VERIFIED: `tests/public-worker.test.ts` collected 6 tests, 6 passed, 0 failed. Restoring the original source kept 6 collected tests, with 3 passed and 3 failed. The fixed source was restored. `npm run build:public` exited 0.
+
+## Local EVM startup boundary
+
+Owner: implementer. Status: Completed.
+V13: `scripts/local.ts` validates `PORT` as an integer from 1024 through 65535 before starting Anvil or creating any data directory, wallet or runtime lock.
+VERIFIED source before fix: the script called `startLocalNode` and `createRuntime` before converting `PORT` at `listen`. Invalid configuration could create runtime state before failing.
+An occupied valid port is still detected at listen time; this invariant covers invalid configuration, not port reservation.
+
+VERIFIED: startup tests collected 5 tests; original source produced `pass 1`, `fail 4` because each invalid port created `data`. The fixed source produced `pass 5`, `fail 0`; type checking exited 0. The tests hide Anvil from PATH and do not submit payments.

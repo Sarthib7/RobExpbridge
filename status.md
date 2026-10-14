@@ -54,3 +54,21 @@ Current scope: public batch CLI, read-only balance command, and deterministic CL
 VERIFIED CLI checks: type checking exited 0; CLI tests printed `tests 3`, `pass 3`, `fail 0`.
 VERIFIED regression proof: replacing exclusive report creation with truncating creation produced `tests 1`, `pass 0`, `fail 1`; restored source produced `tests 1`, `pass 1`, `fail 0`.
 All CLI test cases reject arguments, reuse an existing report, or fail the HTTPS configuration guard before network access. No public testnet batch was run.
+
+
+## Repository readiness, 2026-10-14
+
+Owner: coordinator. Status: In Progress.
+REPORTED user request: improve repository presentation and production readiness.
+Scope: README and setup first; CI controls second; request or startup hardening after a read-only audit.
+Owner boundaries: coordinator owns all edits. Reviewer audits source and tests without editing. No API contract change is planned.
+VERIFIED: PR #19 is merged at `7af93bf`; Node 22 and 24 PR checks ran 70 tests, 70 passed, 0 failed on `a504909`.
+VERIFIED: browser baseline returned `slip`, `12 N`, `seed 7`, `fixture-7`; Arm C returned `incompatible`, `gripper mismatch`. No new payment was sent.
+VERIFIED: corrected README query returned HTTP 200 with `exp-001`, `compatible`.
+VERIFIED: `npm audit --omit=dev --json` returned `total: 0` advisories. Advisory coverage does not prove application security.
+Next: validate documentation and publish one README PR, then review CI and runtime findings.
+
+### Least confident decisions
+
+1. The next hosting target is not specified. Signing remains local; the public Worker stays unsigned.
+2. JSON storage remains acceptable only for the single-runtime testnet demo. Shared production use needs a separate design.

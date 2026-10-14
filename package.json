@@ -16,7 +16,10 @@
   "dependencies": {
     "fastify": "^5.6.0",
     "zod": "^4.1.0",
-    "ethers": "^6.17.0"
+    "ethers": "^6.17.0",
+    "@solana-program/memo": "^0.15.0",
+    "@solana-program/system": "^0.15.0",
+    "@solana/kit": "^8.4.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

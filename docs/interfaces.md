@@ -20,3 +20,8 @@ No live transfer is part of CI.
 
 VERIFIED source: `src/economics/orders.ts` stores a bearer token, quote, record digest, payment intent and signed bytes before broadcast.
 VERIFIED source: retries reuse saved signed bytes; unlock rechecks finality and record compatibility.
+
+## Solana gateway
+
+VERIFIED source: `src/economics/solana.ts` requires the devnet genesis, exact transfer, order memo, signature and finalized RPC evidence.
+VERIFIED source: retries broadcast existing signed bytes. Tests use an injected mock transport.

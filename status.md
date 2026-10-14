@@ -20,3 +20,8 @@ VERIFIED: PR #10 merged as `64a8d27` after Node 22 and 24 CI passed on `e6a4342`
 Current scope: durable license-order state machine and deterministic tests. Owner: release. Status: In Progress.
 VERIFIED order checks: type checking exited 0; order tests printed `tests 13`, `pass 13`, `fail 0`.
 VERIFIED regression proof: bypassing access-time finality produced `tests 1`, `pass 0`, `fail 1`; restoring it produced `tests 1`, `pass 1`, `fail 0`.
+
+VERIFIED: PR #11 merged as `ab6dc86` after Node 22 and 24 checks passed on `9aec046`. Live `/health` returned HTTP 200.
+Current scope: Solana devnet gateway, restricted test-wallet storage and mocked RPC tests. Owner: release. Status: In Progress.
+VERIFIED Solana checks: type checking exited 0; adapter tests printed `tests 7`, `pass 7`, `fail 0`.
+VERIFIED regression proof: using confirmed instead of finalized transaction evidence produced `tests 1`, `pass 0`, `fail 1`; restoring it produced `tests 1`, `pass 1`, `fail 0`.

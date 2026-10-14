@@ -25,3 +25,9 @@ VERIFIED: PR #11 merged as `ab6dc86` after Node 22 and 24 checks passed on `9aec
 Current scope: Solana devnet gateway, restricted test-wallet storage and mocked RPC tests. Owner: release. Status: In Progress.
 VERIFIED Solana checks: type checking exited 0; adapter tests printed `tests 7`, `pass 7`, `fail 0`.
 VERIFIED regression proof: using confirmed instead of finalized transaction evidence produced `tests 1`, `pass 0`, `fail 1`; restoring it produced `tests 1`, `pass 1`, `fail 0`.
+
+VERIFIED: PR #12 merged as `1b3a713` after Node 22 and 24 checks passed on `e0c1377`. Live `/health` returned HTTP 200.
+Current scope: local payment API, single-owner runtime, startup validation and disposable Anvil demonstration. Owner: release. Status: In Progress.
+VERIFIED API/runtime checks: type checking exited 0; focused tests printed `tests 7`, `pass 7`, `fail 0`.
+VERIFIED local Anvil demo: `payment: confirmed`, `sellerReceived: 0.001 local ETH`, `baseline: slip`, `recovery: success`, `retry: same signed transaction, seller paid once`.
+VERIFIED regression proof: creating the runtime before validating PORT produced `tests 1`, `pass 0`, `fail 1`; restoring startup order produced `tests 1`, `pass 1`, `fail 0`.

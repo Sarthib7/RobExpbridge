@@ -18,3 +18,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run demo
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - run: npm run demo:payments

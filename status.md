@@ -48,3 +48,9 @@ VERIFIED: PR #15 merged as `96084ca` after Node 22 and 24 checks passed on `0196
 Current scope: offline constructed batch report and its deterministic CI check. Owner: release. Status: In Progress.
 VERIFIED offline batch check: type checking exited 0; report printed `total: 12`, `passed: 12`, `failed: 0`, `paymentTransactions: 0`.
 VERIFIED regression proof: an incorrect expected expiry verdict printed `total: 12`, `passed: 11`, `failed: 1` and exited 1. Restored source exited 0 with all 12 checks passed. Historical report bytes were restored after verification.
+
+VERIFIED: PR #16 merged as `133e017` after Node 22 and 24 CI passed on `1eea76c`. Live `/health` returned HTTP 200.
+Current scope: public batch CLI, read-only balance command, and deterministic CLI guards. Owner: release. Status: In Progress.
+VERIFIED CLI checks: type checking exited 0; CLI tests printed `tests 3`, `pass 3`, `fail 0`.
+VERIFIED regression proof: replacing exclusive report creation with truncating creation produced `tests 1`, `pass 0`, `fail 1`; restored source produced `tests 1`, `pass 1`, `fail 0`.
+All CLI test cases reject arguments, reuse an existing report, or fail the HTTPS configuration guard before network access. No public testnet batch was run.

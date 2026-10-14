@@ -15,3 +15,8 @@ All outcomes are constructed simulation results. Digests detect record changes; 
 VERIFIED source: `src/economics/chain.ts` binds payment evidence to buyer, seller, amount, memo, network and finalized canonical inclusion.
 VERIFIED source: `src/economics/wallets.ts` stores generated test-wallet keys in files with mode 0600.
 No live transfer is part of CI.
+
+## License orders
+
+VERIFIED source: `src/economics/orders.ts` stores a bearer token, quote, record digest, payment intent and signed bytes before broadcast.
+VERIFIED source: retries reuse saved signed bytes; unlock rechecks finality and record compatibility.

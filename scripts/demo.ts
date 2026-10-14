@@ -1,158 +1,32 @@
-/**
- * One-command demo of ExperienceBridge v0.1.
- *
- * Arm A fails → publishes simulator-tested recovery →
- * Arm B baseline fails → queries → compatible advisory → succeeds →
- * Arm C rejected (gripper mismatch) → tamper rejected →
- * peaq license payment (simulated unless live credentials configured).
- *
- * Outcomes are constructed / deterministic — not real-world performance claims.
- */
-
-import { mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import path from "node:path";
-import { armAExperienceInput, armBQuery, armCQuery } from "../src/fixtures.js";
-import { PeaqAdapter } from "../src/economics/peaq.js";
-import { queryExperiences } from "../src/memory/match.js";
-import { verifyDigest } from "../src/memory/integrity.js";
-import { JsonExperienceStore } from "../src/memory/store.js";
-import { baselineScenario, memoryScenario } from "../src/sim/assembly.js";
-import type { Experience } from "../src/domain/schema.js";
-
-function line(title: string) {
-  console.log("\n" + "─".repeat(64));
-  console.log(title);
-  console.log("─".repeat(64));
+import assert from 'node:assert/strict';
+import { mkdtemp } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { performance } from 'node:perf_hooks';
+import { buildServer } from '../src/server.js';
+import { Store } from '../src/memory/store.js';
+import { fixture } from '../src/sim/assembly.js';
+import { demoExperience } from '../src/sim/experience.js';
+import { verify } from '../src/memory/integrity.js';
+import { licenseReceipt } from '../src/economics/peaq.js';
+const directory = await mkdtemp(join(tmpdir(), 'experiencebridge-'));
+const app = buildServer(new Store(join(directory, 'experiences.json')));
+async function post(url: string, payload: unknown) {
+  const response = await app.inject({ method: 'POST', url, payload: JSON.stringify(payload), headers: { "content-type": "application/json" } });
+  assert.ok(response.statusCode < 300, response.body);
+  return response.json();
 }
-
-function metric(label: string, value: string | number) {
-  console.log(`  ${label}: ${value}`);
-}
-
-async function main() {
-  const dir = await mkdtemp(path.join(tmpdir(), "eb-demo-"));
-  const store = new JsonExperienceStore(path.join(dir, "experiences.json"));
-  const peaq = new PeaqAdapter();
-  const metrics = {
-    baselineFailures: 0,
-    memorySuccesses: 0,
-    rejections: 0,
-    queryTimeMs: 0,
-  };
-
-  try {
-    console.log("ExperienceBridge v0.1 — deterministic three-arm demo");
-    console.log(
-      "Disclaimer: constructed simulator outcomes. Not real-world safety or performance proof.",
-    );
-    console.log("Advisory-only: no physical robot commands are issued.");
-
-    line("1) Arm A — Factory A baseline (constructed slip)");
-    const armAFail = baselineScenario();
-    metric("machine", "arm-a / parallel-v1");
-    metric("procedure", armAFail.procedure);
-    metric("forceN", armAFail.forceN);
-    metric("outcome", armAFail.outcome);
-    metric("reason", armAFail.reason);
-    if (armAFail.outcome === "slip") metrics.baselineFailures += 1;
-
-    line("2) Arm A — reduced_force recovery succeeds in simulator");
-    const armARecovery = memoryScenario();
-    metric("procedure", armARecovery.procedure);
-    metric("forceN", armARecovery.forceN);
-    metric("outcome", armARecovery.outcome);
-    metric("evidence label", "simulation-tested");
-
-    line("3) Publish experience with provenance + integrity digest");
-    const published = await store.publish(armAExperienceInput());
-    const digestOk = verifyDigest(published);
-    metric("id", published.id);
-    metric("contributor", `${published.contributor.organization} / ${published.contributor.machineId}`);
-    metric("evidence", published.evidence.level);
-    metric("rights", `${published.rights.license} (redistribution=${published.rights.redistribution})`);
-    metric("sha256", published.integrity.sha256);
-    metric("integrity verified", String(digestOk.ok));
-
-    line("4) Arm B — without memory (identical constructed conditions)");
-    const armBBaseline = baselineScenario();
-    metric("machine", "arm-b / parallel-v1");
-    metric("outcome", armBBaseline.outcome);
-    metric("reason", armBBaseline.reason);
-    if (armBBaseline.outcome === "slip") metrics.baselineFailures += 1;
-
-    line("5) Arm B — pre-execution query");
-    const experiences = await store.list();
-    const bQuery = queryExperiences(experiences, armBQuery());
-    metrics.queryTimeMs = bQuery.queryTimeMs;
-    metric("status", bQuery.result.status);
-    metric("queryTimeMs", bQuery.queryTimeMs);
-    metric("evidenceLevel", bQuery.result.evidenceLevel ?? "n/a");
-    metric("advisory", JSON.stringify(bQuery.result.advisory));
-    metric("provenance", JSON.stringify(bQuery.result.provenance));
-    for (const r of bQuery.result.reasons) metric("reason", r);
-
-    line("6) Arm B — applies advisory under same seed/fixture");
-    const armBWithMemory = memoryScenario({
-      procedure: bQuery.result.advisory?.procedure as "reduced_force_insert",
-      forceN: bQuery.result.advisory?.forceN ?? 8,
-    });
-    metric("outcome", armBWithMemory.outcome);
-    metric("reason", armBWithMemory.reason);
-    metric("before/after", `${armBBaseline.outcome} → ${armBWithMemory.outcome}`);
-    if (armBWithMemory.outcome === "success") metrics.memorySuccesses += 1;
-
-    line("7) Arm C — vacuum-v2 gripper must be rejected");
-    const cQuery = queryExperiences(experiences, armCQuery());
-    metric("status", cQuery.result.status);
-    for (const r of cQuery.result.reasons) metric("reason", r);
-    if (cQuery.result.status === "incompatible") metrics.rejections += 1;
-
-    line("8) Tamper detection");
-    const tampered = {
-      ...published,
-      advisory: { ...published.advisory, forceN: 99 },
-    } as Experience;
-    const tamperCheck = verifyDigest(tampered);
-    metric("tampered digest ok", String(tamperCheck.ok));
-    if (!tamperCheck.ok) {
-      metric("reason", tamperCheck.reason);
-      metrics.rejections += 1;
-    }
-
-    line("9) peaq license payment (truthful mode)");
-    const receipt = await peaq.payForLicense({
-      experienceId: published.id,
-      payerMachineId: "arm-b",
-      payeeOrganization: published.contributor.organization,
-      license: published.rights.license,
-      idempotencyKey: `demo-${published.id}-arm-b`,
-    });
-    metric("status", receipt.status);
-    metric("mode", receipt.mode);
-    metric("transactionHash", String(receipt.transactionHash));
-    metric("explorerUrl", String(receipt.explorerUrl));
-    if (receipt.status === "simulated") metric("note", receipt.note);
-    if (receipt.status === "error") metric("error", receipt.error);
-
-    line("Measured demo metrics (constructed scenario — not statistical efficacy)");
-    metric("baseline failures observed", metrics.baselineFailures);
-    metric("memory-assisted successes", metrics.memorySuccesses);
-    metric("rejection events (Arm C + tamper)", metrics.rejections);
-    metric("Arm B query time (ms)", metrics.queryTimeMs);
-    metric(
-      "constructed success ratio with memory",
-      metrics.memorySuccesses === 1 && armBBaseline.outcome === "slip" ? "1/1 after 0/1 baseline" : "unexpected",
-    );
-
-    console.log("\nDone. peaq is simulated unless live testnet credentials are configured.");
-    console.log("No TEE / dstack confidentiality is claimed in this MVP.\n");
-  } finally {
-    await rm(dir, { recursive: true, force: true });
-  }
-}
-
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+try {
+  const armA = await post('/simulation/run', { context: fixture });
+  const record = await post('/experiences', demoExperience());
+  const baseline = await post('/simulation/run', { context: fixture });
+  const start = performance.now();
+  const query = await post('/experiences/query', { task: 'connector_insertion', context: fixture, use: 'synthetic-demo' });
+  const queryTimeMs = performance.now() - start;
+  const recovered = await post('/simulation/run', { context: fixture, experienceId: record.id });
+  const rejected = await post('/experiences/query', { task: 'connector_insertion', context: { ...fixture, gripper: 'vacuum-v2' }, use: 'synthetic-demo' });
+  const tampered = structuredClone(record); tampered.advisory.forceN = 9;
+  assert.equal(baseline.outcome, 'slip'); assert.equal(recovered.outcome, 'success');
+  assert.equal(rejected.results[0].status, 'incompatible'); assert.equal(verify(tampered), false);
+  console.log(JSON.stringify({ notice: 'Constructed synthetic outcomes. No real-world safety or effectiveness claim.', armA, provenance: record.contributor, evidence: record.evidence, armB: { baseline, decision: query.results[0], recovered }, armC: rejected.results[0], tamperingDetected: !verify(tampered), metrics: { queryTimeMs, baselineFailures: '1/1', recoverySuccesses: '1/1', repeatedFailuresAvoided: 1, incompatibleRejectionRate: '1/1' }, peaq: await licenseReceipt(record.id), privacy: 'No TEE integration or hardware attestation.', storePath: directory }, null, 2));
+} finally { await app.close(); }

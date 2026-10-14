@@ -18,6 +18,8 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run demo
+      - run: npm run build:public
+      - run: node --check public/app.js
       - uses: foundry-rs/foundry-toolchain@v1
         with:
           version: stable

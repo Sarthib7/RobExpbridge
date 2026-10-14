@@ -31,3 +31,8 @@ Current scope: local payment API, single-owner runtime, startup validation and d
 VERIFIED API/runtime checks: type checking exited 0; focused tests printed `tests 7`, `pass 7`, `fail 0`.
 VERIFIED local Anvil demo: `payment: confirmed`, `sellerReceived: 0.001 local ETH`, `baseline: slip`, `recovery: success`, `retry: same signed transaction, seller paid once`.
 VERIFIED regression proof: creating the runtime before validating PORT produced `tests 1`, `pass 0`, `fail 1`; restoring startup order produced `tests 1`, `pass 1`, `fail 0`.
+
+VERIFIED: PR #13 merged as `bf21436` after Node 22 and 24 CI passed on `8fd3766`, including the disposable Anvil demo. Live `/health` returned HTTP 200.
+Current scope: preserved landing design, public simulator, static build, recorded evidence and frontend behavior tests. Owner: release. Status: In Progress.
+VERIFIED public checks: type checking, public build and frontend syntax exited 0; focused tests printed `tests 10`, `pass 10`, `fail 0`.
+VERIFIED regression proof: hiding compatible public recovery produced `tests 1`, `pass 0`, `fail 1`; restoring the controls produced `tests 1`, `pass 1`, `fail 0`.

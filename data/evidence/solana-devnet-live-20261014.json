@@ -1,0 +1,85 @@
+{
+  "provenance": "VERIFIED",
+  "observedAt": "2026-10-14T17:10:27.260Z",
+  "network": "Solana devnet",
+  "genesis": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+  "order": {
+    "id": "54a769d4-755f-4ac7-a1dc-34b15f86f00a",
+    "experienceId": "exp-001",
+    "state": "confirmed",
+    "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+    "data": "0x657870657269656e63656272696467653a35346137363964342d373535662d346163372d613164632d3334623135663836663030613a63643261383530323461626566643036393831633866313832663130316362666635633233646266623932323233386531356336643463313762383662663030",
+    "price": "0.001",
+    "currency": "SOL",
+    "buyerAddress": "EMc97zXSrG6vb8aqEMponNPgYcDJ9G5vLRYHJz1BYsge",
+    "sellerAddress": "5Br4L66bZhvpErnaih7prwXwjk3VViz5SJ7Wa8Vk4cDF",
+    "expiresAt": "2026-10-14T17:19:05.123Z",
+    "transactionHash": "3Bd94scCn2mFDeMPjAV9r7Kue6WC13dYXZkQHNGmFH2N5pp3AmRdPGAnouFN2dw2AtfEHMVMouLXeztQbYV263WN",
+    "explorerUrl": "https://explorer.solana.com/tx/3Bd94scCn2mFDeMPjAV9r7Kue6WC13dYXZkQHNGmFH2N5pp3AmRdPGAnouFN2dw2AtfEHMVMouLXeztQbYV263WN?cluster=devnet",
+    "reason": "Exact Solana payment verified at finalized commitment."
+  },
+  "baseline": "slip",
+  "armB": "compatible",
+  "armC": "incompatible: gripper mismatch",
+  "advisoryOnly": true,
+  "evidence": {
+    "level": "simulation-tested",
+    "testId": "fixture-test-1",
+    "attempts": 1,
+    "successes": 1
+  },
+  "recovery": {
+    "evidenceLabel": "simulation-tested",
+    "scenario": "fixture-test-1",
+    "seed": 7,
+    "fixture": "fixture-7",
+    "forceN": 8,
+    "outcome": "success",
+    "constructed": true,
+    "experienceId": "exp-001",
+    "advisoryOnly": true
+  },
+  "balances": {
+    "connected": true,
+    "buyerBalance": "0.760709959",
+    "sellerBalance": "0.001",
+    "currency": "SOL"
+  },
+  "limitation": "Payment is a real devnet transfer. Robot outcomes remain constructed simulation results.",
+  "independentRpcVerification": {
+    "observedAt": "2026-10-14T17:10:57.385Z",
+    "commitment": "finalized",
+    "signatureStatus": {
+      "confirmationStatus": "finalized",
+      "confirmations": null,
+      "err": null,
+      "slot": 511057765,
+      "status": {
+        "Ok": null
+      }
+    },
+    "slot": 511057765,
+    "blockTime": 1791997824,
+    "feeLamports": 5000,
+    "transfer": {
+      "destination": "5Br4L66bZhvpErnaih7prwXwjk3VViz5SJ7Wa8Vk4cDF",
+      "lamports": 1000000,
+      "source": "EMc97zXSrG6vb8aqEMponNPgYcDJ9G5vLRYHJz1BYsge"
+    },
+    "memo": "experiencebridge:54a769d4-755f-4ac7-a1dc-34b15f86f00a:cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+    "preBalances": [
+      761714959,
+      0,
+      1,
+      1141440
+    ],
+    "postBalances": [
+      760709959,
+      1000000,
+      1,
+      1141440
+    ],
+    "source": "https://api.devnet.solana.com",
+    "limitation": "RPC evidence from the configured public node, not an independent consensus proof."
+  }
+}

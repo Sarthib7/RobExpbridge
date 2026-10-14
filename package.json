@@ -11,7 +11,11 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "demo": "node --import tsx scripts/demo.ts",
     "start": "node --import tsx src/server.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "dev:local": "node --import tsx scripts/local.ts",
+    "demo:payments": "node --import tsx scripts/payment-demo.ts",
+    "start:agung": "node --import tsx src/server.ts",
+    "start:solana": "PAYMENT_MODE=solana-devnet node --import tsx src/server.ts"
   },
   "dependencies": {
     "fastify": "^5.6.0",

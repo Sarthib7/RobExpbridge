@@ -25,3 +25,9 @@ VERIFIED source: retries reuse saved signed bytes; unlock rechecks finality and 
 
 VERIFIED source: `src/economics/solana.ts` requires the devnet genesis, exact transfer, order memo, signature and finalized RPC evidence.
 VERIFIED source: retries broadcast existing signed bytes. Tests use an injected mock transport.
+
+## Local payment API
+
+VERIFIED source: `src/server.ts` restricts the payment service to loopback Host and Origin values and requires `x-experiencebridge-client: local-ui` on mutating requests.
+VERIFIED source: order endpoints require bearer tokens. Public experience queries hide the advisory when commerce is enabled.
+VERIFIED source: `scripts/payment-demo.ts` exercises quote, payment, retry, finality and recovery on disposable Anvil chain 31337.

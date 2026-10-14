@@ -9,3 +9,9 @@ All outcomes are constructed simulation results. Digests detect record changes; 
 
 1. The single fixture does not model physical robot performance.
 2. The JSON store assumes one process owns each file.
+
+## EVM gateway
+
+VERIFIED source: `src/economics/chain.ts` binds payment evidence to buyer, seller, amount, memo, network and finalized canonical inclusion.
+VERIFIED source: `src/economics/wallets.ts` stores generated test-wallet keys in files with mode 0600.
+No live transfer is part of CI.

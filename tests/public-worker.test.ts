@@ -16,3 +16,57 @@ test('V8 public preview has no payment signing surface and blocks cross-origin m
  const config=await(await serve(new Request('https://exbridge.world/api/config'))).json();assert.equal(config.publicDemo,true);assert.equal(config.mode,'public-demo');
  assert.equal(await(await serve(new Request('https://exbridge.world/evidence'))).text(),'Evidence: blocked');
 });
+
+
+test('V12 public preview cancels an oversized stream before reading its tail', async () => {
+ let reads = 0, cancelled = false;
+ const body = new ReadableStream<Uint8Array>({
+  pull(controller) {
+   reads++;
+   controller.enqueue(new TextEncoder().encode(reads === 1 ? ' '.repeat(16_385) : '{}'));
+   if (reads === 2) controller.close();
+  },
+  cancel() { cancelled = true; },
+ }, { highWaterMark: 0 });
+ const request = new Request('https://exbridge.world/api/demo/publish', {
+  method: 'POST', headers: { 'x-experiencebridge-client': 'local-ui' }, body, duplex: 'half',
+ } as RequestInit & { duplex: 'half' });
+ const response = await serve(request);
+ assert.equal(response.status, 413);
+ assert.equal(cancelled, true);
+ assert.equal(reads, 1);
+});
+
+test('V12 public limit counts UTF-8 bytes rather than string characters', async () => {
+ const input = { pad: 'é'.repeat(8192) };
+ assert.ok(JSON.stringify(input).length < 16_384);
+ const response = await post('/api/demo/publish', input);
+ assert.equal(response.status, 413);
+});
+
+test('V12 public preview accepts valid JSON at the byte limit', async () => {
+ const response = await serve(new Request('https://exbridge.world/api/demo/publish', {
+  method: 'POST', headers: { 'x-experiencebridge-client': 'local-ui' }, body: '{}' + ' '.repeat(16_382),
+ }));
+ assert.equal(response.status, 200);
+ assert.equal((await response.json()).id, 'exp-001');
+});
+
+
+test('V12 public limit accumulates bytes across chunks', async () => {
+ let reads = 0, cancelled = false;
+ const body = new ReadableStream<Uint8Array>({
+  pull(controller) {
+   reads++;
+   controller.enqueue(new TextEncoder().encode(reads <= 2 ? ' '.repeat(10_000) : '{}'));
+   if (reads === 3) controller.close();
+  },
+  cancel() { cancelled = true; },
+ }, { highWaterMark: 0 });
+ const response = await serve(new Request('https://exbridge.world/api/demo/publish', {
+  method: 'POST', headers: { 'x-experiencebridge-client': 'local-ui' }, body, duplex: 'half',
+ } as RequestInit & { duplex: 'half' }));
+ assert.equal(response.status, 413);
+ assert.equal(cancelled, true);
+ assert.equal(reads, 2);
+});

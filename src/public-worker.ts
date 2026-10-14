@@ -30,8 +30,24 @@ export function createPublicHandler(assets: Record<string, string>, evidence: st
     if (request.headers.get('x-experiencebridge-client') !== 'local-ui') return json({ error: 'Client header required.' }, 403);
     if (url.pathname.startsWith('/api/orders')) return json({ error: 'Public preview cannot create orders, sign payments, or unlock paid access. Use the local test workspace.' }, 403);
     try {
-      const text = await request.text();
-      if (text.length > 16_384) return json({ error: 'Request too large.' }, 413);
+      let text = '', bytes = 0;
+      const reader = request.body?.getReader();
+      if (reader) {
+        const decoder = new TextDecoder();
+        try {
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            bytes += value.byteLength;
+            if (bytes > 16_384) {
+              await reader.cancel();
+              return json({ error: 'Request too large.' }, 413);
+            }
+            text += decoder.decode(value, { stream: true });
+          }
+          text += decoder.decode();
+        } finally { reader.releaseLock(); }
+      }
       const input = JSON.parse(text);
       if (url.pathname === '/api/demo/publish') {
         z.strictObject({}).parse(input);

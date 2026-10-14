@@ -89,3 +89,13 @@ VERIFIED: public body-limit PR #22 merged as `76259e9` after Node 22, Node 24 an
 VERIFIED: repository About metadata now has a simulator description, `https://exbridge.world` homepage and five relevant topics, confirmed by `gh repo view`.
 Owner: implementer. Status: In Progress. Scope: local EVM startup port validation.
 VERIFIED: startup tests with original source collected 5 tests, `pass 1`, `fail 4`; invalid ports created a `data` directory. Fixed source collected 5 tests, `pass 5`, `fail 0`. Type checking exited 0.
+
+## Readiness handoff
+
+2026-10-14. Owner: coordinator. Status: Completed (implementation).
+VERIFIED: presentation and setup corrections are in merged PR #20. CI controls are in merged PR #21. The bounded public request reader is in merged PR #22.
+VERIFIED: local startup port validation and its regression checks are committed on PR #23. GitHub records its release checks and merge result.
+VERIFIED: local and public health checks returned `status: ok` after PR #22; the public preview returned `paymentSigning: false`. These health responses do not prove the newly merged Worker source has been deployed. No Worker deployment was made in this readiness pass.
+VERIFIED: no wallet files, payment evidence or robot procedures were changed by this pass. Source changes only affect request parsing and invalid-port startup.
+REPORTED: peaq faucet maintenance blocks user funding. No peaqOS activation is established.
+Follow-up: deploy the bounded public Worker; obtain AGUNG and separately approve activation. A shared payment service needs a custody and authentication design plus transactional storage. Current signer services remain local testnet demos.

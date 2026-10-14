@@ -15,3 +15,8 @@ Current scope: EVM gateway, test-wallet storage and RPC behavior tests. Owner: r
 VERIFIED EVM checks: `npm run check` exited 0; gateway tests printed `tests 9`, `pass 9`, `fail 0`.
 VERIFIED regression proof: bypassing finality produced `tests 1`, `pass 0`, `fail 1`; restored source produced `tests 1`, `pass 1`, `fail 0`.
 VERIFIED: live `/health` returned HTTP 200 with `paymentSigning: false` after the core merge.
+
+VERIFIED: PR #10 merged as `64a8d27` after Node 22 and 24 CI passed on `e6a4342`. Live `/health` returned HTTP 200.
+Current scope: durable license-order state machine and deterministic tests. Owner: release. Status: In Progress.
+VERIFIED order checks: type checking exited 0; order tests printed `tests 13`, `pass 13`, `fail 0`.
+VERIFIED regression proof: bypassing access-time finality produced `tests 1`, `pass 0`, `fail 1`; restoring it produced `tests 1`, `pass 1`, `fail 0`.

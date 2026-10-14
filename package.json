@@ -16,7 +16,9 @@
     "demo:payments": "node --import tsx scripts/payment-demo.ts",
     "start:agung": "node --import tsx src/server.ts",
     "start:solana": "PAYMENT_MODE=solana-devnet node --import tsx src/server.ts",
-    "build:public": "node --import tsx scripts/build-public.ts"
+    "build:public": "node --import tsx scripts/build-public.ts",
+    "peaqos:check": "node --import tsx scripts/peaqos-check.ts",
+    "peaqos:activate": "node --import tsx scripts/peaqos-check.ts --activate"
   },
   "dependencies": {
     "fastify": "^5.6.0",
@@ -24,7 +26,9 @@
     "ethers": "^6.17.0",
     "@solana-program/memo": "^0.15.0",
     "@solana-program/system": "^0.15.0",
-    "@solana/kit": "^8.4.0"
+    "@solana/kit": "^8.4.0",
+    "@peaqos/peaq-os-sdk": "^0.11.2",
+    "viem": "^2.57.5"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

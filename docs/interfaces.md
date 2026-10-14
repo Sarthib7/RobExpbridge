@@ -37,3 +37,8 @@ VERIFIED source: `scripts/payment-demo.ts` exercises quote, payment, retry, fina
 VERIFIED source: `src/public-worker.ts` imports simulator and matching code without wallet or signing modules.
 VERIFIED source: public recovery returns `paymentSent: false`; order requests return HTTP 403.
 VERIFIED source: `scripts/build-public.ts` embeds allowlisted static assets and recorded readiness evidence. The readiness endpoint is a snapshot, not a live activation check.
+
+## peaqOS readiness
+
+VERIFIED source: `scripts/peaqos-check.ts` validates Agung chain and genesis before using the SDK. Activation checks require matching identity and a current subscription.
+VERIFIED source: the explicit `--activate` path checks capped bond and gas reserve and writes an exclusive attempt journal. CI calls only deterministic guards and never activates.

@@ -36,3 +36,10 @@ VERIFIED: PR #13 merged as `bf21436` after Node 22 and 24 CI passed on `8fd3766`
 Current scope: preserved landing design, public simulator, static build, recorded evidence and frontend behavior tests. Owner: release. Status: In Progress.
 VERIFIED public checks: type checking, public build and frontend syntax exited 0; focused tests printed `tests 10`, `pass 10`, `fail 0`.
 VERIFIED regression proof: hiding compatible public recovery produced `tests 1`, `pass 0`, `fail 1`; restoring the controls produced `tests 1`, `pass 1`, `fail 0`.
+
+VERIFIED: PR #14 merged as `ae4d7b3` after Node 22 and 24 CI passed on `435875f`.
+Current scope: peaqOS guard tests, persistent verification key and activation evidence, SDK dependency and explicit commands. Owner: release. Status: In Progress.
+VERIFIED: live HTML and CSS matched the merged public design after PR #14.
+VERIFIED peaqOS checks: type checking exited 0; guard tests printed `tests 6`, `pass 6`, `fail 0`.
+VERIFIED regression proof: removing the gas reserve produced `tests 1`, `pass 0`, `fail 1`; restoring the guard produced `tests 1`, `pass 1`, `fail 0`.
+No activation, public payment or SDK network check was submitted in this slice.

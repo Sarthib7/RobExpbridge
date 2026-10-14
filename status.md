@@ -84,3 +84,8 @@ VERIFIED before source fix: public Worker tests printed `tests 5`, `pass 3`, `fa
 VERIFIED after initial fix: focused tests printed `tests 5`, `pass 5`, `fail 0`; `npm run check` exited 0.
 
 VERIFIED final request-limit proof: focused checks reported `tests 6`, `pass 6`, `fail 0`; original source with those checks reported `tests 6`, `pass 3`, `fail 3`, exit 1. Fixed source restored. Public build exited 0.
+
+VERIFIED: public body-limit PR #22 merged as `76259e9` after Node 22, Node 24 and dependency audit checks passed on `7817301`.
+VERIFIED: repository About metadata now has a simulator description, `https://exbridge.world` homepage and five relevant topics, confirmed by `gh repo view`.
+Owner: implementer. Status: In Progress. Scope: local EVM startup port validation.
+VERIFIED: startup tests with original source collected 5 tests, `pass 1`, `fail 4`; invalid ports created a `data` directory. Fixed source collected 5 tests, `pass 5`, `fail 0`. Type checking exited 0.

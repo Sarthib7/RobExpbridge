@@ -77,3 +77,10 @@ VERIFIED: README PR #20 merged as `aa69d10` after Node 22 and 24 CI passed on `3
 VERIFIED: local and public `/health` returned `status: ok`; public response included `paymentSigning: false`.
 Owner: release. Status: In Progress. Scope: CI permission limits, immutable action references, timeout and dependency audit gate.
 VERIFIED: GitHub commit API resolved action tags: checkout v4 `11d5960a326750d5838078e36cf38b85af677262`, setup-node v4 `49933ea5288caeca8642d1e84afbd3f7d6820020`, Foundry v1 `908c540300062bd5a7e473851cdb4282204cee09`. Pinning these references does not audit their contents.
+
+VERIFIED: CI PR #21 merged as `0ad0709` after Node 22, Node 24 and dependency audit checks passed on `7fef59c`.
+Owner: implementer. Status: In Progress. Scope: public Worker byte limit and deterministic regression checks.
+VERIFIED before source fix: public Worker tests printed `tests 5`, `pass 3`, `fail 2`; oversized streams were not cancelled, and a multibyte oversized body returned 400 instead of 413.
+VERIFIED after initial fix: focused tests printed `tests 5`, `pass 5`, `fail 0`; `npm run check` exited 0.
+
+VERIFIED final request-limit proof: focused checks reported `tests 6`, `pass 6`, `fail 0`; original source with those checks reported `tests 6`, `pass 3`, `fail 3`, exit 1. Fixed source restored. Public build exited 0.

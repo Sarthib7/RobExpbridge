@@ -48,3 +48,12 @@ VERIFIED source: the explicit `--activate` path checks capped bond and gas reser
 VERIFIED source: `scripts/batch-runs.ts` validates the network, count and run ID before creating a report. Exclusive report creation rejects reused run IDs before runtime initialization.
 VERIFIED source: report replacement uses a synced temporary file and rename. Rows with blocked or unknown payment outcomes are not reported as successful.
 CI exercises invalid configuration and existing-report paths only; it does not run a funded public batch.
+
+## Public request body boundary
+
+Owner: implementer. Status: Completed.
+V12: Public POST handlers read at most 16,384 request bytes before parsing JSON. Once a chunk crosses that limit, they cancel the remaining stream and return HTTP 413. A body at the limit remains valid when its JSON and route schema are valid.
+VERIFIED source before fix: `src/public-worker.ts` called `request.text()` before checking `text.length`. That buffered the full request and counted UTF-16 code units.
+This bound limits application buffering; a single transport chunk can already exceed the limit before the reader receives it.
+
+VERIFIED: `tests/public-worker.test.ts` collected 6 tests, 6 passed, 0 failed. Restoring the original source kept 6 collected tests, with 3 passed and 3 failed. The fixed source was restored. `npm run build:public` exited 0.

@@ -130,15 +130,15 @@ const blockedReadiness = {
   preview: { bondAmount: '400000000000000000' },
   activationStateError: 'MACHINE_NOT_FOUND', error: 'INSUFFICIENT_TEST_TOKENS',
 };
-test('peaqOS recorded blocked preview displays exact bond and unregistered ID', async () => {
+test('peaqOS explains recorded funding block without claiming live status', async () => {
   const ui = await publicHarness(blockedReadiness);
-  assert.equal(ui.element('peaqos-status').textContent, 'peaqOS: activation blocked');
-  assert.match(ui.element('peaqos-detail').textContent, /Recorded SDK preview/);
+  assert.equal(ui.element('peaqos-status').textContent, 'peaqOS: waiting for test tokens');
+  assert.match(ui.element('peaqos-detail').textContent, /recorded check found insufficient AGUNG/);
   assert.match(ui.element('peaqos-detail').textContent, /2026-10-13T03:30:53.410Z/);
-  assert.match(ui.element('peaqos-detail').textContent, /Bond: 0.4 AGUNG \(400000000000000000 wei\)/);
-  assert.match(ui.element('peaqos-detail').textContent, /INSUFFICIENT_TEST_TOKENS/);
-  assert.match(ui.element('peaqos-detail').textContent, /MACHINE_NOT_FOUND/);
-  assert.match(ui.element('peaqos-machine').textContent, /Registration is not established/);
+  assert.match(ui.element('peaqos-detail').textContent, /Bond: 0.4 AGUNG/);
+  assert.match(ui.element('peaqos-detail').textContent, /saved snapshot, not a live balance or activation check/);
+  assert.match(ui.element('peaqos-machine').textContent, /not registered in the recorded check/);
+  assert.match(ui.element('peaqos-machine').textContent, /An ID alone does not prove registration/);
 });
 test('peaqOS fetch failure does not block simulation', async () => {
   const ui = await publicHarness(blockedReadiness, '/api/peaqos');
@@ -147,4 +147,12 @@ test('peaqOS fetch failure does not block simulation', async () => {
   assert.equal(ui.visible('recover'), true);
   await ui.element('recover').onclick();
   assert.match(ui.element('recovery-result').textContent, /preview: success/);
+});
+
+test('peaqOS does not infer funding or registration from an unknown block', async () => {
+  const ui = await publicHarness({ ...blockedReadiness, error: 'RPC_ERROR', activationStateError: 'RPC_ERROR' });
+  assert.equal(ui.element('peaqos-status').textContent, 'peaqOS: activation blocked');
+  assert.match(ui.element('peaqos-detail').textContent, /Activation has not been verified/);
+  assert.match(ui.element('peaqos-machine').textContent, /Machine registration is not verified/);
+  assert.doesNotMatch(ui.element('peaqos-detail').textContent, /insufficient AGUNG/);
 });

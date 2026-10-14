@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b0d">
+  <meta name="description" content="exbridge is a Noesora hardware product for sharing simulation-tested machine recovery experiences.">
+  <title>exbridge | A Noesora product</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to workspace</a>
+<aside class="sidebar" aria-label="Workspace navigation">
+  <a class="brand" href="#main" aria-label="Noesora home">
+    <svg class="brand-mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none"><path d="M30 16H16V80H30M66 16H80V80H66M30 70L66 26" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/><rect x="45" y="45" width="6" height="6" fill="currentColor"/></svg>
+    <span class="brand-copy">Noesora<span class="brand-subtitle">Hardware / exbridge</span></span>
+  </a>
+  <p class="nav-label">Workspace</p>
+  <nav class="side-nav" aria-label="Exchange workflow">
+    <a href="#experience"><span class="nav-number">01</span> Experience</a>
+    <a href="#compatibility"><span class="nav-number">02</span> Compatibility</a>
+    <a href="#payment-panel"><span class="nav-number">03</span> Settlement</a>
+    <a id="evidence-link" href="/evidence" hidden><span class="nav-number" aria-hidden="true">↗</span> Run evidence</a>
+    <a href="#wallet-heading"><span class="nav-number" aria-hidden="true">↗</span> Test wallets</a>
+  </nav>
+  <div class="sidebar-bottom"><span class="sidebar-label">DEVELOPMENT WORKSPACE</span><p>Shared experience.<br>Verified access.</p><span class="sidebar-version">exbridge / v0.1</span></div>
+</aside>
+<div class="app-shell">
+  <header class="topbar"><p class="breadcrumb"><span class="breadcrumb-parent">Noesora</span><span class="breadcrumb-separator" aria-hidden="true">/</span><span>Hardware</span><span class="breadcrumb-separator" aria-hidden="true">/</span><strong>exbridge</strong></p><span id="network-badge" class="badge">Connecting</span></header>
+  <main id="main" tabindex="-1">
+    <div class="page-heading"><div><div class="product-origin"><svg viewBox="0 0 96 96" aria-hidden="true" focusable="false"><path d="M30 16H16V80H30M66 16H80V80H66M30 70L66 26" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/><rect x="45" y="45" width="6" height="6" fill="currentColor"/></svg><span>A Noesora product</span></div><p class="eyebrow">HARDWARE / RECOVERY EXCHANGE</p><h1>exbridge</h1><p id="workspace-description" class="lede">Share a tested recovery. Check machine compatibility. Pay for access.</p></div><span class="version-note">Simulation demo<span>Connector insertion / fixture-7</span></span></div>
+    <nav class="workflow-index" aria-label="Workflow steps"><a href="#experience"><span>01</span> Publish experience</a><a href="#compatibility"><span>02</span> Check compatibility</a><a href="#payment-panel"><span>03</span> Settle &amp; recover</a></nav>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <div class="workspace-grid">
+      <div class="workflow-stack">
+        <section class="panel" id="experience" aria-labelledby="experience-heading">
+          <div class="panel-heading"><div class="step-title"><span class="step">01</span><div><h2 id="experience-heading">Experience</h2><p class="small">A recovery contributed by Arm A</p></div></div><span class="panel-tag">Synthetic record</span></div>
+          <div class="experience-summary">
+            <div class="machine-visual" aria-hidden="true"><svg viewBox="0 0 140 112" width="140" height="112" fill="none"><path d="M14 96h112M23 23h94M23 23v65M117 23v65" stroke="currentColor" opacity=".15"/><path d="M44 87h37l7 9H37l7-9Z" fill="currentColor" opacity=".12"/><path d="M57 85V64L40 46l22-22 32 20" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/><circle cx="40" cy="46" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="3"/><circle cx="62" cy="24" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="3"/><path d="m91 40 9 8-6 8m6-8 6-3M99 64v15m-5-7h10" stroke="currentColor" stroke-width="3"/><rect x="89" y="80" width="22" height="8" rx="1" stroke="currentColor" stroke-width="2"/><path d="M59 85h17" stroke="currentColor" stroke-width="5"/></svg></div>
+            <div class="experience-description"><span class="label">EXP-001 / ARM A</span><h3>Connector insertion recovery</h3><p class="small">A lower-force procedure for the fixed demo fixture. Publish the record, then measure Arm B’s baseline.</p></div>
+          </div>
+          <div class="record-meta"><div><span class="label">Robot model</span><strong>arm-x</strong></div><div><span class="label">Gripper</span><strong>parallel-v1</strong></div><div><span class="label">Evidence</span><strong>Simulation-tested</strong></div></div>
+          <div class="actions"><button id="publish">Publish sample</button><button id="baseline" class="secondary">Run baseline</button></div>
+          <div id="published" class="result" hidden></div><div id="baseline-result" class="result" hidden></div>
+        </section>
+        <section class="panel" id="compatibility" aria-labelledby="compatibility-heading">
+          <div class="panel-heading"><div class="step-title"><span class="step">02</span><div><h2 id="compatibility-heading">Compatibility</h2><p class="small">Check the receiving machine before payment</p></div></div></div>
+          <label for="arm">Receiving machine</label><select id="arm" aria-describedby="hardware-help"><option value="B">Arm B · compatible parallel gripper</option><option value="C">Arm C · incompatible vacuum gripper</option></select>
+          <p class="small" id="hardware-help">Arm C uses a different gripper. An incompatible match cannot receive a quote.</p>
+          <dl class="criteria-list"><div><dt>Task</dt><dd>Connector insertion</dd></div><div><dt>Fixture</dt><dd>fixture-7</dd></div><div><dt>Material</dt><dd>polymer-demo</dd></div><div><dt>Baseline force</dt><dd>12 N</dd></div></dl>
+          <div class="actions"><button id="match">Check compatibility</button><button id="quote" class="secondary" hidden>Get payment quote</button></div><div id="match-result" class="result" hidden></div>
+        </section>
+        <section class="panel" id="payment-panel" aria-labelledby="settlement-heading">
+          <div class="panel-heading"><div class="step-title"><span class="step">03</span><div><h2 id="settlement-heading">Settlement &amp; recovery</h2><p id="settlement-help" class="small">Confirm payment to unlock the advisory</p></div></div></div>
+          <div id="payment-empty" class="payment-empty"><span class="empty-symbol" aria-hidden="true">↗</span><strong id="payment-empty-title">Ready when your machine is compatible</strong><p id="payment-empty-help">Publish an experience and check compatibility to request a payment quote.</p></div>
+          <div id="payment" hidden>
+            <div class="section-heading"><strong id="order-state" class="badge"></strong><span id="expiry" class="small"></span></div>
+            <dl class="transaction-details"><dt>Buyer</dt><dd id="order-buyer"></dd><dt>Contributor</dt><dd id="order-seller"></dd><dt>License price</dt><dd id="amount"></dd><dt>Network fee</dt><dd><span id="max-fee">Loading the network fee limit…</span></dd></dl>
+            <p id="order-reason"></p><p id="transaction" class="transaction"></p>
+            <div class="actions"><button id="pay">Pay</button><button id="verify" class="secondary">Check payment</button><button id="rebroadcast" class="secondary" hidden>Retry same transaction</button></div>
+            <p id="rebroadcast-help" class="small" hidden>Retry broadcasts the same stored signed transaction. It does not create a new payment.</p>
+            <p class="small">Payment uses the local server’s buyer wallet. Access requires a verified, finalized transfer.</p>
+          </div>
+          <div class="recovery-action"><button id="recover" hidden>Run with purchased recovery</button></div>
+          <div id="advisory" class="result" hidden></div><div id="recovery-result" class="result" hidden></div>
+        </section>
+      </div>
+      <aside class="wallet-rail" aria-label="Wallets and demo information">
+        <section class="network panel" aria-labelledby="wallet-heading">
+          <div class="section-heading"><h2 id="wallet-heading">Test wallets</h2><button id="refresh" class="quiet">Refresh balances</button></div>
+          <p id="network-help" class="funding-note">Loading network and local test wallets…</p>
+          <div class="wallets">
+            <div class="wallet-account"><div class="account-heading"><span class="account-avatar" aria-hidden="true">B</span><div><strong>Arm B</strong><span class="account-role">Buyer</span></div></div><strong id="buyer-balance" class="wallet-balance">Balance unavailable</strong><code id="buyer">Waiting for setup</code><div class="wallet-actions"><button id="copy" class="quiet">Copy buyer address</button><a id="faucet" class="button quiet" hidden target="_blank" rel="noopener noreferrer">Get test tokens ↗</a></div></div>
+            <div class="wallet-account"><div class="account-heading"><span class="account-avatar" aria-hidden="true">A</span><div><strong>Arm A</strong><span class="account-role">Contributor</span></div></div><strong id="seller-balance" class="wallet-balance">Balance unavailable</strong><code id="seller">Waiting for setup</code></div>
+          </div>
+          <p id="wallet-custody" class="small">Managed by this local server. No browser wallet extension is required.</p>
+        </section>
+        <section class="panel guide-panel" aria-labelledby="demo-heading"><p class="eyebrow">THE DEMO</p><h2 id="demo-heading">One experience. Two outcomes.</h2><ol class="guide-list"><li><strong>Establish the baseline</strong><span>Arm B slips at 12 N in the constructed scenario.</span></li><li><strong id="guide-access-title">Purchase the recovery</strong><span id="guide-access-help">A compatible machine pays for access to Arm A’s advisory.</span></li><li><strong>Compare the result</strong><span>Run the same fixture with the recovery procedure.</span></li></ol><div class="evidence-note"><strong>Simulation evidence only</strong><p>This demo does not establish physical robot safety or real-world performance.</p></div></section>
+      </aside>
+    </div>
+    <section class="integration-note" aria-labelledby="peaqos-heading"><h2 id="peaqos-heading">peaqOS readiness</h2><p id="peaqos-status" role="status">Checking recorded readiness…</p><p id="peaqos-detail" class="small">Machine identities in this demo are synthetic. A computed ID does not establish registration.</p><p id="peaqos-machine" class="transaction"></p></section>
+    <footer class="footer-note"><span>exbridge <span aria-hidden="true">/</span> v0.1</span><span>Synthetic data. Test tokens. Advisory access only.</span></footer>
+  </main>
+</div>
+</body>
+</html>

@@ -170,18 +170,18 @@ async function peaqosReadiness() {
   try {
     const snapshot = await api('/api/peaqos');
     if (!snapshot || typeof snapshot.status !== 'string') throw new Error('Invalid readiness snapshot.');
-    $('peaqos-status').textContent = snapshot.status === 'blocked' ? 'peaqOS: activation blocked' : 'peaqOS: activation not verified by this preview';
+    $('peaqos-status').textContent = snapshot.status === 'blocked' ? (snapshot.error === 'INSUFFICIENT_TEST_TOKENS' ? 'peaqOS: waiting for test tokens' : 'peaqOS: activation blocked') : 'peaqOS: activation not verified by this preview';
     const observed = typeof snapshot.observedAt === 'string' && Number.isFinite(Date.parse(snapshot.observedAt)) ? snapshot.observedAt : 'date unavailable';
     let bond = 'Bond unavailable.';
     if (typeof snapshot.preview?.bondAmount === 'string' && /^[0-9]{1,78}$/.test(snapshot.preview.bondAmount)) {
       const wei = BigInt(snapshot.preview.bondAmount);
       const fraction = (wei % 1000000000000000000n).toString().padStart(18, '0').replace(/0+$/, '');
-      bond = `Bond: ${wei / 1000000000000000000n}${fraction ? '.' + fraction : ''} AGUNG (${snapshot.preview.bondAmount} wei).`;
+      bond = `Bond: ${wei / 1000000000000000000n}${fraction ? '.' + fraction : ''} AGUNG.`;
     }
-    const error = typeof snapshot.error === 'string' ? snapshot.error.slice(0, 200) : 'No activation success verified.';
-    const activation = typeof snapshot.activationStateError === 'string' ? ` Registry check: ${snapshot.activationStateError.slice(0, 200)}.` : '';
-    $('peaqos-detail').textContent = `${snapshot.preview ? 'Recorded SDK preview' : 'Recorded readiness'} · ${observed}. ${bond} Activation result: ${error}.${activation} This snapshot is not a live activation check.`;
-    $('peaqos-machine').textContent = typeof snapshot.machineId === 'string' ? `Computed machine ID: ${snapshot.machineId}. ${snapshot.activationStateError === 'MACHINE_NOT_FOUND' ? 'Not registered in the recorded registry check. ' : ''}Registration is not established by a computed ID.` : 'No computed machine ID recorded. Registration is not verified.';
+    const reason = snapshot.error === 'INSUFFICIENT_TEST_TOKENS' ? 'The recorded check found insufficient AGUNG for activation.' : 'Activation has not been verified.';
+    $('peaqos-detail').textContent = `${reason} ${bond} Recorded check: ${observed}. This is a saved snapshot, not a live balance or activation check.`;
+    const registration = snapshot.activationStateError === 'MACHINE_NOT_FOUND' ? 'The machine was not registered in the recorded check.' : 'Machine registration is not verified.';
+    $('peaqos-machine').textContent = `${registration}${typeof snapshot.machineId === 'string' ? ` Computed ID: ${snapshot.machineId}. An ID alone does not prove registration.` : ''}`;
   } catch {
     $('peaqos-status').textContent = 'peaqOS: readiness unavailable';
     $('peaqos-detail').textContent = 'The recorded SDK preview could not be loaded. The simulator remains available. Machine activation is not verified.';

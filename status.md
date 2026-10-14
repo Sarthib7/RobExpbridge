@@ -43,3 +43,8 @@ VERIFIED: live HTML and CSS matched the merged public design after PR #14.
 VERIFIED peaqOS checks: type checking exited 0; guard tests printed `tests 6`, `pass 6`, `fail 0`.
 VERIFIED regression proof: removing the gas reserve produced `tests 1`, `pass 0`, `fail 1`; restoring the guard produced `tests 1`, `pass 1`, `fail 0`.
 No activation, public payment or SDK network check was submitted in this slice.
+
+VERIFIED: PR #15 merged as `96084ca` after Node 22 and 24 checks passed on `0196a5d`. Live `/health` returned HTTP 200.
+Current scope: offline constructed batch report and its deterministic CI check. Owner: release. Status: In Progress.
+VERIFIED offline batch check: type checking exited 0; report printed `total: 12`, `passed: 12`, `failed: 0`, `paymentTransactions: 0`.
+VERIFIED regression proof: an incorrect expected expiry verdict printed `total: 12`, `passed: 11`, `failed: 1` and exited 1. Restored source exited 0 with all 12 checks passed. Historical report bytes were restored after verification.

@@ -114,3 +114,7 @@ VERIFIED: Agung `eth_getBalance` for `0xb1B6938BAcEAAe2007Ce26D8ad248d54F25c0fB1
 The balance check does not verify current registration or refresh the recorded activation preview. No activation or payment was submitted.
 VERIFIED source: `scripts/peaqos-check.ts` requires the preview net bond plus `50000000000000000` wei as a gas reserve. The recorded 0.4 AGUNG bond therefore requires at least 0.45 AGUNG under this guard.
 Next action: open https://exbridge.world and try the published simulator. Real activation requires test funds and a separately authorized transaction.
+VERIFIED: release commit `1ab660e` was pushed to `origin/codex/design-release`. Git reported `[new branch] codex/design-release -> codex/design-release`.
+VERIFIED: PR creation through the GitHub connector returned HTTP 403, `Resource not accessible by integration`.
+VERIFIED: the automatic approval review rejected CLI PR creation because it requires explicit user approval for that external publication. No PR was created. Remote CI status is not determined.
+Follow-up: obtain approval to open the PR. Do not merge without separate authorization and passing CI.

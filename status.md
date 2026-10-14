@@ -72,3 +72,8 @@ Next: validate documentation and publish one README PR, then review CI and runti
 
 1. The next hosting target is not specified. Signing remains local; the public Worker stays unsigned.
 2. JSON storage remains acceptable only for the single-runtime testnet demo. Shared production use needs a separate design.
+
+VERIFIED: README PR #20 merged as `aa69d10` after Node 22 and 24 CI passed on `30291a2`.
+VERIFIED: local and public `/health` returned `status: ok`; public response included `paymentSigning: false`.
+Owner: release. Status: In Progress. Scope: CI permission limits, immutable action references, timeout and dependency audit gate.
+VERIFIED: GitHub commit API resolved action tags: checkout v4 `11d5960a326750d5838078e36cf38b85af677262`, setup-node v4 `49933ea5288caeca8642d1e84afbd3f7d6820020`, Foundry v1 `908c540300062bd5a7e473851cdb4282204cee09`. Pinning these references does not audit their contents.

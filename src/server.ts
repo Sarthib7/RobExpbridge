@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import { z } from 'zod';
 import { pathToFileURL } from 'node:url';
+import { readFile } from 'node:fs/promises';
 import { Orders, PaymentError } from './economics/orders.js';
 import { createRuntime } from './economics/runtime.js';
 import { demoExperience } from './sim/experience.js';
@@ -30,7 +31,15 @@ export function buildServer(store = new Store('data/local/experiences.json'), or
       reply.header('X-Content-Type-Options', 'nosniff');
       reply.header('Referrer-Policy', 'no-referrer');
     });
+    for (const [url, file, type] of [['/', 'index.html', 'text/html'], ['/app.js', 'app.js', 'application/javascript'], ['/styles.css', 'styles.css', 'text/css']]) {
+      app.get(url, async (_req, reply) => reply.type(type).send(await readFile('public/' + file, 'utf8')));
+    }
     app.get('/api/config', async () => ({ mode: orders.gateway.mode, chainId: orders.gateway.chainId, networkName: orders.gateway.mode === 'agung' ? 'Agung testnet' : orders.gateway.mode === 'solana-devnet' ? 'Solana devnet' : 'Local EVM (not peaq)', currency: orders.gateway.currency, price: orders.gateway.price, maxFee: orders.gateway.maxFee, buyerAddress: orders.gateway.buyerAddress, sellerAddress: orders.gateway.sellerAddress, faucetUrl: orders.gateway.mode === 'solana-devnet' ? 'https://faucet.solana.com' : 'https://docs.peaq.xyz/peaqchain/build/getting-started/get-test-tokens', explorerUrl: orders.gateway.explorerUrl }));
+    app.get('/api/peaqos', async () => {
+      try { return { ...JSON.parse(await readFile('data/evidence/peaqos-readiness.json', 'utf8')), snapshot: true }; }
+      catch { return { status: 'unavailable', snapshot: true, transactionHash: null, note: 'Run npm run peaqos:check to record SDK readiness.' }; }
+    });
+    app.get('/evidence', async (_request, reply) => reply.type('text/plain').send(await readFile('evidence.md', 'utf8')));
     app.get('/api/network', async (_request, reply) => {
       try { const balances = await orders.gateway.balances(); return { connected: true, buyerBalance: balances.buyer, sellerBalance: balances.seller, currency: orders.gateway.currency }; }
       catch { return reply.code(503).send({ error: 'Cannot verify the payment network. Check RPC access and retry.' }); }

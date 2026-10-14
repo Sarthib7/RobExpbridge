@@ -31,3 +31,9 @@ VERIFIED source: retries broadcast existing signed bytes. Tests use an injected 
 VERIFIED source: `src/server.ts` restricts the payment service to loopback Host and Origin values and requires `x-experiencebridge-client: local-ui` on mutating requests.
 VERIFIED source: order endpoints require bearer tokens. Public experience queries hide the advisory when commerce is enabled.
 VERIFIED source: `scripts/payment-demo.ts` exercises quote, payment, retry, finality and recovery on disposable Anvil chain 31337.
+
+## Public simulation UI
+
+VERIFIED source: `src/public-worker.ts` imports simulator and matching code without wallet or signing modules.
+VERIFIED source: public recovery returns `paymentSent: false`; order requests return HTTP 403.
+VERIFIED source: `scripts/build-public.ts` embeds allowlisted static assets and recorded readiness evidence. The readiness endpoint is a snapshot, not a live activation check.

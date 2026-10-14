@@ -1,0 +1,1034 @@
+{
+  "evidenceKind": "constructed-simulation-checks",
+  "provenance": "VERIFIED",
+  "generatedAt": "2026-10-13T03:34:19.982Z",
+  "evaluationTime": "2026-10-13T00:00:00.000Z",
+  "command": "node --import tsx scripts/simulation-batches.ts",
+  "scope": "Twelve constructed checks of the existing simulator and compatibility rules. These are not devnet payment runs.",
+  "limitations": "Synthetic fixtures only. No physical robot commands, payment transactions, real-world performance measurements, or safety validation.",
+  "paymentTransactions": 0,
+  "machineIdentity": "synthetic-arm-a",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "results": [
+    {
+      "id": "baseline-and-approved-recovery",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "compatible",
+        "baseline": "slip",
+        "recovery": "success"
+      },
+      "actual": {
+        "verdict": "compatible",
+        "reasons": [
+          "task, hardware, context, demo rights and simulation evidence match"
+        ],
+        "baseline": "slip",
+        "recovery": "success"
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": {
+        "baseline": {
+          "evidenceLabel": "simulation-tested",
+          "scenario": "fixture-test-1",
+          "seed": 7,
+          "fixture": "fixture-7",
+          "forceN": 12,
+          "outcome": "slip",
+          "constructed": true
+        },
+        "recovery": {
+          "evidenceLabel": "simulation-tested",
+          "scenario": "fixture-test-1",
+          "seed": 7,
+          "fixture": "fixture-7",
+          "forceN": 8,
+          "outcome": "success",
+          "constructed": true
+        }
+      },
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "incompatible-gripper",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "incompatible",
+        "reason": "gripper mismatch"
+      },
+      "actual": {
+        "verdict": "incompatible",
+        "reasons": [
+          "gripper mismatch"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "vacuum-v2",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "vacuum-v2",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "fixture-mismatch",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "incompatible",
+        "reason": "fixture mismatch"
+      },
+      "actual": {
+        "verdict": "incompatible",
+        "reasons": [
+          "fixture mismatch"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-other",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-other",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "missing-context",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "requires_review",
+        "reason": "missing fixture"
+      },
+      "actual": {
+        "verdict": "requires_review",
+        "reasons": [
+          "missing fixture"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "tampered-digest",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "rejected",
+        "reason": "integrity verification failed"
+      },
+      "actual": {
+        "verdict": "rejected",
+        "reasons": [
+          "integrity verification failed"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": false,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 9
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "expired-record",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "rejected",
+        "reason": "record expired or revoked"
+      },
+      "actual": {
+        "verdict": "rejected",
+        "reasons": [
+          "record expired or revoked"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "fc03b6e0028527cf77e6b3da9eb0fe566b294bd56cce6c2cef7c5368a704207b",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2020-01-01T00:00:00.000Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "fc03b6e0028527cf77e6b3da9eb0fe566b294bd56cce6c2cef7c5368a704207b"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "revoked-record",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "rejected",
+        "reason": "record expired or revoked"
+      },
+      "actual": {
+        "verdict": "rejected",
+        "reasons": [
+          "record expired or revoked"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "27c68a12090798d04a56d9498a5f1c9e6cbfd18fcad20119ccbbe6373dc27faf",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": true,
+        "integrity": {
+          "sha256": "27c68a12090798d04a56d9498a5f1c9e6cbfd18fcad20119ccbbe6373dc27faf"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "low-evidence",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "rejected",
+        "reason": "insufficient simulation evidence"
+      },
+      "actual": {
+        "verdict": "rejected",
+        "reasons": [
+          "insufficient simulation evidence"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "6f6f623f74d29d1253cf99f9c2204d1b38eaad3415433bb8fc09427b8d50fcd5",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "observed",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "6f6f623f74d29d1253cf99f9c2204d1b38eaad3415433bb8fc09427b8d50fcd5"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "force-envelope",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "incompatible",
+        "reason": "force envelope mismatch"
+      },
+      "actual": {
+        "verdict": "incompatible",
+        "reasons": [
+          "force envelope mismatch"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 7
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 7
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "wrong-task",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "incompatible",
+        "reason": "task mismatch"
+      },
+      "actual": {
+        "verdict": "incompatible",
+        "reasons": [
+          "task mismatch"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "unrelated-task",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "missing-record-rights",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "rejected",
+        "reason": "integrity verification failed"
+      },
+      "actual": {
+        "verdict": "rejected",
+        "reasons": [
+          "integrity verification failed"
+        ]
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": false,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": null,
+      "repeatedSimulationResult": null
+    },
+    {
+      "id": "repeat-identical-fixture",
+      "provenance": "VERIFIED",
+      "expected": {
+        "verdict": "compatible",
+        "baseline": "slip",
+        "recovery": "success",
+        "identicalResults": true
+      },
+      "actual": {
+        "verdict": "compatible",
+        "reasons": [
+          "task, hardware, context, demo rights and simulation evidence match"
+        ],
+        "baseline": "slip",
+        "recovery": "success",
+        "identicalResults": true
+      },
+      "passed": true,
+      "recordDigest": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+      "recordIntegrityValid": true,
+      "inputContext": {
+        "robotModel": "arm-x",
+        "gripper": "parallel-v1",
+        "connector": "connector-demo",
+        "material": "polymer-demo",
+        "fixture": "fixture-7",
+        "forceLimitN": 12
+      },
+      "inputQuery": {
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "use": "synthetic-demo"
+      },
+      "inputRecord": {
+        "schemaVersion": "0.1",
+        "id": "exp-001",
+        "contributor": {
+          "organization": "synthetic-factory-a",
+          "machineId": "synthetic-arm-a"
+        },
+        "task": "connector_insertion",
+        "context": {
+          "robotModel": "arm-x",
+          "gripper": "parallel-v1",
+          "connector": "connector-demo",
+          "material": "polymer-demo",
+          "fixture": "fixture-7",
+          "forceLimitN": 12
+        },
+        "failure": {
+          "procedure": "baseline_insert",
+          "outcome": "slip"
+        },
+        "advisory": {
+          "procedure": "reduced_force_insert",
+          "forceN": 8
+        },
+        "evidence": {
+          "level": "simulation-tested",
+          "testId": "fixture-test-1",
+          "attempts": 1,
+          "successes": 1
+        },
+        "rights": {
+          "license": "demo-only",
+          "redistribution": false,
+          "permittedUse": "synthetic-demo"
+        },
+        "expiresAt": "2099-01-01T00:00:00Z",
+        "revoked": false,
+        "integrity": {
+          "sha256": "cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00"
+        }
+      },
+      "simulationResult": {
+        "baseline": {
+          "evidenceLabel": "simulation-tested",
+          "scenario": "fixture-test-1",
+          "seed": 7,
+          "fixture": "fixture-7",
+          "forceN": 12,
+          "outcome": "slip",
+          "constructed": true
+        },
+        "recovery": {
+          "evidenceLabel": "simulation-tested",
+          "scenario": "fixture-test-1",
+          "seed": 7,
+          "fixture": "fixture-7",
+          "forceN": 8,
+          "outcome": "success",
+          "constructed": true
+        }
+      },
+      "repeatedSimulationResult": {
+        "baseline": {
+          "evidenceLabel": "simulation-tested",
+          "scenario": "fixture-test-1",
+          "seed": 7,
+          "fixture": "fixture-7",
+          "forceN": 12,
+          "outcome": "slip",
+          "constructed": true
+        },
+        "recovery": {
+          "evidenceLabel": "simulation-tested",
+          "scenario": "fixture-test-1",
+          "seed": 7,
+          "fixture": "fixture-7",
+          "forceN": 8,
+          "outcome": "success",
+          "constructed": true
+        }
+      }
+    }
+  ]
+}

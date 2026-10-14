@@ -15,7 +15,8 @@
     "dev:local": "node --import tsx scripts/local.ts",
     "demo:payments": "node --import tsx scripts/payment-demo.ts",
     "start:agung": "node --import tsx src/server.ts",
-    "start:solana": "PAYMENT_MODE=solana-devnet node --import tsx src/server.ts"
+    "start:solana": "PAYMENT_MODE=solana-devnet node --import tsx src/server.ts",
+    "build:public": "node --import tsx scripts/build-public.ts"
   },
   "dependencies": {
     "fastify": "^5.6.0",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "tsx": "^4.20.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "esbuild": "^0.28.2"
   }
 }

@@ -1,0 +1,102 @@
+{
+  "provenance": "VERIFIED only for executed checks; not_run and blocked rows are not successful runs.",
+  "scenario": "Synthetic fixed robot fixture. Payments use real test tokens. No physical robot commands.",
+  "runId": "checkpoint-20261013",
+  "network": "solana-devnet",
+  "requestedCount": 12,
+  "startedAt": "2026-10-13T03:32:44.793Z",
+  "finishedAt": "2026-10-13T03:32:45.024Z",
+  "status": "blocked",
+  "preflight": {
+    "buyerBalance": "0",
+    "minimumBuyerBalance": "13200000 atomic units",
+    "currency": "SOL",
+    "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+  },
+  "rows": [
+    {
+      "id": "checkpoint-20261013-1",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-2",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-3",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-4",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-5",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-6",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-7",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-8",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-9",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-10",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-11",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    },
+    {
+      "id": "checkpoint-20261013-12",
+      "date": "2026-10-13T03:32:44.793Z",
+      "state": "blocked",
+      "network": "solana-devnet",
+      "reason": "Insufficient buyer test tokens for all prices plus the maximum 0.0001-SOL fee reserve per payment."
+    }
+  ]
+}

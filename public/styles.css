@@ -481,3 +481,9 @@ summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
   .landing-steps { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .landing-destinations { margin-top: 12px; }
 }
+
+.landing-legend { display: none; }
+@media (max-width: 600px) {
+  .landing-diagram text { display: none; }
+  .landing-legend { display: flex; justify-content: space-between; gap: 6px; margin: 12px 0 0; color: var(--silver); font: 12px/1.5 var(--font-body); }
+}

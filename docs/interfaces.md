@@ -78,3 +78,6 @@ VERIFIED source limits: post-failure measurements lack established robot model, 
 VERIFIED: focused case-study checks reported `tests 8`, `pass 8`, `fail 0`; TypeScript checking exited 0. A zero-distance regression produced `tests 1`, `pass 0`, `fail 1`, exit 1; the source was restored.
 
 V14: The frozen study reproduces the committed reference/query episode IDs and every query-to-reference prediction mapping, not only aggregate accuracy. Tests compare these fields with the recorded report.
+
+V15: The offline CLI rejects altered source bytes, a changed frozen protocol and Kaggle/UCI misalignment before emitting any report. CLI tests invoke a copied command with isolated input files; helper-only tests do not satisfy this invariant.
+Bug record, 2026-10-15: removing both CLI integrity-check calls left the original eight helper/evaluation tests passing. The missing command-level checks caused this coverage gap.

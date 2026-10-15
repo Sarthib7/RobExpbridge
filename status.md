@@ -99,3 +99,14 @@ VERIFIED: local and public health checks returned `status: ok` after PR #22; the
 VERIFIED: no wallet files, payment evidence or robot procedures were changed by this pass. Source changes only affect request parsing and invalid-port startup.
 REPORTED: peaq faucet maintenance blocks user funding. No peaqOS activation is established.
 Follow-up: deploy the bounded public Worker; obtain AGUNG and separately approve activation. A shared payment service needs a custody and authentication design plus transactional storage. Current signer services remain local testnet demos.
+
+## Public release, 2026-10-15
+
+Owner: release. Status: Completed.
+Correction to the prior handoff: public deployment was pending on 2026-10-14. It is now verified live.
+VERIFIED: merged source `6ba2f4b` built artifact SHA-256 `674ec45c17249bd15973cf132cf045cb61ac0f3f6f2f7c07cba8099ac35a39f3`.
+VERIFIED Cloudflare deployment: `112f02ec-3cff-4b0e-8df5-c7734ead9e99`, version `ccb7486e-3027-4f9e-9150-2598a405759e`, 100 percent traffic, created `2026-10-15T08:52:50.910075Z`. Compatibility date and flags remain `2026-10-13`, `nodejs_compat`; bindings remain empty.
+VERIFIED live checks: HTML, JavaScript and CSS matched merged source byte for byte; 16,384-byte body returned HTTP 200; oversized UTF-8 body returned HTTP 413; Arm C returned HTTP 422; orders returned HTTP 403.
+VERIFIED simulator: baseline `slip`, recovery `success`, `paymentSent: false`. Health returned `paymentSigning: false`.
+Evidence: `data/evidence/public-release-20261015.json`. These checks cover the unsigned synthetic preview, not a shared signing service or real robot performance.
+Remaining blocker: AGUNG funding and separately approved peaqOS activation.

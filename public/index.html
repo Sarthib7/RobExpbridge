@@ -41,20 +41,20 @@
     <div id="notice" role="status" aria-live="polite"></div>
     <div class="workspace-grid">
       <figure id="demo-scene" class="demo-scene public-only" data-state="ready" data-arm="B" aria-labelledby="scene-heading" aria-describedby="scene-status">
-        <figcaption><span class="scene-kicker">Constructed illustration</span><h2 id="scene-heading">A lesson at the fixture</h2></figcaption>
-        <svg class="scene-drawing" viewBox="0 0 620 320" aria-hidden="true" focusable="false">
+        <figcaption><span class="scene-kicker">Constructed illustration</span><div class="scene-title-row"><h2 id="scene-heading">A lesson at the fixture</h2><span class="scene-fixture-chip">fixture-7</span></div><p class="scene-lesson-label">Arm A’s lesson <span>8 N · simulation-tested</span></p></figcaption>
+        <svg class="scene-drawing" viewBox="0 0 440 320" aria-hidden="true" focusable="false">
           <defs><pattern id="scene-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="currentColor" stroke-width=".5"/></pattern></defs>
-          <rect x="20" y="12" width="580" height="280" fill="url(#scene-grid)" class="scene-grid"/>
+          <rect x="20" y="12" width="400" height="280" fill="url(#scene-grid)" class="scene-grid"/>
           <g class="scene-lesson"><rect x="30" y="24" width="204" height="66" rx="8"/><path d="M48 43h16v25H48zm4 6h8m-8 6h8m-8 6h5" fill="none" stroke="currentColor" stroke-width="2"/><text x="76" y="48">ARM A'S LESSON</text><text x="76" y="70" class="scene-note">8 N · simulated</text></g>
           <path class="scene-memory-link" d="M234 58C325 58 342 96 342 145" fill="none" stroke-width="3" stroke-dasharray="6 7"/>
           <path class="scene-memory-link" d="m335 137 7 9 7-9" fill="none" stroke-width="3"/>
-          <path d="M34 272H590" class="scene-floor"/>
-          <g class="scene-arm"><path d="M102 252h82l12 18H90z" class="scene-base"/><path d="M138 249v-81l62-56 80 47" class="scene-arm-link"/><circle cx="138" cy="168" r="12"/><circle cx="200" cy="112" r="13"/><circle cx="280" cy="159" r="10"/>
+          <ellipse class="scene-ground-shadow" cx="230" cy="273" rx="190" ry="15"/><path class="scene-bench-top" d="M54 254H398L430 272H34Z"/><path class="scene-bench-front" d="M34 272H430V281H34Z"/><path d="M34 272H430" class="scene-floor"/>
+          <g class="scene-arm"><path d="M102 252h82l12 18H90z" class="scene-base"/><path class="scene-pedestal" d="M122 211h32v41h-32z"/><path d="M138 237v-69l62-56 80 47" class="scene-arm-shadow"/><path d="M138 237v-69l62-56 80 47" class="scene-arm-link"/><path class="scene-arm-inset" d="M142 224v-54l59-52 73 43"/><circle cx="138" cy="168" r="14"/><circle cx="200" cy="112" r="15"/><circle cx="280" cy="159" r="12"/><circle class="scene-joint-pin" cx="138" cy="168" r="5"/><circle class="scene-joint-pin" cx="200" cy="112" r="5"/><circle class="scene-joint-pin" cx="280" cy="159" r="4"/>
             <path class="scene-parallel" d="M280 170v9m-10 0h20m-20 0v15m20-15v15" fill="none" stroke-width="4"/>
             <path class="scene-vacuum" d="M280 170v14m-14 10q14-22 28 0z" fill="none" stroke-width="4"/>
           </g>
           <g class="scene-connector"><rect x="270" y="194" width="20" height="30" rx="3"/><path d="M276 201v13m7-13v13"/></g>
-          <g class="scene-fixture"><path d="M247 245h68l14 27h-96z"/><path d="M268 248h24" fill="none" stroke-width="5"/><text x="344" y="263">fixture-7</text></g>
+          <g class="scene-fixture"><path d="M247 245h68l14 27h-96z"/><path class="scene-fixture-face" d="M233 272h96v8h-96z"/><path d="M268 248h24" fill="none" stroke-width="5"/><text x="344" y="263">fixture-7</text></g>
           <g class="scene-blocked"><circle cx="342" cy="112" r="17"/><path d="m334 104 16 16m0-16-16 16"/></g>
           <g class="scene-success"><circle cx="355" cy="208" r="20"/><path d="m345 208 7 7 13-15"/></g>
           <text x="94" y="306" class="scene-machine">Receiving arm</text>

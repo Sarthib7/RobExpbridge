@@ -165,3 +165,10 @@ VERIFIED: focused checks reported `tests 11`, `pass 11`, `fail 0`. Freezing the 
 Least confident decisions:
 1. The square joint housings favor clear small-screen shapes over the form of a particular robot model.
 2. Five seconds per stage gives readers time to read. User observation may support a different pace.
+
+## Guided demo visual frame
+
+Owner: implementer. Status: Completed.
+V26: The public demo has a scoped visual frame. Compact progress tabs retain the active step's `aria-current` attribute. Separate cards display the returned baseline and memory outcomes. The action panel aligns with the top of the fixture illustration. A detailed arm, workbench and fixture replace the earlier sparse drawing. Existing state classes still control slip, matched hardware, rejection and recovery success. Small screens use HTML fixture/lesson labels instead of scaled SVG text.
+VERIFIED: changes are limited to `public/index.html`, `public/styles.css`, the public demo body class in `scripts/public-site.ts`, and this contract. `public/app.js`, simulator, matching, payment adapters and dataset files are unchanged. Existing public-page and guided-flow checks reported `tests 8`, `pass 8`, `fail 0`. Browser requests returned baseline `slip · 12 N`, Arm C `incompatible` with `gripper mismatch`, and Arm B `success · 8 N`. These remain constructed simulator results.
+VERIFIED: browser inspection at viewport widths 390 and 320 reported document widths 375 and 305, respectively. The 320-pixel check found no main-content element extending past the document width. The fixed action was 48 pixels tall; bottom padding was `100px`. These observations cover the tested viewports with zero safe-area inset, not every device, inset or text-zoom setting. New CSS uses the `demo-workspace` class so it does not style the landing page or local payment workspace.

@@ -245,3 +245,65 @@ code, .transaction, .transaction-details dd, .nav-number, .step { font-family: v
 .study-limit p { margin-bottom: 0; }
 .study-links { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 13px; margin: 18px 0; }
 @media (max-width: 700px) { .study-flow { grid-template-columns: 1fr; } .study-flow li + li::before { content: '↓'; left: 18px; top: -23px; } .study-results th, .study-results td { padding: 10px 4px; font-size: 12px; } }
+
+/* The public preview has one guided task. Local paid workspaces retain their full controls. */
+.public-only { display: none; }
+.fixture-details, .study-method { margin: 18px 0; }
+summary { cursor: pointer; min-height: 44px; padding: 12px 0; color: var(--accent-soft); font-size: 13px; }
+summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.fixture-details .record-meta { margin-top: 12px; }
+.study-method[open] > summary { border-bottom: 1px solid var(--hairline); margin-bottom: 20px; }
+.integration-content { padding: 20px 0; }
+.integration-note summary span { margin-left: 12px; color: var(--muted); }
+.public-preview .public-only { display: block; }
+.public-preview .sidebar { position: static; width: auto; padding: 20px max(24px, calc((100vw - 1040px) / 2)); border-left: 0; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; }
+.public-preview .side-nav { display: flex; align-items: center; gap: 8px; margin: 0; padding: 0; }
+.public-preview .side-nav a { font-family: var(--font-body); text-transform: none; letter-spacing: 0; font-size: 14px; }
+.public-preview .side-nav .nav-number, .public-preview .local-nav, .public-preview .nav-label, .public-preview .sidebar-bottom,
+.public-preview .topbar, .public-preview .workflow-index, .public-preview .wallet-rail, .public-preview .product-origin,
+.public-preview .page-heading .eyebrow, .public-preview .version-note, .public-preview .step { display: none; }
+.public-preview .app-shell { margin-left: 0; }
+.public-preview main { max-width: 1040px; padding: 56px 24px 0; }
+.public-preview .page-heading { margin-bottom: 28px; }
+.public-preview h1 { max-width: 720px; font-size: clamp(34px, 5vw, 54px); line-height: 1.08; }
+.public-preview .lede { max-width: 62ch; margin-top: 18px; line-height: 1.7; }
+.public-preview .workspace-grid { display: block; }
+.public-preview .panel { padding: 28px; }
+.public-preview .panel-heading { margin-bottom: 20px; padding-bottom: 18px; }
+.public-preview .experience-summary { margin-bottom: 16px; }
+.public-preview .machine-visual { width: 86px; height: 86px; flex-basis: 86px; }
+.public-preview:not(.demo-ready) #compatibility, .public-preview:not(.demo-ready) #payment-panel { display: none; }
+.demo-boundary { color: var(--muted); font-size: 13px; }
+.demo-progress { display: flex; gap: 24px; list-style: none; margin: 26px 0 20px; padding: 0; color: var(--muted); font-size: 13px; }
+.demo-progress li { border-bottom: 2px solid var(--hairline); padding-bottom: 10px; flex: 1; }
+.demo-progress [aria-current="step"] { color: var(--accent-soft); border-color: var(--accent); }
+.outcome-strip { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 18px 0; border-top: 1px solid var(--hairline); }
+.outcome-strip dl { display: flex; gap: 48px; margin: 0; }
+.outcome-strip dt { color: var(--muted); font-size: 12px; }
+.outcome-strip dd { margin: 5px 0 0; font-size: 19px; }
+.public-preview #notice:not(:empty) { background: transparent; border: 0; padding: 4px 0 16px; margin: 0; color: var(--muted); }
+.public-preview #notice.error { color: var(--danger); }
+.public-preview .recovery-action { display: flex; gap: 12px; flex-wrap: wrap; }
+.public-preview .case-study { margin-top: 56px; }
+.public-preview .case-study .study-limit { margin-top: 18px; }
+.public-preview .case-study > p, .public-preview .study-limit { font-size: 13px; }
+@media (max-width: 600px) {
+  .public-preview .sidebar { padding: 18px 16px; align-items: flex-start; flex-wrap: wrap; gap: 18px; }
+  .public-preview .side-nav { gap: 4px; width: 100%; justify-content: space-between; }
+  .public-preview .side-nav a { padding: 10px 8px; }
+  .public-preview main { padding: 30px 16px 0; }
+  .public-preview .panel { padding: 20px; }
+  .demo-progress { gap: 12px; font-size: 12px; }
+  .outcome-strip dl { gap: 24px; }
+  .outcome-strip dd { font-size: 16px; }
+  .outcome-strip { gap: 12px; flex-wrap: wrap; }
+  .public-preview .panel-tag { margin-left: 0; }
+  .integration-note summary span { display: block; margin: 6px 0 0; }
+}
+
+.public-preview .payment-empty, .public-preview .experience-description > .label { display: none; }
+
+.public-preview #experience .step-title .small, .public-preview #experience .panel-tag { display: none; }
+@media (max-width: 600px) { .public-preview .machine-visual { display: none; } }
+
+.demo-boundary span { display: block; margin-top: 5px; font-size: 12px; }

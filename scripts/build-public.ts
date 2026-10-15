@@ -1,19 +1,20 @@
 import { readFile, mkdir } from 'node:fs/promises';
 import { build } from 'esbuild';
 import { renderPublicCaseStudy } from './public-case-study.js';
-import { renderDemoPage, renderShowcases, renderStudyPage, renderEvidencePage } from './public-site.js';
+import { renderDemoPage, renderLandingPage, renderShowcases, renderStudyPage, renderEvidencePage } from './public-site.js';
 const assets: Record<string,string> = {};
 for (const [route,file] of [['/','index.html'],['/app.js','app.js'],['/styles.css','styles.css']]) assets[route] = await readFile('public/'+file,'utf8');
 for (const file of ['checkpoint-20261013-agung.json','checkpoint-20261013-solana-devnet.json','peaqos-readiness.json','simulation-batches.json']) assets['/data/evidence/'+file] = await readFile('data/evidence/'+file,'utf8');
 const report = await readFile('data/evidence/robot-failure-case-study-20261015.json', 'utf8');
-assets['/'] = renderDemoPage(assets['/']);
+assets['/demo'] = renderDemoPage(assets['/']);
+assets['/'] = renderLandingPage();
 assets['/showcases'] = renderShowcases();
 assets['/case-study'] = renderStudyPage(renderPublicCaseStudy(JSON.parse(report)));
 assets['/data/evidence/robot-failure-case-study-20261015.json'] = report;
 assets['/data/case-studies/robot-failures/manifest.json'] = await readFile('data/case-studies/robot-failures/manifest.json', 'utf8');
 const evidence = await readFile('evidence.md','utf8');
 assets['/evidence'] = renderEvidencePage(evidence);
-for (const route of ['/showcases', '/case-study', '/evidence']) assets[route + '/'] = assets[route];
+for (const route of ['/demo', '/showcases', '/case-study', '/evidence']) assets[route + '/'] = assets[route];
 let peaqos: unknown = { status:'blocked', reason:'Activation has not been verified. No machine ID is claimed.' };
 try { peaqos=JSON.parse(await readFile('data/evidence/peaqos-readiness.json','utf8')); } catch { /* Build still labels missing evidence honestly. */ }
 await mkdir('dist/public',{recursive:true});

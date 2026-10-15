@@ -421,3 +421,63 @@ summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
   .study-teaser { display: block; }
   .evidence-document { padding: 18px; font-size: 12px; }
 }
+
+/* The overview explains the idea before visitors enter the working demo. */
+.site-nav { flex-wrap: wrap; }
+.landing-hero { padding-bottom: 48px; }
+.landing-copy { max-width: 860px; }
+.public-preview .landing-copy h1 { max-width: 860px; font-size: clamp(38px, 5.3vw, 62px); line-height: 1.12; }
+.landing-copy h1 em { font-style: normal; color: var(--accent-soft); }
+.landing-copy .lede { max-width: 650px; font-size: 17px; }
+.landing-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 28px; margin: 26px 0 14px; }
+.landing-actions .showcase-link { margin: 0; }
+.landing-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 20px; color: var(--canvas); background: var(--accent-soft); border: 1px solid var(--accent-soft); border-radius: 4px; font: 14px var(--font-body); text-decoration: none; }
+.landing-primary:hover { background: var(--ink); }
+.landing-caption { color: var(--muted); font-size: 12px; }
+.landing-visual { margin: 40px 0 0; }
+.landing-diagram { border: 1px solid var(--hairline); border-radius: 7px; background: radial-gradient(ellipse at 50% 30%, #1c2841, var(--surface) 70%); padding: 18px 60px; }
+.landing-diagram svg { display: block; width: 100%; height: auto; max-height: 340px; }
+.landing-diagram text { fill: var(--muted); font: 11px var(--font-mono); letter-spacing: 1px; }
+.landing-grid { color: var(--hairline); opacity: .5; }
+.landing-floor { stroke: var(--hairline-strong); }
+.landing-arm { fill: none; stroke: var(--accent-soft); stroke-width: 17; stroke-linecap: round; stroke-linejoin: round; }
+.landing-diagram circle { fill: var(--surface); stroke: var(--accent); stroke-width: 3; }
+.landing-gripper { fill: none; stroke: var(--accent-soft); stroke-width: 3; }
+.landing-base { fill: var(--surface-raised); stroke: var(--hairline-strong); }
+.landing-transfer { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 6; }
+.landing-memory { fill: var(--surface); stroke: var(--accent); }
+.landing-record { stroke: var(--muted); stroke-width: 2; }
+.landing-check { fill: none; stroke: var(--success); stroke-width: 3; }
+.landing-visual figcaption { color: var(--muted); font-size: 12px; margin-top: 12px; max-width: 700px; }
+.landing-about, .landing-proof { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 60px; border-top: 1px solid var(--hairline); padding: 48px 0; }
+.landing-about h2, .landing-how > h2, .landing-proof h2 { font-size: clamp(28px, 3vw, 38px); line-height: 1.15; margin: 0 0 22px; }
+.landing-about p, .landing-proof p { font-size: 15px; line-height: 1.8; color: var(--silver); margin: 0 0 18px; }
+.landing-about .landing-boundary, .landing-proof .landing-boundary { border-left: 2px solid var(--hairline-strong); padding-left: 16px; font-size: 13px; color: var(--muted); }
+.landing-how { border-top: 1px solid var(--hairline); padding: 48px 0; }
+.landing-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; list-style: none; padding: 12px 0 0; margin: 0; }
+.landing-steps li { border-top: 2px solid var(--accent); padding-top: 18px; }
+.landing-steps span, .landing-destinations span { display: block; font: 11px var(--font-mono); color: var(--muted); }
+.landing-steps h3 { font-size: 24px; margin: 15px 0 10px; }
+.landing-steps p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.landing-destinations { display: flex; flex-direction: column; }
+.landing-destinations a { padding: 20px 0; border-bottom: 1px solid var(--hairline); text-decoration: none; color: var(--accent-soft); }
+.landing-destinations a:first-child { padding-top: 0; }
+.landing-destinations strong { display: block; font-size: 19px; font-weight: 500; margin-top: 10px; }
+.landing-destinations a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 850px) {
+  .landing-about, .landing-proof { gap: 32px; }
+  .landing-diagram { padding: 18px; }
+}
+@media (max-width: 600px) {
+  .site-nav a { font-size: 11px; padding: 10px 5px; }
+  .site-nav .site-demo-link { margin-left: auto; }
+  .landing-hero { padding-bottom: 32px; }
+  .public-preview .landing-copy h1 { font-size: 37px; }
+  .landing-copy .lede { font-size: 15px; }
+  .landing-actions { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .landing-diagram { padding: 12px 0; }
+  .landing-about, .landing-proof { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 32px 0; }
+  .landing-how { padding: 32px 0; }
+  .landing-steps { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .landing-destinations { margin-top: 12px; }
+}

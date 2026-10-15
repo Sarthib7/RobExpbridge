@@ -10,7 +10,7 @@ import { renderDemoPage, renderEvidencePage } from '../scripts/public-site.js';
 const reportPath = '../data/evidence/robot-failure-case-study-20261015.json';
 const loadReport = async () => JSON.parse(await readFile(new URL(reportPath, import.meta.url), 'utf8'));
 
-test('V16/V19: built public pages serve report-backed study and working navigation without paid access', async () => {
+test('V16/V19/V20: built public pages serve report-backed study and working navigation without paid access', async () => {
   const build = spawnSync(process.execPath, ['--import', import.meta.resolve('tsx'), 'scripts/build-public.ts'], {
     cwd: fileURLToPath(new URL('..', import.meta.url)), encoding: 'utf8', timeout: 30_000,
   });
@@ -39,10 +39,18 @@ test('V16/V19: built public pages serve report-backed study and working navigati
   assert.equal(order.status, 403);
   const root = await (await get('/')).text();
   assert.ok(root.includes('id="demo"'));
-  assert.ok(root.includes('id="case-study" class="study-teaser"'));
-  assert.ok(!root.includes('class="study-results"'), 'The demo links to the full study instead of stacking it below the controls');
+  assert.ok(root.includes('id="about"'));
+  assert.ok(root.includes('id="case-study"'));
+  assert.ok(!root.includes('src="/app.js"'));
+  const demo = await (await get('/demo')).text();
+  assert.ok(demo.includes('id="demo-scene"'));
+  assert.ok(demo.includes('src="/app.js"'));
+  assert.ok(demo.includes('id="case-study" class="study-teaser"'));
+  assert.ok(!root.includes('id="publish"'), 'The overview must not start the interactive demo');
+  assert.ok(!root.includes('class="study-results"'), 'The overview links to the full study instead of stacking its results');
   for (const [path, title, current] of [
-    ['/', 'exbridge | A Noesora product', '/#demo'],
+    ['/', 'About | exbridge', '/#about'],
+    ['/demo', 'exbridge | A Noesora product', '/demo#demo'],
     ['/showcases', 'Showcases | exbridge', '/showcases'],
     ['/case-study', 'Recorded failure case study | exbridge', '/case-study'],
     ['/evidence', 'Run evidence | exbridge', '/evidence'],
@@ -58,7 +66,7 @@ test('V16/V19: built public pages serve report-backed study and working navigati
     assert.ok(new RegExp(`href="${current}" aria-current="page"`).test(header));
     assert.ok(header.includes('href="https://noesora.xyz"'));
     assert.equal([...body.matchAll(/<h1(?:\s|>)/g)].length, 1);
-    if (path !== '/') assert.ok(!body.includes('src="/app.js"'), 'Static pages must not initialize demo/payment handlers');
+    if (path !== '/demo') assert.ok(!body.includes('src="/app.js"'), 'Static pages must not initialize demo/payment handlers');
     // Follow every local link in the built page, including source assets and anchors.
     for (const [, href] of body.matchAll(/href="([/#][^"]*)"/g)) {
       const target = new URL(href, 'https://exbridge.world' + path);
@@ -67,7 +75,7 @@ test('V16/V19: built public pages serve report-backed study and working navigati
       if (target.hash) assert.ok((await destination.text()).includes(`id="${target.hash.slice(1)}"`), `Missing anchor: ${href}`);
     }
   }
-  for (const path of ['/showcases', '/case-study', '/evidence']) assert.equal(await (await get(path + '/')).text(), await (await get(path)).text());
+  for (const path of ['/demo', '/showcases', '/case-study', '/evidence']) assert.equal(await (await get(path + '/')).text(), await (await get(path)).text());
   const catalog = await (await get('/showcases')).text();
   assert.equal([...catalog.matchAll(/<article class="showcase-card">/g)].length, 2);
   const rawEvidence = await get('/evidence.md');

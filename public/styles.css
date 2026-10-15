@@ -493,7 +493,7 @@ summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 .arm-card-heading, .arm-card-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; font: 11px var(--font-mono); color: var(--muted); }
 .arm-card-heading { border-bottom: 1px solid var(--hairline); }
 .arm-card-heading span:last-child { color: var(--silver); }
-.arm-figure { display: block; width: 100%; height: auto; max-height: 430px; }
+.arm-figure { display: block; width: 100%; height: auto; max-height: 480px; }
 .arm-figure path { vector-effect: non-scaling-stroke; }
 .arm-figure .iso-fill { fill: #17212b; }
 .arm-figure .iso-top { fill: #344758; }
@@ -516,6 +516,33 @@ summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 @media (max-width: 600px) {
   .arm-card-heading, .arm-card-controls { padding: 12px; gap: 8px; }
   .arm-card-heading { font-size: 9px; }
-  .arm-figure { width: 116%; max-width: none; margin-left: -8%; }
+  .arm-figure { width: 100%; max-width: none; margin-left: 0; }
   .arm-legend { font-size: 10px; gap: 5px; }
+}
+
+/* Articulated links share one world projection with their joint housings. */
+.robot-face { stroke: #697e89; stroke-width: .65; stroke-linejoin: round; }
+.robot-face[data-shade="0"] { fill: #26323c; }
+.robot-face[data-shade="1"] { fill: #435361; }
+.robot-face[data-shade="2"] { fill: #6d7d88; }
+.robot-face[data-shade="3"] { fill: #a0afb7; }
+.robot-joint .robot-face[data-shade="0"] { fill: #735439; }
+.robot-joint .robot-face[data-shade="1"] { fill: #a57549; }
+.robot-joint .robot-face[data-shade="2"] { fill: #cc985d; }
+.robot-joint .robot-face[data-shade="3"] { fill: #edbd79; }
+.robot-grip .robot-face { fill: #b4d9e2; stroke: #b4d9e2; }
+.lesson-route { fill: none; stroke: #577d91; stroke-width: 1; stroke-dasharray: 3 6; opacity: .65; }
+.lesson-card { fill: #82b8d2; stroke: #d0e9f5; stroke-width: 1; }
+.lesson-lines { fill: none; stroke: #153b4f; stroke-width: 1.5; }
+.arm-card-controls { align-items: flex-start; }
+.arm-card-controls > #arm-story { display: block; flex: 1 1 300px; max-width: 470px; }
+#arm-readout { font: 16px/1.4 var(--font-body); color: var(--ink); margin: 0 0 6px; }
+.arm-card-controls #arm-detail { font: 13px/1.6 var(--font-body); color: var(--silver); }
+.arm-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 0; margin: 24px 0 12px; list-style-position: inside; font: 12px var(--font-mono); color: var(--muted); }
+.arm-stages li { border-top: 2px solid var(--hairline-strong); padding-top: 10px; }
+.arm-stages [aria-current="step"] { border-color: #82b8d2; color: #b4d9e2; }
+@media (max-width: 600px) {
+  .arm-card-controls > #arm-story { flex-basis: 100%; }
+  .arm-stages { gap: 8px; font-size: 10px; }
+  .arm-card-heading { flex-wrap: wrap; }
 }

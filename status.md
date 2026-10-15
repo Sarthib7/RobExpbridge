@@ -132,3 +132,19 @@ REPORTED independent review: pin the split IDs and per-query prediction mapping,
 VERIFIED source byte protection: `git check-attr text` returned `text: unset` for both retained LP1 files. Scoped attributes preserve the downloaded line endings.
 REPORTED independent final review: no other actionable correctness, leakage or misleading-claim issue was found. The split-ID finding was addressed and all eight focused checks passed again.
 Implementation status: Completed. Release status: In Progress until exact-head CI and sequential merge.
+
+## Case-study review resolution, 2026-10-15
+
+Owner: reviewer. Status: Completed.
+Correction to the earlier handoff: case-study PR #28 merged as `86ea1d2fb34446aa6d9bf859e23df4cfdea29ee8`. Approved README/evidence updates merged in PR #29 as `92e05ef03b671536c0ff95652f3cee66c6e527f3`. The earlier document-edit blocker is resolved.
+
+VERIFIED finding: removing both CLI calls to `verifyManifestFile` in a temporary copy left the original checks at `tests 8`, `pass 8`, `fail 0`. The source already called the checks. Helper tests did not protect command wiring.
+VERIFIED resolution: `tests/robot-failure-cli.test.ts` adds five CLI tests under invariant V15 in `docs/interfaces.md`. They cover the intact report, changed bytes in either source, a changed protocol and misaligned CSV rows. Combined focused checks reported `tests 13`, `pass 13`, `fail 0`; `npm run check` exited 0.
+VERIFIED mutation proof: removing integrity calls produced `tests 5`, `pass 3`, `fail 2`. Removing protocol validation or alignment separately produced `tests 5`, `pass 4`, `fail 1`. Each mutation exited 1; repository source remained unchanged.
+REPORTED independent fix review: no defects found. The reviewer checked isolated command execution and the purpose of each corruption case.
+
+VERIFIED release: [PR #30](https://github.com/Sarthib7/RobExpbridge/pull/30) merged as `dadf52502a4c8295cab3bb7e86cb53818eaa6406`. [CI run 38722591505](https://github.com/Sarthib7/RobExpbridge/actions/runs/38722591505) passed Node 22, Node 24 and dependency audit checks on `72c0b6dae285fad190aa1807eeb572e0552f6f59`. Node 22 output reported `tests 91`, `pass 91`, `fail 0`. This verifies the tests, not physical robot performance.
+VERIFIED source audit: a fresh UCI archive download matched SHA-256 `cdfbe0b260f4a21c5249fe0da4b1baf4041959663a9182253885ee1f41a4568e`. Retained data files matched their recorded archive members. A CLI rerun matched every saved report field except `observedAt`. These checks do not verify the original laboratory collection.
+
+Remaining limits: local checksums trust the committed manifest. Missing robot, site and session metadata prevents evaluation across those groups. Recorded diagnosis does not establish recovery success or safety.
+Follow-up: no remaining CLI coverage fix. AGUNG funding and separately approved peaqOS activation remain outside this review. No dataset, wallet, payment or deployment change occurred.

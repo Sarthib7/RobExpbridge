@@ -49,7 +49,7 @@ export function renderEvidencePage(evidence: string): string {
 
 export function renderDemoPage(template: string): string {
   if (!template.includes('<!-- recorded-case-study -->') || !/<aside class="sidebar"[\s\S]*?<\/aside>/.test(template)) throw new Error('Public demo template slots missing');
-  return template.replace('<body>', '<body class="public-preview">')
+  return template.replace('<body>', '<body class="public-preview demo-workspace">')
     .replace(/<aside class="sidebar"[\s\S]*?<\/aside>/, siteHeader('demo'))
     .replace('<!-- recorded-case-study -->', `<section id="case-study" class="study-teaser" aria-labelledby="study-teaser-heading"><div><p class="site-eyebrow">LOOKING FOR RECORDED DATA?</p><h2 id="study-teaser-heading">Explore the failure diagnosis study.</h2><p>Inspect the fixed dataset split, measured results and errors.</p></div><a class="showcase-link" href="/case-study">Read the case study ↗</a></section>`);
 }

@@ -91,3 +91,38 @@ test('insufficient funds prevents signing', async (t) => {
     assert.equal(signing.mock.callCount(), 0);
   } finally { gateway.close(); }
 });
+
+test('V22 funded EVM wallet signs at the fee cap and refuses to sign above it', async (t) => {
+  let gasPrice = 10_000_000_000n;
+  t.mock.method(JsonRpcProvider.prototype, 'send', async () => '0x7a69');
+  t.mock.method(JsonRpcProvider.prototype, 'getBalance', async () => 100_000_000_000_000_000_000n);
+  t.mock.method(Wallet.prototype, 'populateTransaction', async () => ({
+    to: seller, value: BigInt(intent.amountAtomic), data: intent.data, chainId: 31337,
+    nonce: 0, type: 0, gasLimit: 1_000_000n, gasPrice,
+  }));
+  const signing = t.mock.method(Wallet.prototype, 'signTransaction');
+  const gateway = createGateway('local', 'http://127.0.0.1:8545', fixtureKey, seller);
+  try {
+    const fixed = { ...intent, buyer: gateway.buyerAddress };
+    const prepared = await gateway.prepare(fixed);
+    assert.ok(prepared.rawTransaction.startsWith('0x'));
+    assert.equal(signing.mock.callCount(), 1);
+    gasPrice++;
+    await assert.rejects(gateway.prepare(fixed), /Payment RPC operation failed/);
+    assert.equal(signing.mock.callCount(), 1, 'An over-cap payment must fail before signing, even with sufficient funds');
+  } finally { gateway.close(); }
+});
+
+test('V22 EVM broadcast refuses signed bytes above the fee cap', async (t) => {
+  const sends: string[] = [];
+  t.mock.method(JsonRpcProvider.prototype, 'send', async (method: string) => { sends.push(method); return '0x7a69'; });
+  const raw = await new Wallet(fixtureKey).signTransaction({
+    to: seller, value: BigInt(intent.amountAtomic), data: intent.data, chainId: 31337,
+    nonce: 0, type: 0, gasLimit: 1_000_000n, gasPrice: 10_000_000_001n,
+  });
+  const gateway = createGateway('local', 'http://127.0.0.1:8545', fixtureKey, seller);
+  try {
+    await assert.rejects(gateway.broadcast(raw), /Payment RPC operation failed/);
+    assert.deepEqual(sends, [], 'Over-cap signed bytes must fail before any network request');
+  } finally { gateway.close(); }
+});

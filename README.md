@@ -33,6 +33,27 @@ For the existing Solana CLI wallet, use the [devnet runbook](docs/solana-cli-dem
 
 VERIFIED source: `scripts/demo.ts` uses the simulator without funded wallets. CI runs the commands above on Node.js 22 and 24.
 
+## Recorded robot-failure case study
+
+VERIFIED [captured report](data/evidence/robot-failure-case-study-20261015.json): Kaggle/UCI LP1 supplies 88 recorded force/torque traces. The fixed split uses 68 references and 20 queries. Retrieval classified `15/20` correctly (75%), versus `7/20` (35%) for the reference-majority baseline.
+
+Three of 15 faulty queries were classified as normal. These measurements follow failure detection. This study measures offline diagnosis, not recovery success, pre-failure prediction or robot safety. Recorded traces stay outside the paid advisory path.
+
+```mermaid
+flowchart LR
+    K["Kaggle LP1 sensor rows"] --> A["Verify bytes and align traces<br/>Join original UCI labels"]
+    U["Original UCI recordings"] --> A
+    A --> S["88 distinct recordings<br/>Split whole traces"]
+    S --> R["68 references<br/>Compute channel scales"]
+    S --> Q["20 held-out queries"]
+    R --> N["Retrieve nearest reference"]
+    Q --> N
+    N --> E["Compare recorded labels<br/>15 correct, 5 wrong"]
+    E --> L["3 faulty traces labeled normal<br/>Diagnosis only, no recovery measured"]
+```
+
+Run `npm run case-study:robot` after installation. The command checks local source hashes and prints every prediction without network access or a wallet. Read the [full case study](docs/case-studies/robot-failures.md) for the protocol, all five errors and source rights. Original UCI attribution and CC BY 4.0 terms are retained; the manifest records Kaggle's different license metadata.
+
 ## Choose a demo
 
 | Path | Command | Funds and prerequisites |
@@ -162,7 +183,7 @@ tests/*.test.ts
 | peaqOS activation | VERIFIED saved check blocked; current registration unverified |
 | dstack attestation | Not present |
 | ROS 2 / physical robots | Not present |
-| Factory telemetry | Synthetic fixtures only |
+| Recovery fixtures | Synthetic only; recorded LP1 diagnosis data remains separate |
 
 ## Known limitations
 

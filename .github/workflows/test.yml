@@ -30,6 +30,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run demo
+      - run: npm run case-study:robot
       - run: npm run demo:batches
       - run: npm run build:public
       - run: node --check public/app.js

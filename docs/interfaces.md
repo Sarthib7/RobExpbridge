@@ -66,3 +66,15 @@ VERIFIED source before fix: the script called `startLocalNode` and `createRuntim
 An occupied valid port is still detected at listen time; this invariant covers invalid configuration, not port reservation.
 
 VERIFIED: startup tests collected 5 tests; original source produced `pass 1`, `fail 4` because each invalid port created `data`. The fixed source produced `pass 5`, `fail 0`; type checking exited 0. The tests hide Anvil from PATH and do not submit payments.
+
+## Offline robot-failure case study
+
+Owner: implementer. Status: Completed.
+The `case-study:robot` command reads only the pinned Kaggle LP1 CSV, original UCI LP1 label file and manifest. It returns a JSON report of diagnosis retrieval versus a reference-majority baseline. It imports no payment runtime or controller.
+Reference/query partitions contain whole unique episodes. Channel scales use reference samples only. Every query returns a source reference ID, distance and class prediction, not an executable advisory.
+Input failures: mismatched source hashes, invalid shapes, non-integer values, missing labels, mismatched Kaggle/UCI rows or duplicate traces stop the run.
+VERIFIED source limits: post-failure measurements lack established robot model, gripper, fixture and successful-recovery outcomes. They remain outside the synthetic experience schema.
+
+VERIFIED: focused case-study checks reported `tests 8`, `pass 8`, `fail 0`; TypeScript checking exited 0. A zero-distance regression produced `tests 1`, `pass 0`, `fail 1`, exit 1; the source was restored.
+
+V14: The frozen study reproduces the committed reference/query episode IDs and every query-to-reference prediction mapping, not only aggregate accuracy. Tests compare these fields with the recorded report.

@@ -1,0 +1,80 @@
+{
+  "provenance": "VERIFIED",
+  "retrievedAt": "2026-10-15T10:13:54.727419+00:00",
+  "dataset": "Robot Execution Failures, LP1: approach to grasp position",
+  "authors": [
+    "Luis Seabra Lopes",
+    "Luis M. Camarinha-Matos"
+  ],
+  "originalSource": "https://archive.ics.uci.edu/dataset/138/robot+execution+failures",
+  "doi": "10.24432/C5M89N",
+  "originalDownload": "https://archive.ics.uci.edu/static/public/138/robot+execution+failures.zip",
+  "kaggleSource": "https://www.kaggle.com/datasets/prashant111/robot-execution-failures",
+  "kaggleVersion": 1,
+  "kaggleDownload": "https://www.kaggle.com/api/v1/datasets/download/prashant111/robot-execution-failures?datasetVersionNumber=1",
+  "originalArchiveSha256": "cdfbe0b260f4a21c5249fe0da4b1baf4041959663a9182253885ee1f41a4568e",
+  "kaggleArchiveSha256": "8cc9dcfdabca5b57e4be026bdcd1147433b657845ed436d980ea621ce86a4cfa",
+  "files": {
+    "lp1.data": {
+      "bytes": 27345,
+      "sha256": "e146de5aeaffd864f0e57ce2fe0b58e98582c3e808e6c0e8deb9b25a54ef0cb5"
+    },
+    "lp1_data.csv": {
+      "bytes": 26293,
+      "sha256": "1537eed449cd545f8fd67f3690d6f5f4f2f30f7855136c7b475e08ba1eb83953"
+    }
+  },
+  "rights": {
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "basis": "Original UCI dataset license; both original creators and the Kaggle mirror are credited.",
+    "kaggleCatalogLicense": "CC0: Public Domain",
+    "licenseDifference": "The mirror lists CC0. This study retains original UCI attribution and does not assert that the mirror can remove the original terms.",
+    "changes": "Only LP1 text data is retained. Kaggle CSV bytes and UCI data bytes are unchanged. Labels are joined only after exact numeric trace alignment."
+  },
+  "sampling": {
+    "episodes": 88,
+    "samplesPerEpisode": 15,
+    "channels": [
+      "Fx",
+      "Fy",
+      "Fz",
+      "Tx",
+      "Ty",
+      "Tz"
+    ],
+    "windowMs": 315,
+    "units": "Source measurement units are not specified; no SI-unit conversion is claimed.",
+    "timing": "Collected after failure detection, not a pre-action forecast."
+  },
+  "protocol": {
+    "scope": "LP1 only: offline diagnosis retrieval, not recovery or pre-failure prediction",
+    "source": "prashant111/robot-execution-failures",
+    "kaggleVersion": 1,
+    "original": "UCI Robot Execution Failures, DOI 10.24432/C5M89N",
+    "split": "Within each original label, sort episodes by SHA256 of canonical integer samples; first ceil(classCount/5) are queries. Remaining episodes are reference memory. No window-level split.",
+    "features": "All 90 raw values; channel scale is population standard deviation across reference-memory samples only. Zero scale becomes 1. No tuning.",
+    "retrieval": "One nearest reference episode by squared Euclidean distance after channel scaling. Equal distance ties resolve by source episode index.",
+    "baseline": "Majority label in reference memory; equal counts resolve lexicographically.",
+    "metrics": [
+      "correct/queries",
+      "accuracy",
+      "per-class recall",
+      "balanced accuracy",
+      "confusion counts"
+    ],
+    "limits": [
+      "Small same-source, post-detection recordings",
+      "No recovery outcome labels",
+      "No verified hardware compatibility metadata",
+      "No physical control or new payments"
+    ],
+    "frozenAt": "2026-10-15T10:09:09.635540+00:00"
+  },
+  "limits": [
+    "No recovery outcome or controller execution data",
+    "Robot model, gripper and production context are not established",
+    "Only LP1; other subsets have duplicate traces",
+    "No downloaded code or executable artifacts are used"
+  ]
+}

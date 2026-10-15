@@ -1,0 +1,96 @@
+{
+  "provenance": {
+    "organization": "synthetic-factory-a",
+    "machineId": "synthetic-arm-a"
+  },
+  "observedAt": "2026-10-15T09:10:25.455Z",
+  "command": "node --import tsx scripts/demo.ts",
+  "exitCode": 0,
+  "nodeVersion": "v26.8.1",
+  "measurementLimit": "One local in-process API invocation. queryTimeMs is not a throughput, network-latency or production benchmark.",
+  "notice": "Constructed synthetic outcomes. No real-world safety or effectiveness claim.",
+  "armA": {
+    "evidenceLabel": "simulation-tested",
+    "scenario": "fixture-test-1",
+    "seed": 7,
+    "fixture": "fixture-7",
+    "forceN": 12,
+    "outcome": "slip",
+    "constructed": true
+  },
+  "evidence": {
+    "level": "simulation-tested",
+    "testId": "fixture-test-1",
+    "attempts": 1,
+    "successes": 1
+  },
+  "armB": {
+    "baseline": {
+      "evidenceLabel": "simulation-tested",
+      "scenario": "fixture-test-1",
+      "seed": 7,
+      "fixture": "fixture-7",
+      "forceN": 12,
+      "outcome": "slip",
+      "constructed": true
+    },
+    "decision": {
+      "id": "exp-001",
+      "status": "compatible",
+      "reasons": [
+        "task, hardware, context, demo rights and simulation evidence match"
+      ],
+      "advisory": {
+        "procedure": "reduced_force_insert",
+        "forceN": 8
+      },
+      "evidence": {
+        "level": "simulation-tested",
+        "testId": "fixture-test-1",
+        "attempts": 1,
+        "successes": 1
+      },
+      "contributor": {
+        "organization": "synthetic-factory-a",
+        "machineId": "synthetic-arm-a"
+      },
+      "advisoryOnly": true
+    },
+    "recovered": {
+      "evidenceLabel": "simulation-tested",
+      "scenario": "fixture-test-1",
+      "seed": 7,
+      "fixture": "fixture-7",
+      "forceN": 8,
+      "outcome": "success",
+      "constructed": true,
+      "experienceId": "exp-001",
+      "advisoryOnly": true
+    }
+  },
+  "armC": {
+    "id": "exp-001",
+    "status": "incompatible",
+    "reasons": [
+      "gripper mismatch"
+    ],
+    "advisory": null
+  },
+  "tamperingDetected": true,
+  "metrics": {
+    "queryTimeMs": 0.722417000000064,
+    "baselineFailures": "1/1",
+    "recoverySuccesses": "1/1",
+    "repeatedFailuresAvoided": 1,
+    "incompatibleRejectionRate": "1/1"
+  },
+  "peaq": {
+    "status": "simulated",
+    "network": "none",
+    "experienceId": "exp-001",
+    "transactionHash": null,
+    "explanation": "Synthetic license receipt. No chain transaction or payment occurred."
+  },
+  "privacy": "No TEE integration or hardware attestation.",
+  "verification": "VERIFIED"
+}

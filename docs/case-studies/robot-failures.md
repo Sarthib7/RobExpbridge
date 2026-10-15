@@ -32,7 +32,9 @@ VERIFIED source manifest: [source files and hashes](../../data/case-studies/robo
 
 ## Frozen protocol
 
-VERIFIED protocol: chosen before the first scored probe and preserved with its timestamp in the data manifest and report. No parameter or split was changed after seeing the result.
+REPORTED study chronology: the original study record says the protocol was chosen before the first scored probe and was not retuned after scoring.
+
+Correction: an earlier version marked that chronology as VERIFIED. The manifest records a freeze time before the report time, but Git first stores both together in commit `86ea1d2`. Those recorded timestamps alone do not independently prove when the protocol was selected. The reproducibility checks pin the current protocol and split; they do not establish pre-registration.
 
 1. Within each original category, sort whole recordings by SHA-256 of their canonical integer samples. Reserve the first `ceil(category count / 5)` for queries. Keep the rest as reference memory.
 2. Use 68 reference recordings and 20 query recordings. Keep all 15 samples from each recording together. Reject duplicate traces; never place the same trace on both sides.

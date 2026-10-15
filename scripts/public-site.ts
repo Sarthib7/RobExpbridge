@@ -55,19 +55,17 @@ export function renderDemoPage(template: string): string {
 }
 
 
-export function renderLandingPage(): string {
+export function renderLandingPage(armFigure: string): string {
   return page('About', 'An evidence-backed exchange for machine experiences. Explore the constructed demo and recorded diagnosis study.', 'home', `
     <section class="landing-hero" aria-labelledby="landing-heading">
       <div class="landing-copy"><p class="site-eyebrow">EXBRIDGE / A NOESORA PRODUCT</p><h1 id="landing-heading">A lesson from one machine.<br><em>A starting point for another.</em></h1><p class="lede">Share a recorded experience. Check whether it fits the receiving machine. Keep the evidence and limits with the advice.</p><div id="demo" class="landing-actions"><a class="button landing-primary" href="/demo#demo">Try the recovery demo ↗</a><a class="showcase-link" href="/showcases">Explore the showcases ↗</a></div><p class="landing-caption">Research MVP. Constructed recovery demo and a separate recorded-data diagnosis study.</p></div>
-      <figure class="landing-visual" aria-labelledby="landing-diagram-caption"><div class="landing-diagram" aria-hidden="true">
-        <svg viewBox="0 0 680 340" focusable="false"><defs><pattern id="landing-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="currentColor" stroke-width=".5"/></pattern></defs><rect class="landing-grid" width="680" height="340" fill="url(#landing-grid)"/>
-          <path class="landing-floor" d="M30 270H650"/><path class="landing-arm" d="M100 250v-85l60-65 65 45"/><circle cx="100" cy="165" r="9"/><circle cx="160" cy="100" r="10"/><circle cx="225" cy="145" r="8"/><path class="landing-gripper" d="M225 155v13m-12 0h24m-24 0v18m24-18v18"/><path class="landing-base" d="M70 250h60l14 20H56z"/>
-          <path class="landing-arm receiving-arm" d="M580 250v-85l-60-65-65 45"/><circle cx="580" cy="165" r="9"/><circle cx="520" cy="100" r="10"/><circle cx="455" cy="145" r="8"/><path class="landing-gripper" d="M455 155v13m-12 0h24m-24 0v18m24-18v18"/><path class="landing-base" d="M550 250h60l14 20h-88z"/>
-          <path class="landing-transfer" d="M230 105Q340-30 450 105"/><path class="landing-transfer" d="m438 101 14 7-1-16"/>
-          <rect class="landing-memory" x="278" y="112" width="124" height="107" rx="8"/><path class="landing-record" d="M301 135h78m-78 14h78m-78 14h45"/><path class="landing-check" d="m327 188 9 9 18-20"/>
-          <text x="100" y="305" text-anchor="middle">MACHINE A</text><text x="340" y="248" text-anchor="middle">CHECK THE CONTEXT</text><text x="580" y="305" text-anchor="middle">MACHINE B</text><text x="340" y="38" text-anchor="middle">SHARED EXPERIENCE</text>
-        </svg>
-      </div><p class="landing-legend" aria-hidden="true"><span>Machine A</span><span>→</span><span>Context check</span><span>→</span><span>Machine B</span></p><figcaption id="landing-diagram-caption">Concept illustration: one machine contributes a lesson. Compatibility and evidence checks come before advice reaches another.</figcaption></figure>
+      <figure id="arm-workcell" class="landing-visual" aria-labelledby="landing-diagram-caption">
+        <div class="arm-card"><div class="arm-card-heading"><span>FIG. 01 / CONCEPT</span><span>A lesson crosses the workbench</span></div>
+        ${armFigure}
+        <div class="arm-card-controls"><div><button id="arm-pause" type="button" hidden>Pause animation</button><button id="arm-next" type="button" hidden>Next step</button></div><p id="arm-readout" role="status" aria-live="off">01 / Arm A contributes</p></div></div>
+        <p class="arm-legend"><span>Arm A · contribute</span><span>Context check</span><span>Arm B · consult</span></p>
+        <figcaption id="landing-diagram-caption">Concept animation of Cartesian robot arms. One machine contributes a lesson. Context checks come before another receives advice. This is not live telemetry or a measured recovery. No robot commands are sent.</figcaption>
+      </figure><script src="/arm-figure.js" defer></script>
     </section>
     <section id="about" class="landing-about" aria-labelledby="about-heading"><div><p class="site-eyebrow">ABOUT EXBRIDGE</p><h2 id="about-heading">Share the lesson.<br>Keep the context.</h2></div><div><p>exbridge is a prototype for sharing machine experiences with their task, hardware context and evidence. A receiving machine can query a lesson and see why it matches, needs review or must be rejected.</p><p>The current recovery demo uses a constructed connector-insertion fixture. Compatible Arm B receives an advisory. Arm C has a different gripper and is rejected.</p><p class="landing-boundary">Advice stays separate from execution. Existing controllers and operators retain control. The prototype does not establish physical robot safety.</p></div></section>
     <section class="landing-how" aria-labelledby="how-heading"><p class="site-eyebrow">THE IDEA, STEP BY STEP</p><h2 id="how-heading">Context travels with the experience.</h2><ol class="landing-steps"><li><span>01 / CONTRIBUTE</span><h3>Record the lesson</h3><p>Attach task context, provenance, evidence and permitted uses.</p></li><li><span>02 / CHECK</span><h3>Check the fit</h3><p>Reject incompatible hardware and records with insufficient evidence.</p></li><li><span>03 / ADVISE</span><h3>Return an advisory</h3><p>The authorized controller decides whether to act. Retrieval is not permission to execute.</p></li></ol></section>

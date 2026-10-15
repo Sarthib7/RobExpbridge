@@ -101,6 +101,16 @@ The command reads local text files, validates their hashes and produces a JSON r
 
 VERIFIED checks: `tests/robot-failure-study.test.ts` reported `tests 8`, `pass 8`, `fail 0`. Setting every candidate distance to zero made the frozen-result check report `tests 1`, `pass 0`, `fail 1`, exit 1. Restoring the source returned eight passing tests. An independent Python probe agreed with TypeScript on every split ID, prediction and metric.
 
+### CLI regression coverage
+
+Correction from the fresh-eyes review: the original eight tests covered helpers and evaluation, but did not protect CLI wiring. Removing both CLI integrity calls left all eight passing. The current command already called those checks; the missing protection was in the test suite.
+
+VERIFIED: five additional CLI tests reported `tests 5`, `pass 5`, `fail 0`. They run a copied command with isolated files and verify the intact report, corruption of either source, a changed frozen protocol and mismatched Kaggle rows. Source-corruption probes change whitespace while preserving numeric values, so parsing or alignment cannot hide a missing integrity check.
+
+VERIFIED mutation checks in temporary copies: removing both integrity calls produced `tests 5`, `pass 3`, `fail 2`. Removing protocol validation or row alignment separately produced `tests 5`, `pass 4`, `fail 1`. Each mutation exited 1. Repository source remained unchanged.
+
+Local hashes verify files against the committed manifest. They do not independently authenticate a changed manifest or verify the original laboratory observations. Source provenance also depends on the upstream attribution and the reviewed download records.
+
 ## Relationship to the MVP
 
 VERIFIED source: `src/domain/schema.ts` and `src/sim/assembly.ts` support the constructed connector-insertion fixture. LP1 lacks established robot model, gripper, connector, material and fixture metadata, as well as measured recovery outcomes. These traces stay outside the paid advisory and recovery path.

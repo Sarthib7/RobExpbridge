@@ -1,102 +1,113 @@
-# Evidence index
+# MVP run evidence
 
-2026-10-13. Owner: coordinator. Public settlement checkpoint: Blocked.
+Updated 2026-10-15. Owner: release.
 
-VERIFIED reports below contain 12 passed constructed checks and zero confirmed public payment transactions. The user requested setup to continue while live runs remain blocked. These checks do not establish physical robot performance or safety.
+VERIFIED: the MVP runs a deterministic recovery scenario and has one finalized Solana devnet payment. The payment uses test SOL. All robot inputs and outcomes are constructed. No physical robot telemetry or field dataset is supplied.
 
-## Constructed checks
+## Correction to the earlier index
 
-VERIFIED report: [simulation-batches.json](data/evidence/simulation-batches.json). Report output: `total: 12`, `passed: 12`, `failed: 0`, `paymentTransactions: 0`.
+The 2026-10-13 index reported no confirmed public testnet payment. That was the recorded state then. A Solana devnet payment completed on 2026-10-14 and was checked again on 2026-10-15. The earlier blocked batches remain preflight failures, not successful payments.
 
-| Check | Actual verdict | Passed |
+The earlier test count was 63. VERIFIED [CI run 38709010147](https://github.com/Sarthib7/RobExpbridge/actions/runs/38709010147), head `7c4b516a2d5bbee26010f5c4a22e7414d91b688d`, reported `tests 78`, `pass 78`, `fail 0` on both Node 22 and Node 24. This verifies those checks, not production safety.
+
+## What is real and what is constructed
+
+| Evidence | Observed result | Boundary |
 | --- | --- | --- |
-| baseline-and-approved-recovery | compatible | True |
-| incompatible-gripper | incompatible | True |
-| fixture-mismatch | incompatible | True |
-| missing-context | requires_review | True |
-| tampered-digest | rejected | True |
-| expired-record | rejected | True |
-| revoked-record | rejected | True |
-| low-evidence | rejected | True |
-| force-envelope | incompatible | True |
-| wrong-task | incompatible | True |
-| missing-record-rights | rejected | True |
-| repeat-identical-fixture | compatible | True |
+| VERIFIED public Solana RPC | Finalized 0.001 SOL transfer | Real devnet payment with test tokens |
+| VERIFIED paid app run | Confirmed order, advisory access, recovery success | Application record plus constructed simulator |
+| VERIFIED fresh simulator run | Baseline slip, compatible recovery, incompatible rejection | Synthetic fixture, not physical robot data |
+| VERIFIED public deployment | Healthy preview; orders return HTTP 403 | Unsigned simulator, no public payment signing |
+| VERIFIED saved peaqOS report | Insufficient AGUNG; machine not found | Historical snapshot, not proof of activation |
 
-## Public payment batch index
+## Real devnet transaction
 
-VERIFIED report contents: each payment below stopped at the balance preflight. No transaction was prepared. Blocked rows are not completed payment runs.
+VERIFIED [fresh RPC recheck](data/evidence/solana-recheck-20261015.json), collected on 2026-10-15 through `https://api.devnet.solana.com`:
 
-| Network | Test run | State | Transaction |
-| --- | --- | --- | --- |
-| agung | checkpoint-20261013-1 | blocked | None |
-| agung | checkpoint-20261013-2 | blocked | None |
-| agung | checkpoint-20261013-3 | blocked | None |
-| agung | checkpoint-20261013-4 | blocked | None |
-| agung | checkpoint-20261013-5 | blocked | None |
-| agung | checkpoint-20261013-6 | blocked | None |
-| agung | checkpoint-20261013-7 | blocked | None |
-| agung | checkpoint-20261013-8 | blocked | None |
-| agung | checkpoint-20261013-9 | blocked | None |
-| agung | checkpoint-20261013-10 | blocked | None |
-| agung | checkpoint-20261013-11 | blocked | None |
-| agung | checkpoint-20261013-12 | blocked | None |
-| solana-devnet | checkpoint-20261013-1 | blocked | None |
-| solana-devnet | checkpoint-20261013-2 | blocked | None |
-| solana-devnet | checkpoint-20261013-3 | blocked | None |
-| solana-devnet | checkpoint-20261013-4 | blocked | None |
-| solana-devnet | checkpoint-20261013-5 | blocked | None |
-| solana-devnet | checkpoint-20261013-6 | blocked | None |
-| solana-devnet | checkpoint-20261013-7 | blocked | None |
-| solana-devnet | checkpoint-20261013-8 | blocked | None |
-| solana-devnet | checkpoint-20261013-9 | blocked | None |
-| solana-devnet | checkpoint-20261013-10 | blocked | None |
-| solana-devnet | checkpoint-20261013-11 | blocked | None |
-| solana-devnet | checkpoint-20261013-12 | blocked | None |
-
-Reports: [Agung](data/evidence/checkpoint-20261013-agung.json), [Solana devnet](data/evidence/checkpoint-20261013-solana-devnet.json).
-
-## peaqOS
-
-VERIFIED [SDK readiness report](data/evidence/peaqos-readiness.json): deployment `agung-2026-08-28`, chain `9990`, `balanceWei: 0`, `bondAmount: 400000000000000000`, `activationStateError: MACHINE_NOT_FOUND`, `transactionHash: null`. The machine ID in that report is computed, not registered. No activity event is claimed.
-
-INFERRED setup budget: 0.582 AGUNG covers the reported 0.4 bond, the configured 0.05 activation reserve and 0.132 batch reserve. Actual fees may differ. Solana batch reserve is 0.0132 SOL.
-
-Dedicated test addresses:
-
-- Agung: `0xb1B6938BAcEAAe2007Ce26D8ad248d54F25c0fB1`.
-- Solana devnet: `EgPwYPZK6D7JZyHCLMxf1dxsGykmqswDGsz7MeaDpVCG`.
-
-REPORTED official [Solana onboarding guide](https://docs.peaq.xyz/peaqos/guides/onboard-on-solana): peaqOS onboarding is mainnet-only. Solana devnet payments in this project are separate from peaqOS onboarding. The [peaqOS AI guide](https://docs.peaq.xyz/peaqos/peaqos-ai) is an integration reference, not evidence of this machine being active.
-
-## Current local payment verification
-
-VERIFIED `npm run demo:payments` exited 0 on 2026-10-13: `payment: confirmed`, `sellerReceived: 0.001 local ETH`, `baseline: slip`, `recovery: success`, `retry: same signed transaction, seller paid once`.
-Local chain 31337 hash: `0x0e5b0444acd83c261ba4d63f7b52c7eaade058c19213981034b0d5fa22d1c71a`.
-This disposable local transaction is not public settlement.
-
-VERIFIED integrated suite: `tests 63`, `pass 63`, `fail 0`.
-The first sandboxed run failed because its mock RPC could not open a localhost socket (`listen EPERM`). The socket-enabled run passed.
-
-## Earlier local transactions
-
-REPORTED historical session records. These are local Anvil transactions on chain 31337, not public testnet settlement. Disposable chains may no longer be queryable.
-
-| Test | Local transaction hash |
+| Field | Value |
 | --- | --- |
-| Earlier disposable example | `0x00203f4c52a91cb5b0499d5d55a0d0ccf38f7c86671a09ee0fa14c12088b0d65` |
-| Payment example | `0x0733779b14b48681638e03970eb6e41692d23d442835ef5c1357cf8c0da3964e` |
-| Persistent browser example | `0x5636d12963828069b8c1fbeeca14950c53dae218240b7380b8ca7b3bad379ccc` |
+| Network | Solana devnet |
+| Signature | `3Bd94scCn2mFDeMPjAV9r7Kue6WC13dYXZkQHNGmFH2N5pp3AmRdPGAnouFN2dw2AtfEHMVMouLXeztQbYV263WN` |
+| Confirmation | `finalized` |
+| Transaction error | `null` |
+| Slot | `511057765` |
+| Transfer | `1000000` lamports (`0.001 SOL`) |
+| Fee | `5000` lamports (`0.000005 SOL`) |
+| Buyer | `EMc97zXSrG6vb8aqEMponNPgYcDJ9G5vLRYHJz1BYsge` |
+| Contributor | `5Br4L66bZhvpErnaih7prwXwjk3VViz5SJ7Wa8Vk4cDF` |
+| Order ID | `54a769d4-755f-4ac7-a1dc-34b15f86f00a` |
+| Record digest | `cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00` |
 
-REPORTED faucet claim: `0xeec5c3ccb5cdb01f51d537d0cb78d45e79ca35a50da7bb5686e37b917e3fb689`. Earlier RPC queries returned null transaction and receipt. This is not a verified transaction.
+[Open the explorer receipt](https://explorer.solana.com/tx/3Bd94scCn2mFDeMPjAV9r7Kue6WC13dYXZkQHNGmFH2N5pp3AmRdPGAnouFN2dw2AtfEHMVMouLXeztQbYV263WN?cluster=devnet).
 
-## Demo flow
+VERIFIED method: `getSignatureStatuses` used `searchTransactionHistory: true`. `getTransaction` used `commitment: finalized` and `encoding: jsonParsed`. Parsed sender, recipient and amount matched the recorded order. The memo matched the order ID and record digest. This recheck sent no new payment.
 
-1. Load the synthetic sample and run the baseline. Inspect the slip at 12 N.
-2. Check Arm B compatibility and run the public preview recovery at 8 N. The preview sends no payment.
-3. Select Arm C. Inspect the gripper rejection.
-4. Open this evidence index. Use the local payment demo for settlement mechanics. Public testnet receipts remain blocked.
+This evidence trusts the configured public RPC node. It is not an independent consensus proof. A transfer and memo do not establish that a robot performed a task or that an experience is true.
 
-## Remaining checkpoint
+## The paid application run
 
-Public payments, peaqOS activation and exact PR-head remote CI still need verification. No claim of full bounty completion, hardware validation or TEE privacy is made.
+VERIFIED [recorded run](data/evidence/solana-devnet-live-20261014.json):
+
+1. Arm A contributed `exp-001` for a synthetic connector-insertion task, labeled `simulation-tested`.
+2. Arm B ran the baseline at 12 N and returned `slip`. Matching returned `compatible` for its robot, gripper and context.
+3. The app created an access order bound to the record digest. One 0.001 SOL devnet payment was submitted and finalized.
+4. The confirmed order unlocked the advisory. Recovery succeeded at 8 N with seed 7 and the same fixture.
+5. Arm C used `vacuum-v2` instead of `parallel-v1`. Matching returned `incompatible: gripper mismatch`.
+
+The recorded run joins app state, payment fields and simulator outcomes. The fresh RPC recheck validates the public transaction. It does not independently replay or authenticate the historical application process.
+
+## Fresh simulator run
+
+VERIFIED [raw output](data/evidence/mvp-simulator-run-20261015.json). Command: `node --import tsx scripts/demo.ts`. Exit code: `0`. Capture runtime: `v26.8.1`. The CI run above used Node 22 and 24.
+
+| Measurement | Baseline | Recovery |
+| --- | --- | --- |
+| Scenario | `fixture-test-1` | `fixture-test-1` |
+| Fixture | `fixture-7` | `fixture-7` |
+| Seed | `7` | `7` |
+| Force | `12 N` | `8 N` |
+| Outcome | `slip` | `success` |
+| Constructed | `true` | `true` |
+
+VERIFIED output: Arm C returned `incompatible`. Changing advisory bytes produced `tamperingDetected: true`. The run reported `baselineFailures: 1/1`, `recoverySuccesses: 1/1`, `incompatibleRejectionRate: 1/1`, and `repeatedFailuresAvoided: 1`.
+
+VERIFIED local query time: `0.722417000000064 ms`. This is one in-process API call on one machine. It is not a network-latency, throughput or production benchmark. The 1/1 outcomes follow designed simulator rules, not a statistical effectiveness study.
+
+The CLI prints a simulated peaq receipt with `transactionHash: null` and submits no payment. The real Solana transfer above came from the separate local payment workspace.
+
+## Reproduce without spending tokens
+
+VERIFIED source: `package.json` and `scripts/demo.ts` support:
+
+```sh
+npm ci --ignore-scripts
+npm run demo
+```
+
+The command checks baseline, compatible recovery, incompatible hardware and tampering. Query time and temporary paths can differ.
+
+Open [the public preview](https://exbridge.world), load the sample, run the baseline, check Arm B and run its recovery. Select Arm C to inspect rejection. VERIFIED source and deployment checks: the preview sends no payment.
+
+For the paid path, use the [local Solana CLI wallet runbook](docs/solana-cli-demo.md). It requires a local devnet wallet and explicit contributor address. Starting the server does not pay. The payment action can spend devnet SOL. Inspecting the existing receipt does not require another payment.
+
+## Public deployment
+
+VERIFIED [deployment receipt](data/evidence/public-release-20261015.json): source `6ba2f4bfd1cd8495d4a0a49ae374ceb0f88a239a`, deployment `112f02ec-3cff-4b0e-8df5-c7734ead9e99`, version `ccb7486e-3027-4f9e-9150-2598a405759e`, 100 percent traffic at `2026-10-15T08:52:50.910075Z`.
+
+VERIFIED at capture: HTML, JavaScript and CSS matched merged source. A 16,384-byte body returned HTTP 200; oversized UTF-8 input returned HTTP 413; Arm C returned HTTP 422; public orders returned HTTP 403. Recovery returned `paymentSent: false`.
+
+These are timestamped checks, not continuous uptime measurements. The Worker embeds evidence at build time. An existing deployment can show an earlier evidence index until it is rebuilt.
+
+## peaqOS and remaining gaps
+
+VERIFIED [saved SDK report](data/evidence/peaqos-readiness.json): chain `9990`, `balanceWei: 0`, bond `400000000000000000` wei (0.4 AGUNG), `INSUFFICIENT_TEST_TOKENS`, `MACHINE_NOT_FOUND`, `transactionHash: null`. This snapshot does not establish the current balance or registration. A computed machine ID does not prove registration.
+
+REPORTED by the user: the peaq faucet is under maintenance. Agung settlement and peaqOS activation remain unverified. The Solana devnet transfer does not establish either integration.
+
+VERIFIED source and evidence scope: no physical robot dataset, private factory telemetry or hardware TEE attestation is supplied. A shared payment service still needs authentication, custody design and transactional storage before production use.
+
+## Historical checks
+
+VERIFIED [constructed batch report](data/evidence/simulation-batches.json): `total: 12`, `passed: 12`, `failed: 0`, `paymentTransactions: 0`. It covers compatibility, fixture mismatch, missing context, integrity, expiry, revocation, evidence and rights checks.
+
+VERIFIED historical report contents: [Agung](data/evidence/checkpoint-20261013-agung.json) and [Solana devnet](data/evidence/checkpoint-20261013-solana-devnet.json) each contain 12 blocked preflight rows. Those rows prepared no transaction and do not count as completed payment runs.

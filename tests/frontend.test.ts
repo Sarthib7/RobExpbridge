@@ -59,7 +59,16 @@ async function publicHarness(snapshot: unknown = { activation: 'not_verified' },
   for (const match of html.matchAll(/<\/?([a-z][\w-]*)\b([^>]*)>/gi)) {
     const [tag, name, attributes] = match;
     if (tag.startsWith('</')) { stack.pop(); continue; }
-    const node: any = { hidden: /\bhidden\b/.test(attributes), parent: stack.at(-1), value: 'B', textContent: '', replaceChildren() {}, append() {} };
+    const attrs: Record<string, string> = {};
+    const node: any = { tag: name.toLowerCase(), children: [], hidden: /\bhidden\b/.test(attributes), parent: stack.at(-1), value: 'B', textContent: '',
+      replaceChildren() {}, append() {}, focus() {}, scrollIntoView() {},
+      setAttribute(key: string, value: string) { attrs[key] = value; }, removeAttribute(key: string) { delete attrs[key]; },
+      querySelector(selector: string) {
+        const find = (parent: any): any => { for (const child of parent.children) { if (child.tag === selector) return child; const found = find(child); if (found) return found; } };
+        return find(this);
+      },
+    };
+    node.parent?.children.push(node);
     const id = /\bid="([^"]+)"/.exec(attributes)?.[1];
     if (id) elements.set(id, node);
     if (!['meta', 'link', 'br', 'input', 'img', 'hr'].includes(name.toLowerCase()) && !tag.endsWith('/>')) stack.push(node);
@@ -69,7 +78,7 @@ async function publicHarness(snapshot: unknown = { activation: 'not_verified' },
   const calls: string[] = [];
   const source = await readFile(new URL('../public/app.js', import.meta.url), 'utf8');
   await runInNewContext(`(async () => { ${source}\n })()`, {
-    document: { getElementById: element, querySelectorAll: () => [], createElement: () => ({}) },
+    document: { getElementById: element, querySelectorAll: () => [], createElement: () => ({}), body: { classList: { add() {} } } },
     sessionStorage: { getItem() { throw new Error('Public mode must not restore a paid order.'); } },
     AbortSignal, setInterval() {},
     fetch: async (path: string, options: RequestInit) => {
@@ -78,6 +87,7 @@ async function publicHarness(snapshot: unknown = { activation: 'not_verified' },
       return handler(new Request('https://example.test' + path, options));
     },
   });
+  assert.equal(element('notice').textContent, 'Run the baseline to begin.', 'Public startup must complete without a caught DOM error');
   return { element, calls, fail: (path: string) => { failure = path; }, visible: (id: string) => {
     for (let node = element(id); node; node = node.parent) if (node.hidden) return false;
     return true;
@@ -88,8 +98,7 @@ test('public preview exposes compatible recovery outside hidden payment controls
   const ui = await publicHarness();
   assert.equal(ui.visible('recover'), false);
   await ui.element('publish').onclick();
-  await ui.element('baseline').onclick();
-  assert.match(ui.element('baseline-result').textContent, /slip/);
+  assert.match(ui.element('baseline-outcome').textContent, /slip/);
   await ui.element('match').onclick();
   assert.equal(ui.visible('recover'), true);
   assert.equal(ui.visible('payment'), false);
@@ -97,6 +106,7 @@ test('public preview exposes compatible recovery outside hidden payment controls
   await ui.element('recover').onclick();
   assert.match(ui.element('recovery-result').textContent, /preview: success/);
   assert.equal(ui.calls.some(path => path.startsWith('/api/orders')), false);
+  await ui.element('change-machine').onclick();
   ui.element('arm').value = 'C'; ui.element('arm').onchange();
   await ui.element('match').onclick();
   assert.equal(ui.visible('recover'), false);
@@ -105,6 +115,7 @@ test('public preview exposes compatible recovery outside hidden payment controls
 
 test('public failed compatibility recheck removes prior recovery and eligibility', async () => {
   const ui = await publicHarness();
+  await ui.element('publish').onclick();
   await ui.element('match').onclick(); await ui.element('recover').onclick();
   assert.equal(ui.visible('recovery-result'), true);
   ui.fail('/experiences/query'); await ui.element('match').onclick();
@@ -116,6 +127,7 @@ test('public failed compatibility recheck removes prior recovery and eligibility
 
 test('public failed recovery clears the previous successful result', async () => {
   const ui = await publicHarness();
+  await ui.element('publish').onclick();
   await ui.element('match').onclick(); await ui.element('recover').onclick();
   assert.equal(ui.visible('recovery-result'), true);
   ui.fail('/api/demo/recovery'); await ui.element('recover').onclick();
@@ -143,6 +155,7 @@ test('peaqOS explains recorded funding block without claiming live status', asyn
 test('peaqOS fetch failure does not block simulation', async () => {
   const ui = await publicHarness(blockedReadiness, '/api/peaqos');
   assert.equal(ui.element('peaqos-status').textContent, 'peaqOS: readiness unavailable');
+  await ui.element('publish').onclick();
   await ui.element('match').onclick();
   assert.equal(ui.visible('recover'), true);
   await ui.element('recover').onclick();

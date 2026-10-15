@@ -89,3 +89,13 @@ V16: The built public demo shows recorded diagnosis results and an accessible fl
 Input: `data/evidence/robot-failure-case-study-20261015.json`, read at build time. Output: static HTML, raw report JSON and source manifest JSON. No signing, dataset ingestion or controller route is added.
 
 VERIFIED V16 checks: built-Worker tests reported `tests 2`, `pass 2`, `fail 0`; a temporary wrong-score mutation produced `tests 2`, `pass 1`, `fail 1`, exit 1. Rendering checks summary counts against prediction rows. Desktop and 390-pixel browser checks showed the table and flow diagram without horizontal clipping.
+
+## Guided public demo
+
+Owner: implementer. Status: Completed.
+V17: Public visitors see one active demo step: baseline, compatibility or recovery. The baseline action loads the synthetic sample and measures it. Only a compatible selection advances to recovery. Failed requests leave a usable retry, and restart clears displayed outcomes. Local paid workspaces retain separate publish/baseline actions and their existing payment gates.
+The public page keeps simulation limits and case-study limitations visible. Hardware criteria, recorded-study method and peaqOS snapshot details use native disclosures. Public wallets and duplicate workflow navigation are outside the primary path.
+Verification uses the shipped browser handlers with the real public Worker. The test DOM does not measure CSS, focus or responsive layout; browser checks cover those surfaces.
+
+VERIFIED V17 checks: guided-flow tests reported `tests 3`, `pass 3`, `fail 0`; combined public checks reported `tests 5`, `pass 5`, `fail 0`. Type checking exited 0. With the old browser handlers, the new flow tests reported `tests 3`, `pass 1`, `fail 2`. A temporary mutation that advanced incompatible hardware reported `tests 3`, `pass 2`, `fail 1`. Both exited 1; repository source remained unchanged.
+VERIFIED browser checks at 375, 768 and 1280 pixels: document width did not exceed viewport width. Keyboard Enter advanced to the compatibility heading, which received focus. The simulation performance/safety limit remains visible outside collapsed content. REPORTED independent review: both identified issues (hidden limit and stale repeated-recovery outcome) were addressed; no defect found in those fixes.

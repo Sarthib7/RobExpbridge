@@ -18,20 +18,26 @@
   </a>
   <p class="nav-label">Workspace</p>
   <nav class="side-nav" aria-label="Exchange workflow">
-    <a href="#experience"><span class="nav-number">01</span> Experience</a>
-    <a href="#compatibility"><span class="nav-number">02</span> Compatibility</a>
-    <a href="#payment-panel"><span class="nav-number">03</span> Settlement</a>
-    <a id="case-study-link" href="#case-study" hidden><span class="nav-number" aria-hidden="true">↗</span> Recorded-data study</a>
+    <a class="local-nav" href="#experience"><span class="nav-number">01</span> Experience</a>
+    <a class="local-nav" href="#compatibility"><span class="nav-number">02</span> Compatibility</a>
+    <a class="local-nav" href="#payment-panel"><span class="nav-number">03</span> Settlement</a>
+    <a class="public-only" href="#demo">Try the demo</a>
+    <a id="case-study-link" href="#case-study" hidden><span class="nav-number" aria-hidden="true">↗</span> Case study</a>
     <a id="evidence-link" href="/evidence" hidden><span class="nav-number" aria-hidden="true">↗</span> Run evidence</a>
-    <a href="#wallet-heading"><span class="nav-number" aria-hidden="true">↗</span> Test wallets</a>
+    <a class="local-nav" href="#wallet-heading"><span class="nav-number" aria-hidden="true">↗</span> Test wallets</a>
   </nav>
   <div class="sidebar-bottom"><span class="sidebar-label">DEVELOPMENT WORKSPACE</span><p>Shared experience.<br>Verified access.</p><span class="sidebar-version">exbridge / v0.1</span></div>
 </aside>
 <div class="app-shell">
   <header class="topbar"><p class="breadcrumb"><span class="breadcrumb-parent">Noesora</span><span class="breadcrumb-separator" aria-hidden="true">/</span><span>Hardware</span><span class="breadcrumb-separator" aria-hidden="true">/</span><strong>exbridge</strong></p><span id="network-badge" class="badge">Connecting</span></header>
   <main id="main" tabindex="-1">
-    <div class="page-heading"><div><div class="product-origin"><svg viewBox="0 0 96 96" aria-hidden="true" focusable="false"><path d="M30 16H16V80H30M66 16H80V80H66M30 70L66 26" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/><rect x="45" y="45" width="6" height="6" fill="currentColor"/></svg><span>A Noesora product</span></div><p class="eyebrow">HARDWARE / RECOVERY EXCHANGE</p><h1>exbridge</h1><p id="workspace-description" class="lede">Share a tested recovery. Check machine compatibility. Pay for access.</p></div><span class="version-note">Simulation demo<span>Connector insertion / fixture-7</span></span></div>
+    <div class="page-heading"><div><div class="product-origin"><svg viewBox="0 0 96 96" aria-hidden="true" focusable="false"><path d="M30 16H16V80H30M66 16H80V80H66M30 70L66 26" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/><rect x="45" y="45" width="6" height="6" fill="currentColor"/></svg><span>A Noesora product</span></div><p class="eyebrow">HARDWARE / RECOVERY EXCHANGE</p><h1 id="page-title">exbridge</h1><p id="workspace-description" class="lede">Share a tested recovery. Check machine compatibility. Pay for access.</p></div><span class="version-note">Simulation demo<span>Connector insertion / fixture-7</span></span></div>
     <nav class="workflow-index" aria-label="Workflow steps"><a href="#experience"><span>01</span> Publish experience</a><a href="#compatibility"><span>02</span> Check compatibility</a><a href="#payment-panel"><span>03</span> Settle &amp; recover</a></nav>
+    <section id="demo" class="demo-overview public-only" aria-label="Demo progress and outcomes">
+      <p class="demo-boundary">Constructed simulation. No wallet or payment needed.<span>Results do not establish real-world performance or robot safety.</span></p>
+      <ol class="demo-progress"><li id="progress-baseline" aria-current="step">1. Baseline</li><li id="progress-compatibility">2. Compatibility</li><li id="progress-recovery">3. Recovery</li></ol>
+      <div id="outcome-strip" class="outcome-strip" hidden><dl><div><dt>Without memory</dt><dd id="baseline-outcome">Not run</dd></div><div><dt>With memory</dt><dd id="memory-outcome">Not run</dd></div></dl><button id="restart-demo" class="quiet" hidden>Start over</button></div>
+    </section>
     <div id="notice" role="status" aria-live="polite"></div>
     <div class="workspace-grid">
       <div class="workflow-stack">
@@ -39,17 +45,17 @@
           <div class="panel-heading"><div class="step-title"><span class="step">01</span><div><h2 id="experience-heading">Experience</h2><p class="small">A recovery contributed by Arm A</p></div></div><span class="panel-tag">Synthetic record</span></div>
           <div class="experience-summary">
             <div class="machine-visual" aria-hidden="true"><svg viewBox="0 0 140 112" width="140" height="112" fill="none"><path d="M14 96h112M23 23h94M23 23v65M117 23v65" stroke="currentColor" opacity=".15"/><path d="M44 87h37l7 9H37l7-9Z" fill="currentColor" opacity=".12"/><path d="M57 85V64L40 46l22-22 32 20" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/><circle cx="40" cy="46" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="3"/><circle cx="62" cy="24" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="3"/><path d="m91 40 9 8-6 8m6-8 6-3M99 64v15m-5-7h10" stroke="currentColor" stroke-width="3"/><rect x="89" y="80" width="22" height="8" rx="1" stroke="currentColor" stroke-width="2"/><path d="M59 85h17" stroke="currentColor" stroke-width="5"/></svg></div>
-            <div class="experience-description"><span class="label">EXP-001 / ARM A</span><h3>Connector insertion recovery</h3><p class="small">A lower-force procedure for the fixed demo fixture. Publish the record, then measure Arm B’s baseline.</p></div>
+            <div class="experience-description"><span class="label">EXP-001 / ARM A</span><h3>Connector insertion recovery</h3><p id="sample-help" class="small">A lower-force procedure for the fixed demo fixture. Publish the record, then measure Arm B’s baseline.</p></div>
           </div>
-          <div class="record-meta"><div><span class="label">Robot model</span><strong>arm-x</strong></div><div><span class="label">Gripper</span><strong>parallel-v1</strong></div><div><span class="label">Evidence</span><strong>Simulation-tested</strong></div></div>
+          <details class="fixture-details"><summary>Fixture and hardware details</summary><div class="record-meta"><div><span class="label">Robot model</span><strong>arm-x</strong></div><div><span class="label">Gripper</span><strong>parallel-v1</strong></div><div><span class="label">Evidence</span><strong>Simulation-tested</strong></div></div></details>
           <div class="actions"><button id="publish">Publish sample</button><button id="baseline" class="secondary">Run baseline</button></div>
           <div id="published" class="result" hidden></div><div id="baseline-result" class="result" hidden></div>
         </section>
         <section class="panel" id="compatibility" aria-labelledby="compatibility-heading">
-          <div class="panel-heading"><div class="step-title"><span class="step">02</span><div><h2 id="compatibility-heading">Compatibility</h2><p class="small">Check the receiving machine before payment</p></div></div></div>
+          <div class="panel-heading"><div class="step-title"><span class="step">02</span><div><h2 id="compatibility-heading">Compatibility</h2><p id="compatibility-help" class="small">Check the receiving machine before payment</p></div></div></div>
           <label for="arm">Receiving machine</label><select id="arm" aria-describedby="hardware-help"><option value="B">Arm B · compatible parallel gripper</option><option value="C">Arm C · incompatible vacuum gripper</option></select>
           <p class="small" id="hardware-help">Arm C uses a different gripper. An incompatible match cannot receive a quote.</p>
-          <dl class="criteria-list"><div><dt>Task</dt><dd>Connector insertion</dd></div><div><dt>Fixture</dt><dd>fixture-7</dd></div><div><dt>Material</dt><dd>polymer-demo</dd></div><div><dt>Baseline force</dt><dd>12 N</dd></div></dl>
+          <details class="fixture-details"><summary>Matching criteria</summary><dl class="criteria-list"><div><dt>Task</dt><dd>Connector insertion</dd></div><div><dt>Fixture</dt><dd>fixture-7</dd></div><div><dt>Material</dt><dd>polymer-demo</dd></div><div><dt>Baseline force</dt><dd>12 N</dd></div></dl></details>
           <div class="actions"><button id="match">Check compatibility</button><button id="quote" class="secondary" hidden>Get payment quote</button></div><div id="match-result" class="result" hidden></div>
         </section>
         <section class="panel" id="payment-panel" aria-labelledby="settlement-heading">
@@ -63,7 +69,7 @@
             <p id="rebroadcast-help" class="small" hidden>Retry broadcasts the same stored signed transaction. It does not create a new payment.</p>
             <p class="small">Payment uses the local server’s buyer wallet. Access requires a verified, finalized transfer.</p>
           </div>
-          <div class="recovery-action"><button id="recover" hidden>Run with purchased recovery</button></div>
+          <div class="recovery-action"><button id="recover" hidden>Run with purchased recovery</button><button id="change-machine" class="secondary public-only">Try another machine</button></div>
           <div id="advisory" class="result" hidden></div><div id="recovery-result" class="result" hidden></div>
         </section>
       </div>
@@ -81,7 +87,7 @@
       </aside>
     </div>
     <!-- recorded-case-study -->
-    <section class="integration-note" aria-labelledby="peaqos-heading"><h2 id="peaqos-heading">peaqOS readiness</h2><p id="peaqos-status" role="status">Checking recorded readiness…</p><p id="peaqos-detail" class="small">Machine identities in this demo are synthetic. A computed ID does not establish registration.</p><p id="peaqos-machine" class="transaction"></p></section>
+    <details class="integration-note"><summary>peaqOS integration status <span class="small">Recorded check, activation unverified</span></summary><div class="integration-content"><h2 id="peaqos-heading">peaqOS readiness</h2><p id="peaqos-status" role="status">Checking recorded readiness…</p><p id="peaqos-detail" class="small">Machine identities in this demo are synthetic. A computed ID does not establish registration.</p><p id="peaqos-machine" class="transaction"></p></div></details>
     <footer class="footer-note"><span>exbridge <span aria-hidden="true">/</span> v0.1</span><span>Synthetic recovery. Recorded diagnosis study. Test tokens.</span></footer>
   </main>
 </div>

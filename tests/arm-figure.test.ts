@@ -19,7 +19,7 @@ function harness(still = false, observer = true) {
   let serial = 0;
   const queue = new Map<number, (now: number) => void>();
   const media = { matches: still, addEventListener: (_: string, fn: () => void) => { changed = fn; } };
-  const document = { hidden: false, activeElement: null, getElementById: (id: string) => nodes.get(id),
+  const document = { hidden: false, activeElement: null as unknown, getElementById: (id: string) => nodes.get(id),
     addEventListener: (name: string, fn: () => void) => listeners.set('document:' + name, fn) };
   const context: Record<string, unknown> = { document, matchMedia: () => media,
     requestAnimationFrame: (fn: (now: number) => void) => { queue.set(++serial, fn); return serial; },
@@ -53,6 +53,10 @@ test('V24: concept motion follows elapsed time and stops when paused, hidden, or
   h.event('arm-workcell', 'focusin');
   h.event('arm-pause', 'click');
   assert.equal(h.queue.size, 1, 'Explicit Play overrides hover and focus');
+  h.document.activeElement = h.nodes.get('arm-pause');
+  h.event('arm-workcell', 'pointerleave');
+  assert.equal(h.queue.size, 1, 'Leaving the focused Play control must keep playing');
+  h.document.activeElement = null;
   h.visible(false);
   assert.equal(h.queue.size, 0);
   h.visible(true);

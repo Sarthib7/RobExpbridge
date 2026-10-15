@@ -55,7 +55,10 @@
     sync();
   });
   figure.addEventListener('pointerenter', () => { engaged = true; sync(); });
-  figure.addEventListener('pointerleave', () => { engaged = figure.contains(document.activeElement); sync(); });
+  figure.addEventListener('pointerleave', () => {
+    engaged = figure.contains(document.activeElement) && document.activeElement !== pause;
+    sync();
+  });
   figure.addEventListener('focusin', () => { engaged = true; sync(); });
   figure.addEventListener('focusout', event => { engaged = figure.contains(event.relatedTarget); sync(); });
   document.addEventListener('visibilitychange', sync);

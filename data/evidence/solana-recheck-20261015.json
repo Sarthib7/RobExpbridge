@@ -1,0 +1,19 @@
+{
+  "provenance": "VERIFIED",
+  "observedAt": "2026-10-15T09:10:25.601Z",
+  "source": "https://api.devnet.solana.com",
+  "method": "getSignatureStatuses(searchTransactionHistory=true) and getTransaction(commitment=finalized, encoding=jsonParsed)",
+  "signature": "3Bd94scCn2mFDeMPjAV9r7Kue6WC13dYXZkQHNGmFH2N5pp3AmRdPGAnouFN2dw2AtfEHMVMouLXeztQbYV263WN",
+  "confirmationStatus": "finalized",
+  "error": null,
+  "slot": 511057765,
+  "blockTime": 1791997824,
+  "feeLamports": 5000,
+  "transfer": {
+    "destination": "5Br4L66bZhvpErnaih7prwXwjk3VViz5SJ7Wa8Vk4cDF",
+    "lamports": 1000000,
+    "source": "EMc97zXSrG6vb8aqEMponNPgYcDJ9G5vLRYHJz1BYsge"
+  },
+  "memo": "experiencebridge:54a769d4-755f-4ac7-a1dc-34b15f86f00a:cd2a85024abefd06981c8f182f101cbff5c23dbfb922238e15c6d4c17b86bf00",
+  "limitation": "Read-only verification through the configured public RPC. This is a devnet payment with test tokens, not mainnet settlement or robot evidence. No new transaction was submitted."
+}

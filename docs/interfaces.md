@@ -81,3 +81,11 @@ V14: The frozen study reproduces the committed reference/query episode IDs and e
 
 V15: The offline CLI rejects altered source bytes, a changed frozen protocol and Kaggle/UCI misalignment before emitting any report. CLI tests invoke a copied command with isolated input files; helper-only tests do not satisfy this invariant.
 Bug record, 2026-10-15: removing both CLI integrity-check calls left the original eight helper/evaluation tests passing. The missing command-level checks caused this coverage gap.
+
+## Public recorded-data panel
+
+Owner: implementer. Status: Completed.
+V16: The built public demo shows recorded diagnosis results and an accessible flow diagram from the committed report. It publishes the raw report and source manifest, rejects inconsistent counts during rendering, and keeps payment orders blocked. Diagnosis is not described as recovery success, pre-failure prediction or robot safety.
+Input: `data/evidence/robot-failure-case-study-20261015.json`, read at build time. Output: static HTML, raw report JSON and source manifest JSON. No signing, dataset ingestion or controller route is added.
+
+VERIFIED V16 checks: built-Worker tests reported `tests 2`, `pass 2`, `fail 0`; a temporary wrong-score mutation produced `tests 2`, `pass 1`, `fail 1`, exit 1. Rendering checks summary counts against prediction rows. Desktop and 390-pixel browser checks showed the table and flow diagram without horizontal clipping.

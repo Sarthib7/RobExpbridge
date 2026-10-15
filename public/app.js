@@ -153,6 +153,7 @@ await action(async () => {
     $('guide-access-title').textContent = 'Preview the recovery';
     $('guide-access-help').textContent = 'A compatible machine can try the synthetic advisory without payment in this preview.';
     $('evidence-link').hidden = false;
+    $('case-study-link').hidden = false;
     await balances(); notice('Public simulation ready. Load the sample to begin. No payment will be sent.');
     return;
   }

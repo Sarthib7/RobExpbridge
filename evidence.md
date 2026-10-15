@@ -2,7 +2,7 @@
 
 Updated 2026-10-15. Owner: release.
 
-VERIFIED: the MVP runs a deterministic recovery scenario and has one finalized Solana devnet payment. The payment uses test SOL. All robot inputs and outcomes are constructed. No physical robot telemetry or field dataset is supplied.
+VERIFIED: the MVP runs a deterministic recovery scenario and has one finalized Solana devnet payment. The payment uses test SOL. The recovery inputs and outcomes are constructed. A separate offline case study now includes recorded Kaggle/UCI failure traces; it measures diagnosis only.
 
 ## Run at a glance
 
@@ -46,6 +46,38 @@ The earlier test count was 63. VERIFIED [CI run 38709010147](https://github.com/
 | VERIFIED fresh simulator run | Baseline slip, compatible recovery, incompatible rejection | Synthetic fixture, not physical robot data |
 | VERIFIED public deployment | Healthy preview; orders return HTTP 403 | Unsigned simulator, no public payment signing |
 | VERIFIED saved peaqOS report | Insufficient AGUNG; machine not found | Historical snapshot, not proof of activation |
+
+## Recorded failure retrieval
+
+Correction: the earlier index said no physical robot dataset was supplied. That statement described the simulator evidence before PR #28. Recorded LP1 traces are now supplied for offline diagnosis; the recovery evidence remains synthetic.
+
+VERIFIED [case-study report](data/evidence/robot-failure-case-study-20261015.json): 88 distinct recordings, 68 references and 20 held-out queries. Source hashes and complete row alignment are checked before original UCI labels are attached to the Kaggle CSV. Original UCI attribution and CC BY 4.0 terms are retained. The [manifest](data/case-studies/robot-failures/manifest.json) records Kaggle's different license metadata.
+
+| Metric | Similar-failure retrieval | Reference-majority baseline |
+| --- | ---: | ---: |
+| Correct labels | 15 / 20 | 7 / 20 |
+| Accuracy | 75% | 35% |
+| Mean per-class recall | 74.11% | 25% |
+| Fault recordings labeled normal | 3 / 15 | 0 / 15 |
+
+VERIFIED report boundary: five retrieval errors include three faulty traces labeled normal. These are post-detection measurements from one dataset. The split does not hold out a separate robot or site. The result cannot establish recovery success, hardware compatibility, pre-failure prediction or safety.
+
+```mermaid
+flowchart LR
+    K["Kaggle LP1 sensor rows"] --> A["Verify bytes and align traces<br/>Join original UCI labels"]
+    U["Original UCI recordings"] --> A
+    A --> S["88 distinct recordings<br/>Split whole traces"]
+    S --> R["68 references<br/>Compute channel scales"]
+    S --> Q["20 held-out queries"]
+    R --> N["Retrieve nearest reference"]
+    Q --> N
+    N --> E["Compare recorded labels<br/>15 correct, 5 wrong"]
+    E --> L["3 faulty traces labeled normal<br/>Diagnosis only, no recovery measured"]
+```
+
+Reproduce with `npm run case-study:robot`. The command reads committed text files and prints JSON without network access, payment or robot control. The [full case study](docs/case-studies/robot-failures.md) lists every error and the frozen protocol. Recorded traces stay outside the paid advisory and recovery path.
+
+VERIFIED [CI run 38720742023](https://github.com/Sarthib7/RobExpbridge/actions/runs/38720742023), feature head `d528c1d1d4f1354ea639a19b1109ea4802f0217c`: Node 22 reported `tests 86`, `pass 86`, `fail 0`. Node 22 and Node 24 jobs and the dependency audit passed. These checks do not validate physical robot performance.
 
 ## Real devnet transaction
 
@@ -131,7 +163,7 @@ VERIFIED [saved SDK report](data/evidence/peaqos-readiness.json): chain `9990`, 
 
 REPORTED by the user: the peaq faucet is under maintenance. Agung settlement and peaqOS activation remain unverified. The Solana devnet transfer does not establish either integration.
 
-VERIFIED source and evidence scope: no physical robot dataset, private factory telemetry or hardware TEE attestation is supplied. A shared payment service still needs authentication, custody design and transactional storage before production use.
+VERIFIED source and evidence scope: recorded LP1 diagnosis data is supplied separately. Private factory telemetry and hardware TEE attestation are not supplied. A shared payment service still needs authentication, custody design and transactional storage before production use.
 
 ## Historical checks
 

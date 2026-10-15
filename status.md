@@ -110,3 +110,25 @@ VERIFIED live checks: HTML, JavaScript and CSS matched merged source byte for by
 VERIFIED simulator: baseline `slip`, recovery `success`, `paymentSent: false`. Health returned `paymentSigning: false`.
 Evidence: `data/evidence/public-release-20261015.json`. These checks cover the unsigned synthetic preview, not a shared signing service or real robot performance.
 Remaining blocker: AGUNG funding and separately approved peaqOS activation.
+
+## Recorded robot-data case study, 2026-10-15
+
+Owner: implementer. Status: In Progress.
+REPORTED user request: use Kaggle or Hugging Face data and run test cases for a case study.
+Scope: isolated offline LP1 diagnosis retrieval, pinned public data, deterministic tests and case-study evidence. No API or simulator schema change.
+Owner boundaries: implementer owns all edits; reviewer only audits data provenance, leakage and result interpretation.
+VERIFIED: Kaggle version 1 contains six numeric columns without labels. All five files match the original UCI numeric rows exactly. LP1 has 88 distinct 15-by-6 traces; labels come from the original only after exact trace alignment.
+VERIFIED exploratory probe: 68 reference episodes, 20 query episodes; retrieval `15/20`, majority baseline `7/20`; three faulty queries were called normal. This is post-detection diagnosis, not recovery effectiveness or safety.
+Next: freeze the original probe protocol, add offline reproducibility checks and record all errors without tuning the split.
+
+VERIFIED implementation: `npm run check` exited 0. Case-study tests reported `tests 8`, `pass 8`, `fail 0`. Replacing candidate distance with zero produced `tests 1`, `pass 0`, `fail 1`, exit 1; restoring the source returned eight passing tests.
+VERIFIED independent replay: Python and TypeScript agree on reference/query IDs, all predictions and all metrics. Recorded report: `data/evidence/robot-failure-case-study-20261015.json`.
+VERIFIED rights and source notices: original UCI license is CC BY 4.0; the Kaggle catalog lists CC0. This package retains original attribution and explicitly records that difference.
+Blocked: automatic approval review rejected appending case-study links to user-authored README.md and evidence.md without explicit approval. Those two files remain unchanged; the standalone document is `docs/case-studies/robot-failures.md`.
+Next: review the isolated research tool and merge its single feature PR only after exact-head CI passes.
+
+REPORTED independent review: pin the split IDs and per-query prediction mapping, since equal aggregate metrics alone cannot prove the frozen partition. VERIFIED implementation: the test now compares those fields directly with the committed report.
+
+VERIFIED source byte protection: `git check-attr text` returned `text: unset` for both retained LP1 files. Scoped attributes preserve the downloaded line endings.
+REPORTED independent final review: no other actionable correctness, leakage or misleading-claim issue was found. The split-ID finding was addressed and all eight focused checks passed again.
+Implementation status: Completed. Release status: In Progress until exact-head CI and sequential merge.

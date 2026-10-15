@@ -1,0 +1,460 @@
+{
+  "provenance": "VERIFIED",
+  "command": "node --import tsx scripts/robot-failure-study.ts",
+  "observedAt": "2026-10-15T10:19:09.015Z",
+  "protocol": {
+    "scope": "LP1 only: offline diagnosis retrieval, not recovery or pre-failure prediction",
+    "source": "prashant111/robot-execution-failures",
+    "kaggleVersion": 1,
+    "original": "UCI Robot Execution Failures, DOI 10.24432/C5M89N",
+    "split": "Within each original label, sort episodes by SHA256 of canonical integer samples; first ceil(classCount/5) are queries. Remaining episodes are reference memory. No window-level split.",
+    "features": "All 90 raw values; channel scale is population standard deviation across reference-memory samples only. Zero scale becomes 1. No tuning.",
+    "retrieval": "One nearest reference episode by squared Euclidean distance after channel scaling. Equal distance ties resolve by source episode index.",
+    "baseline": "Majority label in reference memory; equal counts resolve lexicographically.",
+    "metrics": [
+      "correct/queries",
+      "accuracy",
+      "per-class recall",
+      "balanced accuracy",
+      "confusion counts"
+    ],
+    "limits": [
+      "Small same-source, post-detection recordings",
+      "No recovery outcome labels",
+      "No verified hardware compatibility metadata",
+      "No physical control or new payments"
+    ],
+    "frozenAt": "2026-10-15T10:09:09.635540+00:00"
+  },
+  "sourceAttribution": {
+    "dataset": "Robot Execution Failures, LP1: approach to grasp position",
+    "authors": [
+      "Luis Seabra Lopes",
+      "Luis M. Camarinha-Matos"
+    ],
+    "originalSource": "https://archive.ics.uci.edu/dataset/138/robot+execution+failures",
+    "doi": "10.24432/C5M89N",
+    "kaggleSource": "https://www.kaggle.com/datasets/prashant111/robot-execution-failures",
+    "kaggleVersion": 1,
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "rightsBasis": "Original UCI dataset license; both original creators and the Kaggle mirror are credited.",
+    "kaggleCatalogLicense": "CC0: Public Domain",
+    "licenseDifference": "The mirror lists CC0. This study retains original UCI attribution and does not assert that the mirror can remove the original terms."
+  },
+  "sampling": {
+    "episodes": 88,
+    "samplesPerEpisode": 15,
+    "channels": [
+      "Fx",
+      "Fy",
+      "Fz",
+      "Tx",
+      "Ty",
+      "Tz"
+    ],
+    "windowMs": 315,
+    "units": "Source measurement units are not specified; no SI-unit conversion is claimed.",
+    "timing": "Collected after failure detection, not a pre-action forecast."
+  },
+  "sourceFileIntegrity": {
+    "lp1.data": {
+      "bytes": 27345,
+      "sha256": "e146de5aeaffd864f0e57ce2fe0b58e98582c3e808e6c0e8deb9b25a54ef0cb5"
+    },
+    "lp1_data.csv": {
+      "bytes": 26293,
+      "sha256": "1537eed449cd545f8fd67f3690d6f5f4f2f30f7855136c7b475e08ba1eb83953"
+    }
+  },
+  "sourceCount": 88,
+  "classCounts": {
+    "normal": 21,
+    "collision": 17,
+    "obstruction": 34,
+    "fr_collision": 16
+  },
+  "referenceCount": 68,
+  "queryCount": 20,
+  "referenceIds": [
+    "lp1-001",
+    "lp1-002",
+    "lp1-003",
+    "lp1-005",
+    "lp1-006",
+    "lp1-007",
+    "lp1-008",
+    "lp1-009",
+    "lp1-010",
+    "lp1-011",
+    "lp1-013",
+    "lp1-014",
+    "lp1-016",
+    "lp1-018",
+    "lp1-019",
+    "lp1-020",
+    "lp1-021",
+    "lp1-023",
+    "lp1-024",
+    "lp1-025",
+    "lp1-026",
+    "lp1-027",
+    "lp1-028",
+    "lp1-030",
+    "lp1-032",
+    "lp1-033",
+    "lp1-035",
+    "lp1-036",
+    "lp1-039",
+    "lp1-040",
+    "lp1-041",
+    "lp1-042",
+    "lp1-043",
+    "lp1-044",
+    "lp1-045",
+    "lp1-046",
+    "lp1-047",
+    "lp1-048",
+    "lp1-049",
+    "lp1-050",
+    "lp1-051",
+    "lp1-052",
+    "lp1-053",
+    "lp1-055",
+    "lp1-056",
+    "lp1-059",
+    "lp1-060",
+    "lp1-061",
+    "lp1-062",
+    "lp1-063",
+    "lp1-064",
+    "lp1-066",
+    "lp1-067",
+    "lp1-070",
+    "lp1-071",
+    "lp1-073",
+    "lp1-074",
+    "lp1-076",
+    "lp1-077",
+    "lp1-078",
+    "lp1-079",
+    "lp1-080",
+    "lp1-082",
+    "lp1-083",
+    "lp1-084",
+    "lp1-085",
+    "lp1-086",
+    "lp1-088"
+  ],
+  "queryIds": [
+    "lp1-004",
+    "lp1-012",
+    "lp1-015",
+    "lp1-017",
+    "lp1-022",
+    "lp1-029",
+    "lp1-031",
+    "lp1-034",
+    "lp1-037",
+    "lp1-038",
+    "lp1-054",
+    "lp1-057",
+    "lp1-058",
+    "lp1-065",
+    "lp1-068",
+    "lp1-069",
+    "lp1-072",
+    "lp1-075",
+    "lp1-081",
+    "lp1-087"
+  ],
+  "scalesFromReferenceOnly": [
+    41.831487745169206,
+    41.3033133161023,
+    331.76722844727743,
+    155.03031630139495,
+    95.40441439797495,
+    19.150429509640016
+  ],
+  "retrieval": {
+    "correct": 15,
+    "total": 20,
+    "accuracy": 0.75,
+    "perClassRecall": {
+      "collision": 0.75,
+      "fr_collision": 0.5,
+      "normal": 1,
+      "obstruction": 0.7142857142857143
+    },
+    "balancedAccuracy": 0.7410714285714286,
+    "confusion": {
+      "collision": {
+        "collision": 3,
+        "fr_collision": 0,
+        "normal": 1,
+        "obstruction": 0
+      },
+      "fr_collision": {
+        "collision": 0,
+        "fr_collision": 2,
+        "normal": 2,
+        "obstruction": 0
+      },
+      "normal": {
+        "collision": 0,
+        "fr_collision": 0,
+        "normal": 5,
+        "obstruction": 0
+      },
+      "obstruction": {
+        "collision": 0,
+        "fr_collision": 2,
+        "normal": 0,
+        "obstruction": 5
+      }
+    }
+  },
+  "majorityBaseline": {
+    "correct": 7,
+    "total": 20,
+    "accuracy": 0.35,
+    "perClassRecall": {
+      "collision": 0,
+      "fr_collision": 0,
+      "normal": 0,
+      "obstruction": 1
+    },
+    "balancedAccuracy": 0.25,
+    "confusion": {
+      "collision": {
+        "collision": 0,
+        "fr_collision": 0,
+        "normal": 0,
+        "obstruction": 4
+      },
+      "fr_collision": {
+        "collision": 0,
+        "fr_collision": 0,
+        "normal": 0,
+        "obstruction": 4
+      },
+      "normal": {
+        "collision": 0,
+        "fr_collision": 0,
+        "normal": 0,
+        "obstruction": 5
+      },
+      "obstruction": {
+        "collision": 0,
+        "fr_collision": 0,
+        "normal": 0,
+        "obstruction": 7
+      }
+    }
+  },
+  "predictions": [
+    {
+      "queryId": "lp1-004",
+      "queryDigest": "10ba5acb7fad241dbc6711393f7a42cef05ba143c9b093ad1733febb098f4f02",
+      "truth": "normal",
+      "referenceId": "lp1-005",
+      "referenceDigest": "47d5dd4126a935eb3187542b3e1b3f890b45e010e3534726a551e7f4bbcc80c4",
+      "prediction": "normal",
+      "squaredDistance": 0.09759737297081326,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-012",
+      "queryDigest": "31000c4f572b4d7ef8c0e0660d7199863ba899ba4339aa5933e7a62f45aef03f",
+      "truth": "normal",
+      "referenceId": "lp1-001",
+      "referenceDigest": "efabb731f70fec4cd9d5ec62176030763cdaf4c426b7aaa8b172558b4d865e88",
+      "prediction": "normal",
+      "squaredDistance": 0.09242040617078799,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-015",
+      "queryDigest": "07c9cec873ea4a5c59b84f2c053791ef7e725f62d4d3ef8b7e2d1bc66401ab5f",
+      "truth": "normal",
+      "referenceId": "lp1-016",
+      "referenceDigest": "9fa85059776c9d9c0996daf726c573d55c40e099460b16d12f18a56337939c69",
+      "prediction": "normal",
+      "squaredDistance": 0.11290447906437774,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-017",
+      "queryDigest": "3fbe4ce29edd8718229b97fe56bcee27d2aa3e3e1a334398337a5f857954eb73",
+      "truth": "normal",
+      "referenceId": "lp1-001",
+      "referenceDigest": "efabb731f70fec4cd9d5ec62176030763cdaf4c426b7aaa8b172558b4d865e88",
+      "prediction": "normal",
+      "squaredDistance": 0.10639220926762033,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-022",
+      "queryDigest": "0d1814ea5dd3dada215814f43d538ca8b830e0da0c068935516ebd987044b5ff",
+      "truth": "collision",
+      "referenceId": "lp1-023",
+      "referenceDigest": "c22aeb2a8b8c9030759bea4bb362bebf5fab92ad2f0c17bc0cf7276c27f454da",
+      "prediction": "collision",
+      "squaredDistance": 16.11192074434289,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-029",
+      "queryDigest": "1f6e5a54d76bc43101e2914c03464d3667b2bb627a2eced50318751cfcf0f5ce",
+      "truth": "collision",
+      "referenceId": "lp1-006",
+      "referenceDigest": "587351a36a067bbd29f92c9589023ff0a19b7b13fa6b6607bc2c31dd5ab2f000",
+      "prediction": "normal",
+      "squaredDistance": 1.5357366393976708,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-031",
+      "queryDigest": "0d4a904a030f70c195b18bf933dc2c1581a1f9119d93af53f90839f93cbba4cc",
+      "truth": "collision",
+      "referenceId": "lp1-030",
+      "referenceDigest": "4181921811d396674f31fc1df8708b8790ee44ad7c809bb06252753de7dcb0be",
+      "prediction": "collision",
+      "squaredDistance": 0.5284700037925987,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-034",
+      "queryDigest": "18dedf3cd8a554f18450c64bf4e35a46a8e0b1a4b8feff764cebb00f6130ff73",
+      "truth": "collision",
+      "referenceId": "lp1-026",
+      "referenceDigest": "9619315ef7993a8084f7933abf3dfa1082b0454c70a6eb4594e9d3bb63f3def0",
+      "prediction": "collision",
+      "squaredDistance": 91.93039602805909,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-037",
+      "queryDigest": "036c6c7956d8de4adc782f172019ca300292da383b8ac38b793de207d8c2579e",
+      "truth": "obstruction",
+      "referenceId": "lp1-040",
+      "referenceDigest": "8d1f9504c7bd22149718374e1691a60033a1e617ab7be1b502b74710fdb4e035",
+      "prediction": "obstruction",
+      "squaredDistance": 110.24272730691999,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-038",
+      "queryDigest": "2131fc6b929d300b353ed1580b381c39d53ff63f7d62df587e41e31066483097",
+      "truth": "obstruction",
+      "referenceId": "lp1-040",
+      "referenceDigest": "8d1f9504c7bd22149718374e1691a60033a1e617ab7be1b502b74710fdb4e035",
+      "prediction": "obstruction",
+      "squaredDistance": 21.412113512608727,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-054",
+      "queryDigest": "38ac1609701ad4f6e19b306946e1c81f682726e8627db4109abbbff2309d84fa",
+      "truth": "obstruction",
+      "referenceId": "lp1-053",
+      "referenceDigest": "cca98bd0d54d00a05c9bfba712bcee0c5603afe018d5c45125793321ed8f7ba5",
+      "prediction": "fr_collision",
+      "squaredDistance": 145.25225132809456,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-057",
+      "queryDigest": "188c885ba1b8319b6fcc1e64f51a581b991c78206843bec2acc4fa6a62a610fd",
+      "truth": "fr_collision",
+      "referenceId": "lp1-056",
+      "referenceDigest": "718c87e05c861adb18ba5f85559e36d704ed38e456009b84dfbb3e31b931775a",
+      "prediction": "fr_collision",
+      "squaredDistance": 1.827721891290855,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-058",
+      "queryDigest": "0935a0eacfd6cb15e1e1511616c857c2ab967316e9fab39fe239400457c33beb",
+      "truth": "obstruction",
+      "referenceId": "lp1-086",
+      "referenceDigest": "eee2d221a8cb3dc34ec6a43bb9f2dc235af9194aefc4b7954f74de510f9dd6c1",
+      "prediction": "obstruction",
+      "squaredDistance": 107.54329674231816,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-065",
+      "queryDigest": "33e65388014a289f38bd2b2db6bd4daece9c5e837c5115590983c145e2e92b6f",
+      "truth": "obstruction",
+      "referenceId": "lp1-047",
+      "referenceDigest": "4ceff7a6643c1f87cca2b241dacdccf54f9a2ac1614e9cc34bd4c01035da0298",
+      "prediction": "obstruction",
+      "squaredDistance": 378.59694276860506,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-068",
+      "queryDigest": "253c9b921f38ef618662ee824cd11b222fde0c3c4ad5e91d6a50b7175ae265ec",
+      "truth": "normal",
+      "referenceId": "lp1-041",
+      "referenceDigest": "8ed85b70a2f060262a80f50e574ceaba3d290c0db2acd030c34109eee6e8b7fd",
+      "prediction": "normal",
+      "squaredDistance": 0.12769351105433846,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-069",
+      "queryDigest": "147a5db2b136a2549912e3ab63d058cc7dc79c7a6c0ad9427b16bc5f321fa192",
+      "truth": "fr_collision",
+      "referenceId": "lp1-088",
+      "referenceDigest": "ae498074b771e99dc401b8b4c719f0a9f448456997b6386762cdfd7a65fe2aac",
+      "prediction": "fr_collision",
+      "squaredDistance": 2.912704509769715,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-072",
+      "queryDigest": "184684fef62612e235d7bf45a127a2fce8bbcca3f4fa394a6465930bfa5fc06b",
+      "truth": "fr_collision",
+      "referenceId": "lp1-041",
+      "referenceDigest": "8ed85b70a2f060262a80f50e574ceaba3d290c0db2acd030c34109eee6e8b7fd",
+      "prediction": "normal",
+      "squaredDistance": 0.8680355603072183,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-075",
+      "queryDigest": "09ddc6fd41253d2c83e5a8dad2f413534c2b4b8329e01f9cdd5fae471c1e2b36",
+      "truth": "fr_collision",
+      "referenceId": "lp1-007",
+      "referenceDigest": "41b0ea83e7fa4d2c3d55760798f0bd0c21a7c5e8d6411314c46ca0c626aa5894",
+      "prediction": "normal",
+      "squaredDistance": 2.165480272604033,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-081",
+      "queryDigest": "314aac87a567b2781d922d42b38541123014bc831ba5a7b46adf22b78afb1ac0",
+      "truth": "obstruction",
+      "referenceId": "lp1-059",
+      "referenceDigest": "7fd6aaad951ffae3b64cdc91f21e9c1ee002f98a523e9c09b4875e0aac069d70",
+      "prediction": "fr_collision",
+      "squaredDistance": 17.471528511535503,
+      "majorityPrediction": "obstruction"
+    },
+    {
+      "queryId": "lp1-087",
+      "queryDigest": "11aac2b215ddb18a626b42ff658bfe595d7a652f4044be60baab5a077cf38432",
+      "truth": "obstruction",
+      "referenceId": "lp1-086",
+      "referenceDigest": "eee2d221a8cb3dc34ec6a43bb9f2dc235af9194aefc4b7954f74de510f9dd6c1",
+      "prediction": "obstruction",
+      "squaredDistance": 928.2155549428621,
+      "majorityPrediction": "obstruction"
+    }
+  ],
+  "falseNormalCount": 3,
+  "executionAuthority": false,
+  "recoveryOutcomesMeasured": false
+}

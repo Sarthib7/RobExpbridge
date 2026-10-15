@@ -21,7 +21,8 @@
     "peaqos:check": "node --import tsx scripts/peaqos-check.ts",
     "build:public": "node --import tsx scripts/build-public.ts",
     "demo:batches": "node --import tsx scripts/simulation-batches.ts",
-    "peaqos:activate": "node --import tsx scripts/peaqos-check.ts --activate"
+    "peaqos:activate": "node --import tsx scripts/peaqos-check.ts --activate",
+    "case-study:robot": "node --import tsx scripts/robot-failure-study.ts"
   },
   "dependencies": {
     "@peaqos/peaq-os-sdk": "^0.11.2",

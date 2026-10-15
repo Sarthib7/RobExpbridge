@@ -65,6 +65,8 @@ test('V25: articulated geometry keeps links attached through the illustrated rea
     const home = m.joints(side, 0), reached = m.joints(side, 1);
     assert.ok(Math.abs(home.wrist[0] - reached.wrist[0]) > 50);
     assert.ok(home.wrist[2] - reached.wrist[2] > 70);
+    assert.ok(Math.abs(home.wristAngle) > .2);
+    assert.ok(Math.abs(reached.wristAngle) < 1e-8);
     for (const time of [0,5,10,15,20]) {
       const before = m.pose(time - .0001), after = m.pose(time + .0001);
       assert.ok(distance(m.joints(side, before[side]).wrist, m.joints(side, after[side]).wrist) < .01);
@@ -78,6 +80,8 @@ test('V25: articulated geometry keeps links attached through the illustrated rea
       assert.notEqual(open.find((p: any) => p.id === id).faces[3].d, closed.find((p: any) => p.id === id).faces[3].d, 'Both jaws open and close');
     }
   }
+  for (const time of [5,10,15,20]) assert.ok(Math.abs(m.pose(time - .0001).lessonOpacity - m.pose(time + .0001).lessonOpacity) < .01, 'Lesson fades continuously at stage boundaries');
+  assert.equal(m.pose(7.5).lessonHeight, 70);
   assert.equal(m.pose(5).lesson, -98);
   assert.equal(m.pose(6).checked, false);
   assert.equal(m.pose(10).lesson, 0);
@@ -106,6 +110,10 @@ test('V24/V25: motion changes joint paths, keeps playing on hover, and stops whe
   h.event('arm-workcell', 'pointerenter');
   h.event('arm-workcell', 'focusin');
   assert.equal(h.queue.size, 1, 'Hover and focus must not stop the requested playback');
+  h.reduced(true);
+  assert.equal(h.queue.size, 0);
+  assert.equal(h.nodes.get('a-upper-face-3').attrs.d, pose, 'Changing reduced-motion preference preserves the pose');
+  h.reduced(false);
   h.event('arm-pause', 'click');
   assert.equal(h.queue.size, 0);
   h.frame(5000);
@@ -132,12 +140,15 @@ test('V24/V25: reduced motion stays still; manual steps keep lesson, caption and
   assert.equal(h.queue.size, 0);
   assert.equal(h.nodes.get('arm-pause').disabled, true);
   assert.equal(h.nodes.get('arm-pause').textContent, 'Motion off');
+  const home = harness();
+  assert.equal(h.nodes.get('a-upper-face-3').attrs.d, home.nodes.get('a-upper-face-3').attrs.d, 'Reduced motion starts at the static home pose');
   for (const stage of [1,2,3,0]) {
     h.event('arm-next', 'click');
     const state = m.pose(stage * 5 + 2.5);
     assert.equal(h.nodes.get('arm-readout').textContent, m.stages[stage][0]);
     assert.equal(h.nodes.get('arm-detail').textContent, m.stages[stage][1]);
-    assert.equal(h.nodes.get('arm-lesson').attrs.opacity, state.lessonVisible ? '1' : '0');
+    assert.equal(h.nodes.get('arm-lesson').attrs.opacity, String(state.lessonOpacity));
+    assert.equal(h.nodes.get('arm-lesson').attrs.transform, `translate(${m.project([state.lesson, -5, state.lessonHeight]).join(' ')})`);
     assert.equal(h.nodes.get('arm-stage-' + stage).attrs['aria-current'], 'step');
     assert.equal(h.nodes.get('arm-story').attrs['aria-live'], 'polite');
     for (const part of m.parts(state)) for (const [i, face] of part.faces.entries()) assert.equal(h.nodes.get(`${part.id}-face-${i}`).attrs.d, face.d);

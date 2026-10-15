@@ -18,7 +18,7 @@ const exbridgeArmModel = (() => {
     ['01 / Arm A records a lesson', 'A local attempt becomes a record with task context and evidence.'],
     ['02 / Check before sharing', 'Compare task, gripper and evidence. A mismatch must stop the transfer.'],
     ['03 / Arm B receives advice', 'A compatible lesson becomes an advisory. The controller keeps control.'],
-    ['04 / Arm B tries the advisory', 'Illustrated motion only. Open the demo to measure the constructed recovery.'],
+    ['04 / Arm B tries locally', 'The controller decides whether to act. This motion is illustrative, not a measured recovery.'],
   ];
   function pose(elapsed) {
     const clock = ((elapsed % 20) + 20) % 20, stage = Math.floor(clock / 5), t = (clock % 5) / 5;
@@ -28,6 +28,8 @@ const exbridgeArmModel = (() => {
       gripA: stage === 0 ? closed : 0, gripB: stage === 3 ? closed : 0,
       // A moving card denotes information, not a physical object or network transaction.
       lesson: stage === 1 ? lerp(-98, 0, ease(t * 2)) : stage === 2 ? lerp(0, 98, ease(t * 1.5)) : 0,
+      lessonHeight: stage === 1 ? lerp(108, 70, ease(t * 2)) : stage === 2 ? lerp(70, 108, ease(t * 1.5)) : 108,
+      lessonOpacity: stage === 1 ? ease(t / .12) : stage === 2 ? ease((1 - t) / .12) : 0,
       lessonVisible: stage === 1 || stage === 2, checked: stage === 1 && t >= .5 || stage === 2 || stage === 3,
     };
   }
@@ -40,7 +42,7 @@ const exbridgeArmModel = (() => {
     const shoulder = [base, 0, 55];
     const elbow = [base + direction * l1 * Math.cos(shoulderAngle), 0, 55 + l1 * Math.sin(shoulderAngle)];
     const wrist = [base + direction * dx, 0, 55 + dz];
-    return { shoulder, elbow, wrist, shoulderAngle, elbowAngle };
+    return { shoulder, elbow, wrist, shoulderAngle, elbowAngle, wristAngle: direction * .28 * (1 - amount) };
   }
   function box(id, centre, half, angle = 0, color = 'metal') {
     const c = Math.cos(angle), s = Math.sin(angle);
@@ -70,16 +72,21 @@ const exbridgeArmModel = (() => {
       link('forearm', q.elbow, q.wrist, -2, 6, 7);
       link('forearm-rib', q.elbow, q.wrist, 6, 2, 1);
       for (const [name, at, radius] of [['shoulder', q.shoulder, 13], ['elbow', q.elbow, 11], ['wrist', q.wrist, 8]]) {
-        put(name, at, [radius,10,radius], 0, 'joint');
-        put(name+'-cap', add(at,[0,11,0]), [radius-3,1,radius-3]);
+        const angle = name === 'wrist' ? q.wristAngle : 0;
+        put(name, at, [radius,10,radius], angle, 'joint');
+        put(name+'-cap', add(at,[0,11,0]), [radius-3,1,radius-3], angle);
         if (name !== 'wrist') for (const sign of [-1,1]) put(`${name}-bolt-${sign}`, add(at,[sign*(radius-5),13,0]), [1.4,1,1.4]);
       }
-      put('ram', add(q.wrist,[0,0,-10]), [5,5,6]);
-      put('palm', add(q.wrist,[0,0,-16]), [10,11,3]);
+      const tool = (name, offset, half, color) => {
+        const [x,y,z] = offset, c = Math.cos(q.wristAngle), s = Math.sin(q.wristAngle);
+        put(name, add(q.wrist,[x*c-z*s,y,x*s+z*c]), half, q.wristAngle, color);
+      };
+      tool('ram', [0,0,-10], [5,5,6]);
+      tool('palm', [0,0,-16], [10,11,3]);
       const gap = lerp(14,9,grip);
       for (const sign of [-1,1]) {
-        put('finger-'+sign, add(q.wrist,[0,sign*gap,-25]), [6,2,7], 0, 'grip');
-        put('pad-'+sign, add(q.wrist,[0,sign*(gap-2),-29]), [6,1,3], 0, 'joint');
+        tool('finger-'+sign, [0,sign*gap,-25], [6,2,7], 'grip');
+        tool('pad-'+sign, [0,sign*(gap-2),-29], [6,1,3], 'joint');
       }
     }
     return result;

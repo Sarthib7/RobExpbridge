@@ -16,7 +16,7 @@
   const story = document.getElementById('arm-story');
   const stages = model.stages.map((_, i) => document.getElementById(`arm-stage-${i}`));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let elapsed = reduced.matches ? 2.5 : 0, frame = null, previous = null, inView = false, paused = false, shown = -1, drawnPose = '';
+  let elapsed = 0, frame = null, previous = null, inView = false, paused = false, shown = -1, drawnPose = '';
   function paint() {
     const state = model.pose(elapsed);
     const poseKey = [state.a, state.b, state.gripA, state.gripB].join(',');
@@ -28,9 +28,9 @@
         if (ref.shade !== face.shade) { ref.node.setAttribute('data-shade', face.shade); ref.shade = face.shade; }
       });
     }
-    const point = model.project([state.lesson, -35, 124 - Math.abs(state.lesson) / 98 * 16]);
+    const point = model.project([state.lesson, -5, state.lessonHeight]);
     lesson.setAttribute('transform', `translate(${point.join(' ')})`);
-    lesson.setAttribute('opacity', state.lessonVisible ? '1' : '0');
+    lesson.setAttribute('opacity', String(state.lessonOpacity));
     context.setAttribute('opacity', state.checked ? '1' : '0.35');
     if (shown !== state.stage) {
       shown = state.stage;
@@ -76,11 +76,7 @@
     sync();
   });
   document.addEventListener('visibilitychange', sync);
-  reduced.addEventListener('change', () => {
-    elapsed = Math.floor(elapsed / 5) * 5 + 2.5;
-    paint();
-    sync();
-  });
+  reduced.addEventListener('change', sync);
   if ('IntersectionObserver' in globalThis) {
     new IntersectionObserver(entries => { inView = entries[entries.length - 1].isIntersecting; sync(); }).observe(figure);
   } // Without visibility observation, keep a still figure and working manual steps.

@@ -4,6 +4,33 @@ Updated 2026-10-15. Owner: release.
 
 VERIFIED: the MVP runs a deterministic recovery scenario and has one finalized Solana devnet payment. The payment uses test SOL. All robot inputs and outcomes are constructed. No physical robot telemetry or field dataset is supplied.
 
+## Run at a glance
+
+VERIFIED flow: the [paid run](data/evidence/solana-devnet-live-20261014.json) and [RPC recheck](data/evidence/solana-recheck-20261015.json) support the path below. Blue nodes show constructed robot data. Green nodes show the real devnet payment check.
+
+```mermaid
+flowchart TD
+    A["Arm A contributes exp-001<br/>Simulator-tested recovery at 8 N"] --> R["Store record with digest<br/>and synthetic provenance"]
+    B["Arm B baseline: slip at 12 N<br/>fixture-7, seed 7"] --> Q["Query task, hardware<br/>and context before recovery"]
+    R --> G{"Compatibility gate"}
+    Q --> G
+    C["Arm C<br/>vacuum-v2 gripper"] --> G
+    G -->|"Gripper mismatch"| X["Reject Arm C<br/>No quote or advisory"]
+    G -->|"Arm B compatible"| O["Create access order<br/>Bind order to record digest"]
+    O --> P["Solana devnet transfer<br/>Buyer pays contributor 0.001 SOL"]
+    P --> V{"Finalized transfer matches<br/>sender, recipient, amount and memo?"}
+    V -->|"No"| L["Advisory stays locked"]
+    V -->|"Yes"| U["Unlock the advisory"]
+    U --> S["Constructed recovery: success at 8 N<br/>Same fixture-7 and seed 7"]
+
+    classDef simulation fill:#e8f1ff,stroke:#315c91,color:#172b4d;
+    classDef chain fill:#e5f5e9,stroke:#28733c,color:#173d22;
+    class A,B,C,S simulation;
+    class P,V chain;
+```
+
+VERIFIED boundaries: the public preview runs the synthetic recovery without payment and blocks access orders. The diagram shows the local paid path. peaqOS activation is a separate, pending integration. Neither path controls a physical robot.
+
 ## Correction to the earlier index
 
 The 2026-10-13 index reported no confirmed public testnet payment. That was the recorded state then. A Solana devnet payment completed on 2026-10-14 and was checked again on 2026-10-15. The earlier blocked batches remain preflight failures, not successful payments.

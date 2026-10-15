@@ -139,3 +139,10 @@ Owner: implementer. Status: Completed.
 V22: A funded EVM wallet may sign at the configured maximum fee, but must not sign above it. Broadcasting over-cap signed bytes fails before any RPC call. The fee cap remains 0.01 local ETH or AGUNG; no production parameter changes.
 Bug record, 2026-10-15: the earlier fee/funds test used a zero balance, so it passed when the preparation fee-cap guard was removed. New cases isolate the cap from insufficient funds and exercise signed-byte validation separately. These tests use an ephemeral signer and mocked RPC. They submit no public transaction.
 VERIFIED: focused EVM checks reported `tests 11`, `pass 11`, `fail 0`; type checking exited 0. Removing the preparation fee-cap guard in a temporary copy produced `tests 11`, `pass 10`, `fail 1`. Removing the signed-byte cap separately produced the same counts. Each mutation exited 1; repository source remained unchanged. Mocked RPC checks do not establish live network behavior.
+
+## Case-study display and chronology review
+
+Owner: implementer. Status: Completed.
+V23: Public study percentages reflect the validated report counts, rather than the captured report's particular percentages. A separate synthetic count fixture checks both retrieval and baseline displays. The real dataset, split and captured results remain unchanged.
+Bug record, 2026-10-15: original rendering tests checked only the recorded 75% and 35% values. Hard-coded percentages could pass those checks. The study document also labeled its pre-score freeze chronology VERIFIED based on recorded timestamps. Git first stores the manifest and report together in `86ea1d2`; the document now separates reported chronology from verified reproducibility.
+VERIFIED: focused public checks reported `tests 5`, `pass 5`, `fail 0`; type checking exited 0. Hard-coding retrieval to 75% in a temporary copy produced `tests 5`, `pass 4`, `fail 1`. Hard-coding the baseline to 35% separately produced the same counts. Each mutation exited 1; repository source remained unchanged. The extra count fixture tests display behavior, not a second dataset result.

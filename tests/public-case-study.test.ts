@@ -124,3 +124,22 @@ test('V21: evidence citations link to source files and keep unsafe markup inert'
   assert.ok(!hostile.includes('href="//evil.example'));
   assert.ok(hostile.includes('<a href="https://example.com">&lt;img src=x&gt;</a>'));
 });
+
+
+test('V23: public study percentages follow a different valid count fixture', () => {
+  // Synthetic formatting fixture, not a second dataset result.
+  const html = renderPublicCaseStudy({
+    sourceCount: 8, referenceCount: 4, queryCount: 4,
+    retrieval: { correct: 2, total: 4 }, majorityBaseline: { correct: 3, total: 4 }, falseNormalCount: 1,
+    predictions: [
+      { truth: 'obstruction', prediction: 'obstruction', majorityPrediction: 'obstruction' },
+      { truth: 'obstruction', prediction: 'normal', majorityPrediction: 'obstruction' },
+      { truth: 'obstruction', prediction: 'collision', majorityPrediction: 'obstruction' },
+      { truth: 'normal', prediction: 'normal', majorityPrediction: 'obstruction' },
+    ],
+    executionAuthority: false, recoveryOutcomesMeasured: false,
+  });
+  assert.ok(html.includes('50%<meter min="0" max="4" value="2"'));
+  assert.ok(html.includes('75%<meter min="0" max="4" value="3"'));
+  assert.ok(!html.includes('35%'));
+});

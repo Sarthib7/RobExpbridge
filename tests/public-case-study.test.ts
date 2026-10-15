@@ -5,11 +5,12 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { renderPublicCaseStudy } from '../scripts/public-case-study.js';
+import { renderDemoPage, renderEvidencePage } from '../scripts/public-site.js';
 
 const reportPath = '../data/evidence/robot-failure-case-study-20261015.json';
 const loadReport = async () => JSON.parse(await readFile(new URL(reportPath, import.meta.url), 'utf8'));
 
-test('V16: built public demo serves report-backed results, diagram and evidence without paid access', async () => {
+test('V16/V19: built public pages serve report-backed study and working navigation without paid access', async () => {
   const build = spawnSync(process.execPath, ['--import', import.meta.resolve('tsx'), 'scripts/build-public.ts'], {
     cwd: fileURLToPath(new URL('..', import.meta.url)), encoding: 'utf8', timeout: 30_000,
   });
@@ -17,7 +18,7 @@ test('V16: built public demo serves report-backed results, diagram and evidence 
   assert.equal(build.status, 0, build.stderr);
   const { default: worker } = await import(pathToFileURL(resolve('dist/public/worker.js')).href);
   const get = (path: string) => worker.fetch(new Request('https://exbridge.world' + path));
-  const page = await get('/');
+  const page = await get('/case-study');
   assert.equal(page.status, 200);
   const html = await page.text();
   const report = await loadReport();
@@ -36,6 +37,43 @@ test('V16: built public demo serves report-backed results, diagram and evidence 
     method: 'POST', headers: { 'x-experiencebridge-client': 'local-ui' }, body: '{}',
   }));
   assert.equal(order.status, 403);
+  const root = await (await get('/')).text();
+  assert.ok(root.includes('id="demo"'));
+  assert.ok(root.includes('id="case-study" class="study-teaser"'));
+  assert.ok(!root.includes('class="study-results"'), 'The demo links to the full study instead of stacking it below the controls');
+  for (const [path, title, current] of [
+    ['/', 'exbridge | A Noesora product', '/#demo'],
+    ['/showcases', 'Showcases | exbridge', '/showcases'],
+    ['/case-study', 'Recorded failure case study | exbridge', '/case-study'],
+    ['/evidence', 'Run evidence | exbridge', '/evidence'],
+  ]) {
+    const response = await get(path);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get('content-type')!, /text\/html/);
+    assert.match(response.headers.get('content-security-policy')!, /script-src 'self'/);
+    const body = await response.text();
+    assert.ok(body.includes(`<title>${title}</title>`));
+    const header = body.match(/<header class="site-header">[\s\S]*?<\/header>/)![0];
+    assert.equal([...header.matchAll(/aria-current="page"/g)].length, 1);
+    assert.ok(new RegExp(`href="${current}" aria-current="page"`).test(header));
+    assert.ok(header.includes('href="https://noesora.xyz"'));
+    assert.equal([...body.matchAll(/<h1(?:\s|>)/g)].length, 1);
+    if (path !== '/') assert.ok(!body.includes('src="/app.js"'), 'Static pages must not initialize demo/payment handlers');
+    // Follow every local link in the built page, including source assets and anchors.
+    for (const [, href] of body.matchAll(/href="([/#][^"]*)"/g)) {
+      const target = new URL(href, 'https://exbridge.world' + path);
+      const destination = await get(target.pathname);
+      assert.equal(destination.status, 200, `${path} has a broken link: ${href}`);
+      if (target.hash) assert.ok((await destination.text()).includes(`id="${target.hash.slice(1)}"`), `Missing anchor: ${href}`);
+    }
+  }
+  for (const path of ['/showcases', '/case-study', '/evidence']) assert.equal(await (await get(path + '/')).text(), await (await get(path)).text());
+  const catalog = await (await get('/showcases')).text();
+  assert.equal([...catalog.matchAll(/<article class="showcase-card">/g)].length, 2);
+  const rawEvidence = await get('/evidence.md');
+  assert.match(rawEvidence.headers.get('content-type')!, /text\/plain/);
+  assert.equal(await rawEvidence.text(), await readFile(new URL('../evidence.md', import.meta.url), 'utf8'));
+  assert.equal((await get('/showcases/missing')).status, 404);
 });
 
 test('V16: public case-study rendering rejects missing or inconsistent evidence and execution claims', async () => {
@@ -48,4 +86,13 @@ test('V16: public case-study rendering rejects missing or inconsistent evidence 
   assert.throws(() => renderPublicCaseStudy({ ...report, predictions: report.predictions.slice(1) }));
   assert.throws(() => renderPublicCaseStudy({ ...report, executionAuthority: true }));
   assert.throws(() => renderPublicCaseStudy({ ...report, recoveryOutcomesMeasured: true }));
+});
+
+
+test('V19: public page construction escapes evidence and rejects a missing demo slot', () => {
+  const evidence = '<script>alert("wallet")</script>& private <tag>';
+  const html = renderEvidencePage(evidence);
+  assert.ok(!html.includes(evidence));
+  assert.ok(html.includes('&lt;script&gt;alert(&quot;wallet&quot;)&lt;/script&gt;&amp; private &lt;tag&gt;'));
+  assert.throws(() => renderDemoPage('<body><main>Missing slots</main>'), /slots missing/);
 });

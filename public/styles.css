@@ -487,3 +487,35 @@ summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
   .landing-diagram text { display: none; }
   .landing-legend { display: flex; justify-content: space-between; gap: 6px; margin: 12px 0 0; color: var(--silver); font: 12px/1.5 var(--font-body); }
 }
+
+/* Anatomy figure. Solid fills and facing tones retain depth at small widths. */
+.arm-card { border: 1px solid var(--hairline-strong); border-radius: 8px; background: radial-gradient(ellipse at 50% 40%, #1b2733, #0d1218 75%); overflow: hidden; }
+.arm-card-heading, .arm-card-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; font: 11px var(--font-mono); color: var(--muted); }
+.arm-card-heading { border-bottom: 1px solid var(--hairline); }
+.arm-card-heading span:last-child { color: var(--silver); }
+.arm-figure { display: block; width: 100%; height: auto; max-height: 430px; }
+.arm-figure path { vector-effect: non-scaling-stroke; }
+.arm-figure .iso-fill { fill: #17212b; }
+.arm-figure .iso-top { fill: #344758; }
+.arm-figure .iso-shade[data-shade="0"] { fill: #121b24; }
+.arm-figure .iso-shade[data-shade="1"] { fill: #1d2b38; }
+.arm-figure .iso-shade[data-shade="2"] { fill: #263847; }
+.arm-figure .iso-shade[data-shade="3"] { fill: #2d4151; }
+.arm-figure .iso-line { fill: none; stroke: #698497; stroke-width: .7; stroke-linejoin: round; }
+.arm-figure .iso-crease { stroke: #405665; stroke-width: .5; }
+.arm-figure [data-lit] > .iso-top { fill: #b4d9e2; }
+.arm-figure [data-lit] > .iso-shade { fill: #689aa7; }
+.arm-figure [data-lit] > .iso-line { stroke: #b4d9e2; }
+.arm-card-controls { border-top: 1px solid var(--hairline); flex-wrap: wrap; }
+.arm-card-controls > div { display: flex; gap: 8px; }
+.arm-card-controls button { min-height: 44px; padding: 8px 12px; border: 1px solid var(--hairline-strong); border-radius: 4px; background: var(--surface); color: var(--silver); font: 12px var(--font-body); cursor: pointer; }
+.arm-card-controls button:hover { border-color: var(--accent); }
+.arm-card-controls button:disabled { opacity: .55; cursor: default; }
+.arm-card-controls p { margin: 0; color: var(--accent-soft); }
+.arm-legend { display: flex; justify-content: space-around; gap: 12px; color: var(--muted); font: 12px var(--font-mono); }
+@media (max-width: 600px) {
+  .arm-card-heading, .arm-card-controls { padding: 12px; gap: 8px; }
+  .arm-card-heading { font-size: 9px; }
+  .arm-figure { width: 116%; max-width: none; margin-left: -8%; }
+  .arm-legend { font-size: 10px; gap: 5px; }
+}

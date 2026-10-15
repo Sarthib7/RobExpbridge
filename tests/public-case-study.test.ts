@@ -42,6 +42,11 @@ test('V16/V19/V20: built public pages serve report-backed study and working navi
   assert.ok(root.includes('id="about"'));
   assert.ok(root.includes('id="case-study"'));
   assert.ok(!root.includes('src="/app.js"'));
+  assert.ok(root.includes('src="/arm-figure.js"'));
+  assert.ok(root.includes('not live telemetry or a measured recovery'));
+  assert.ok(!root.includes('NaN'));
+  assert.equal((await get('/arm-figure.js')).headers.get('content-type'), 'application/javascript');
+  assert.equal(await (await get('/arm-figure.js')).text(), await readFile('public/arm-figure.js', 'utf8'));
   const demo = await (await get('/demo')).text();
   assert.ok(demo.includes('id="demo-scene"'));
   assert.ok(demo.includes('src="/app.js"'));

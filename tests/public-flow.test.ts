@@ -140,3 +140,24 @@ test('V17: local workspaces retain explicit publish and baseline actions', async
   await get('baseline').onclick();
   assert.equal(requests.includes('/simulation/run'), true);
 });
+
+test('V27: the polite live notice includes measured outcomes, force and incompatible-hardware reasons', async () => {
+  const { get, hold } = await browser();
+  assert.equal(get('notice').attributes.role, 'status');
+  assert.equal(get('notice').attributes['aria-live'], 'polite');
+  await get('publish').onclick();
+  assert.match(get('notice').textContent, /constructed fixture.*slip.*12 N/);
+  get('arm').value = 'C'; get('arm').onchange();
+  await get('match').onclick();
+  assert.match(get('notice').textContent, /gripper mismatch/);
+  assert.doesNotMatch(get('notice').textContent, /success/);
+  get('arm').value = 'B'; get('arm').onchange();
+  await get('match').onclick();
+  const release = hold('/api/demo/recovery');
+  const pending = get('recover').onclick();
+  assert.doesNotMatch(get('notice').textContent, /success/);
+  release(); await pending;
+  assert.match(get('notice').textContent, /constructed fixture.*success.*8 N/);
+  await get('restart-demo').onclick();
+  assert.equal(get('notice').textContent, 'Run the baseline to begin.');
+});

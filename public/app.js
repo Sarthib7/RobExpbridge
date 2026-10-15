@@ -127,7 +127,7 @@ $('publish').onclick = () => action(async () => {
     $('baseline-outcome').textContent = `${baseline.outcome} · ${baseline.forceN} N`;
     $('memory-outcome').textContent = 'Not run'; $('restart-demo').hidden = false; $('outcome-strip').hidden = false;
     compatible = false; previewStep('compatibility');
-    notice('Baseline measured. Choose a receiving machine and check its compatibility.');
+    notice(`Baseline measured in the constructed fixture: ${baseline.outcome} at ${baseline.forceN} N. Choose a receiving machine and check its compatibility.`);
     return;
   }
   notice('Sample ready. Run the baseline or check compatibility.');
@@ -147,7 +147,7 @@ $('match').onclick = () => action(async () => {
   result('match-result', match ? `${match.status}\n${match.reasons.join('\n')}` : 'No experience found. Publish the sample first.', !compatible);
   previewScene(compatible ? 'matched' : 'blocked', compatible ? 'Hardware matched. Recovery not measured.' : 'No compatible lesson for this hardware.', compatible ? '8 N simulated advisory' : 'No advisory');
   if (publicDemo() && compatible) previewStep('payment-panel');
-  notice(compatible ? (publicDemo() ? 'Compatible. Run the recovery preview.' : 'Compatible. You can request a payment quote.') : publicDemo() ? 'No compatible lesson for this machine. Try Arm B for a matching recovery.' : 'No payment quote is available for this selection.');
+  notice(compatible ? (publicDemo() ? 'Compatible. Run the recovery preview.' : 'Compatible. You can request a payment quote.') : publicDemo() ? `No compatible lesson: ${match?.reasons.join('; ') || 'No matching experience found'}. Try Arm B for a matching recovery.` : 'No payment quote is available for this selection.');
 });
 $('quote').onclick = () => action(async () => {
   if (publicDemo()) return;
@@ -189,7 +189,7 @@ $('recover').onclick = () => action(async () => {
     $('memory-outcome').textContent = `${data.outcome} · ${data.forceN} N`;
     previewScene(data.outcome === 'success' ? 'success' : 'failure', `Recovery result: ${data.outcome}.`, `${data.forceN} N simulated force`);
   }
-  result('recovery-result', `${publicDemo() ? 'Arm B recovery preview' : 'Arm B with memory'}: ${data.outcome}\nForce: ${data.forceN} N · seed ${data.seed} · ${data.fixture}`, data.outcome !== 'success'); notice('Recovery measured. Compare this result with the baseline above.');
+  result('recovery-result', `${publicDemo() ? 'Arm B recovery preview' : 'Arm B with memory'}: ${data.outcome}\nForce: ${data.forceN} N · seed ${data.seed} · ${data.fixture}`, data.outcome !== 'success'); notice(publicDemo() ? `Recovery measured in the constructed fixture: ${data.outcome} at ${data.forceN} N. Compare this result with the baseline above.` : 'Recovery measured. Compare this result with the baseline above.');
 });
 await action(async () => {
   config = await api('/api/config');

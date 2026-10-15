@@ -3,7 +3,7 @@ import { build } from 'esbuild';
 import { renderPublicCaseStudy } from './public-case-study.js';
 import { renderDemoPage, renderLandingPage, renderShowcases, renderStudyPage, renderEvidencePage } from './public-site.js';
 const assets: Record<string,string> = {};
-for (const [route,file] of [['/','index.html'],['/app.js','app.js'],['/arm-figure.js','arm-figure.js'],['/styles.css','styles.css']]) assets[route] = await readFile('public/'+file,'utf8');
+for (const [route,file] of [['/','index.html'],['/app.js','app.js'],['/arm-figure.js','arm-figure.js'],['/arm-model.js','arm-model.js'],['/styles.css','styles.css']]) assets[route] = await readFile('public/'+file,'utf8');
 for (const file of ['checkpoint-20261013-agung.json','checkpoint-20261013-solana-devnet.json','peaqos-readiness.json','simulation-batches.json']) assets['/data/evidence/'+file] = await readFile('data/evidence/'+file,'utf8');
 const report = await readFile('data/evidence/robot-failure-case-study-20261015.json', 'utf8');
 assets['/demo'] = renderDemoPage(assets['/']);

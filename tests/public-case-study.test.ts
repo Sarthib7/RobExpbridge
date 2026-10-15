@@ -78,6 +78,12 @@ test('V16/V19/V20: built public pages serve report-backed study and working navi
   for (const path of ['/demo', '/showcases', '/case-study', '/evidence']) assert.equal(await (await get(path + '/')).text(), await (await get(path)).text());
   const catalog = await (await get('/showcases')).text();
   assert.equal([...catalog.matchAll(/<article class="showcase-card">/g)].length, 2);
+  const publicEvidence = await (await get('/evidence')).text();
+  const evidenceSource = await readFile(new URL('../evidence.md', import.meta.url), 'utf8');
+  for (const [, label, path] of evidenceSource.matchAll(/\[([^\]\n]+)\]\(((?:data|docs)\/[^\s)]+)\)/g)) {
+    assert.ok(publicEvidence.includes(`href="https://github.com/Sarthib7/RobExpbridge/blob/main/${path}"`), `Unlinked citation: ${label}`);
+    await readFile(new URL('../' + path, import.meta.url));
+  }
   const rawEvidence = await get('/evidence.md');
   assert.match(rawEvidence.headers.get('content-type')!, /text\/plain/);
   assert.equal(await rawEvidence.text(), await readFile(new URL('../evidence.md', import.meta.url), 'utf8'));
@@ -103,4 +109,18 @@ test('V19: public page construction escapes evidence and rejects a missing demo 
   assert.ok(!html.includes(evidence));
   assert.ok(html.includes('&lt;script&gt;alert(&quot;wallet&quot;)&lt;/script&gt;&amp; private &lt;tag&gt;'));
   assert.throws(() => renderDemoPage('<body><main>Missing slots</main>'), /slots missing/);
+});
+
+
+test('V21: evidence citations link to source files and keep unsafe markup inert', () => {
+  const html = renderEvidencePage('[paid run](data/evidence/run.json) [runbook](docs/runbook.md) [receipt](https://explorer.example/tx/abc?cluster=devnet&view=full)');
+  assert.ok(html.includes('<a href="https://github.com/Sarthib7/RobExpbridge/blob/main/data/evidence/run.json">paid run</a>'));
+  assert.ok(html.includes('<a href="https://github.com/Sarthib7/RobExpbridge/blob/main/docs/runbook.md">runbook</a>'));
+  assert.ok(html.includes('<a href="https://explorer.example/tx/abc?cluster=devnet&amp;view=full">receipt</a>'));
+  const hostile = renderEvidencePage('<script>alert(1)</script> [bad](javascript:alert) [relative](//evil.example) [<img src=x>](https://example.com)');
+  assert.ok(!hostile.includes('<script>'));
+  assert.ok(!hostile.includes('<img'));
+  assert.ok(!hostile.includes('href="javascript:'));
+  assert.ok(!hostile.includes('href="//evil.example'));
+  assert.ok(hostile.includes('<a href="https://example.com">&lt;img src=x&gt;</a>'));
 });

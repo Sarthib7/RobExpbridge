@@ -1,5 +1,13 @@
 const escapeHtml = (text: string) => text.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!);
 
+// Render only inline citations. Other Markdown, including diagrams, stays readable source text.
+function evidenceCitations(evidence: string): string {
+  return escapeHtml(evidence).replace(/\[([^\]\n]+)\]\((https:\/\/[^\s)]+|(?:data|docs)\/[^\s)]+)\)/g, (_, label: string, target: string) => {
+    const href = target.startsWith('https://') ? target : `https://github.com/Sarthib7/RobExpbridge/blob/main/${target}`;
+    return `<a href="${href}">${label}</a>`;
+  });
+}
+
 export function siteHeader(current: 'home' | 'demo' | 'showcases' | 'study' | 'evidence'): string {
   const active = (page: string) => current === page ? ' aria-current="page"' : '';
   return `<header class="site-header">
@@ -36,7 +44,7 @@ export function renderStudyPage(study: string): string {
 }
 
 export function renderEvidencePage(evidence: string): string {
-  return page('Run evidence', 'Recorded run evidence and integration limits for exbridge.', 'evidence', `<a class="back-link" href="/showcases">← All showcases</a><div class="showcase-intro"><p class="site-eyebrow">RECORDED RUNS</p><h1>Inspect the evidence.</h1><p class="lede">This is the repository’s recorded evidence document. Dates and integration checks describe those runs, not a live network check.</p><a class="showcase-link" href="/evidence.md">Open raw Markdown ↗</a></div><pre class="evidence-document">${escapeHtml(evidence)}</pre>`);
+  return page('Run evidence', 'Recorded run evidence and integration limits for exbridge.', 'evidence', `<a class="back-link" href="/showcases">← All showcases</a><div class="showcase-intro"><p class="site-eyebrow">RECORDED RUNS</p><h1>Inspect the evidence.</h1><p class="lede">This is the repository’s recorded evidence document. Dates and integration checks describe those runs, not a live network check.</p><a class="showcase-link" href="/evidence.md">Open raw Markdown ↗</a></div><pre class="evidence-document">${evidenceCitations(evidence)}</pre>`);
 }
 
 export function renderDemoPage(template: string): string {

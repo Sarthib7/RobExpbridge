@@ -31,6 +31,15 @@ function controls() {
   }
   if (order?.state !== 'confirmed') { $('advisory').hidden = true; $('recovery-result').hidden = true; }
 }
+function previewScene(state, message, force) {
+  if (!publicDemo()) return;
+  const arm = $('arm').value === 'C' ? 'C' : 'B';
+  $('demo-scene').setAttribute('data-state', state);
+  $('demo-scene').setAttribute('data-arm', arm);
+  $('scene-machine').textContent = arm === 'C' ? 'Arm C · vacuum gripper' : 'Arm B · parallel gripper';
+  $('scene-status').textContent = message;
+  $('scene-force').textContent = force;
+}
 function previewStep(id, focus = true) {
   if (!publicDemo()) return;
   const panels = ['experience', 'compatibility', 'payment-panel'];
@@ -51,19 +60,21 @@ $('restart-demo').onclick = () => {
   compatible = false; $('arm').value = 'B';
   for (const id of ['published', 'baseline-result', 'match-result', 'advisory', 'recovery-result', 'restart-demo', 'outcome-strip']) $(id).hidden = true;
   $('baseline-outcome').textContent = 'Not run'; $('memory-outcome').textContent = 'Not run';
+  previewScene('ready', 'Baseline not measured.', '12 N simulated baseline');
   previewStep('experience'); controls(); notice('Run the baseline to begin.');
 };
 $('change-machine').onclick = () => {
   if (!publicDemo() || busy) return;
   compatible = false; $('match-result').hidden = true; $('recovery-result').hidden = true;
   $('memory-outcome').textContent = 'Not run';
+  previewScene('checking', 'Choose receiving hardware.', 'Recovery not measured');
   previewStep('compatibility'); controls(); notice('Choose Arm B or try Arm C to see an incompatible match.');
 };
 async function action(work) {
   if (busy) return;
   busy = true; controls(); notice('Working…');
   try { await work(); }
-  catch (error) { notice(error.message || 'Request failed. Check the server and network.', true); }
+  catch (error) { previewScene('error', 'No result from this attempt. Retry this step.', 'Not measured'); notice(error.message || 'Request failed. Check the server and network.', true); }
   finally { busy = false; controls(); }
 }
 function save() {
@@ -107,10 +118,12 @@ async function verify() {
 $('refresh').onclick = () => action(async () => { await balances(); notice('Balances refreshed.'); });
 $('copy').onclick = () => action(async () => { await navigator.clipboard.writeText(config.buyerAddress); notice('Buyer address copied. Use it as the faucet recipient.'); });
 $('publish').onclick = () => action(async () => {
+  previewScene('measuring', 'Measuring the baseline…', '12 N simulated baseline');
   const data = await api('/api/demo/publish', {});
   result('published', `${publicDemo() ? 'Loaded' : 'Published'} ${data.id}\nEvidence: ${data.evidence?.level || 'simulation-tested'}\nContributor: ${data.contributor?.machineId || 'Arm A'} (synthetic identity)`);
   if (publicDemo()) {
     const baseline = await api('/simulation/run', { context: fixture });
+    previewScene(baseline.outcome === 'success' ? 'success' : 'failure', `Baseline result: ${baseline.outcome}.`, `${baseline.forceN} N simulated force`);
     $('baseline-outcome').textContent = `${baseline.outcome} · ${baseline.forceN} N`;
     $('memory-outcome').textContent = 'Not run'; $('restart-demo').hidden = false; $('outcome-strip').hidden = false;
     compatible = false; previewStep('compatibility');
@@ -123,14 +136,16 @@ $('baseline').onclick = () => action(async () => {
   const data = await api('/simulation/run', { context: fixture });
   result('baseline-result', `Arm B baseline: ${data.outcome}\nForce: ${data.forceN} N · seed ${data.seed} · ${data.fixture}`, data.outcome !== 'success'); notice('Baseline measured in the constructed fixture.');
 });
-$('arm').onchange = () => { if (publicDemo()) $('memory-outcome').textContent = 'Not run'; compatible = false; $('advisory').hidden = true; $('recovery-result').hidden = true; $('match-result').hidden = true; controls(); };
+$('arm').onchange = () => { previewScene('checking', 'Hardware not checked.', 'Recovery not measured'); if (publicDemo()) $('memory-outcome').textContent = 'Not run'; compatible = false; $('advisory').hidden = true; $('recovery-result').hidden = true; $('match-result').hidden = true; controls(); };
 $('match').onclick = () => action(async () => {
+  previewScene('checking', 'Checking hardware compatibility…', 'Recovery not measured');
   compatible = false;
   $('match-result').hidden = true; $('advisory').hidden = true; $('recovery-result').hidden = true;
   controls();
   const data = await api('/experiences/query', { task: 'connector_insertion', context: context(), use: 'synthetic-demo' });
   const match = data.results.find(item => item.id === 'exp-001'); compatible = match?.status === 'compatible';
   result('match-result', match ? `${match.status}\n${match.reasons.join('\n')}` : 'No experience found. Publish the sample first.', !compatible);
+  previewScene(compatible ? 'matched' : 'blocked', compatible ? 'Hardware matched. Recovery not measured.' : 'No compatible lesson for this hardware.', compatible ? '8 N simulated advisory' : 'No advisory');
   if (publicDemo() && compatible) previewStep('payment-panel');
   notice(compatible ? (publicDemo() ? 'Compatible. Run the recovery preview.' : 'Compatible. You can request a payment quote.') : publicDemo() ? 'No compatible lesson for this machine. Try Arm B for a matching recovery.' : 'No payment quote is available for this selection.');
 });
@@ -166,11 +181,14 @@ $('rebroadcast').onclick = () => action(async () => {
 });
 $('recover').onclick = () => action(async () => {
   $('advisory').hidden = true; $('recovery-result').hidden = true;
-  if (publicDemo()) $('memory-outcome').textContent = 'Not run';
+  if (publicDemo()) { $('memory-outcome').textContent = 'Not run'; previewScene('measuring', 'Measuring the recovery…', '8 N simulated advisory'); }
   const data = publicDemo()
     ? await api('/api/demo/recovery', { context: context() })
     : await api(`/api/orders/${order.id}/run`, {}, true);
-  if (publicDemo()) $('memory-outcome').textContent = `${data.outcome} · ${data.forceN} N`;
+  if (publicDemo()) {
+    $('memory-outcome').textContent = `${data.outcome} · ${data.forceN} N`;
+    previewScene(data.outcome === 'success' ? 'success' : 'failure', `Recovery result: ${data.outcome}.`, `${data.forceN} N simulated force`);
+  }
   result('recovery-result', `${publicDemo() ? 'Arm B recovery preview' : 'Arm B with memory'}: ${data.outcome}\nForce: ${data.forceN} N · seed ${data.seed} · ${data.fixture}`, data.outcome !== 'success'); notice('Recovery measured. Compare this result with the baseline above.');
 });
 await action(async () => {
@@ -183,6 +201,7 @@ await action(async () => {
   if (publicDemo()) {
     document.body.classList.add('demo-ready');
     previewStep('experience', false);
+    previewScene('ready', 'Baseline not measured.', '12 N simulated baseline');
     $('page-title').textContent = 'Try a recovery with shared memory.';
     $('experience-heading').textContent = 'Run the baseline';
     $('compatibility-heading').textContent = 'Check the receiving machine';

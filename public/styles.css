@@ -307,3 +307,53 @@ summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 @media (max-width: 600px) { .public-preview .machine-visual { display: none; } }
 
 .demo-boundary span { display: block; margin-top: 5px; font-size: 12px; }
+
+/* A schematic explains the current result; it is not robot telemetry. */
+.public-preview .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: stretch; }
+.demo-scene { margin: 0; min-width: 0; padding: 24px; border: 1px solid var(--hairline); border-radius: 5px; background: radial-gradient(ellipse at 50% 60%, var(--surface-raised), var(--surface) 75%); }
+.scene-kicker { display: block; color: var(--muted); font: 11px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+.scene-drawing { display: block; width: 100%; height: 260px; margin: 12px 0; color: var(--hairline-strong); }
+.scene-grid { opacity: .45; }
+.scene-floor { stroke: var(--hairline-strong); stroke-width: 2; }
+.scene-lesson rect { fill: var(--surface-raised); stroke: var(--hairline-strong); }
+.scene-lesson { color: var(--muted); }
+.scene-drawing text { fill: var(--muted); font: 12px var(--font-mono); }
+.scene-drawing .scene-note { font-family: var(--font-body); font-size: 15px; }
+.scene-memory-link { stroke: var(--hairline-strong); opacity: .5; }
+.scene-arm-link { fill: none; stroke: var(--accent-soft); stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; }
+.scene-arm circle { fill: var(--surface); stroke: var(--accent); stroke-width: 4; }
+.scene-base, .scene-fixture path { fill: var(--surface-raised); stroke: var(--hairline-strong); }
+.scene-parallel, .scene-vacuum { stroke: var(--accent-soft); }
+.scene-vacuum { display: none; }
+.demo-scene[data-arm="C"] .scene-parallel { display: none; }
+.demo-scene[data-arm="C"] .scene-vacuum { display: block; }
+.scene-connector { fill: var(--accent-soft); stroke: var(--surface); transform-origin: 280px 209px; }
+.scene-success, .scene-blocked { display: none; fill: var(--surface); stroke-width: 3; }
+.scene-success { stroke: var(--success); }
+.scene-blocked { stroke: var(--warning); }
+.scene-caption { border-top: 1px solid var(--hairline); padding-top: 16px; }
+.scene-caption p { color: var(--ink); font-size: 14px; margin-bottom: 8px; }
+.scene-caption span { color: var(--muted); font: 12px var(--font-mono); }
+.demo-scene[data-state="failure"] .scene-connector { transform: translate(28px, 10px) rotate(24deg); fill: var(--warning); }
+.demo-scene[data-state="matched"] .scene-memory-link, .demo-scene[data-state="success"] .scene-memory-link { stroke: var(--accent); opacity: 1; }
+.demo-scene[data-state="success"] .scene-connector { transform: translateY(22px); fill: var(--success); }
+.demo-scene[data-state="success"] .scene-success, .demo-scene[data-state="blocked"] .scene-blocked { display: block; }
+.demo-scene[data-state="blocked"] .scene-memory-link { stroke: var(--warning); }
+.demo-scene[data-state="failure"] .scene-caption p, .demo-scene[data-state="blocked"] .scene-caption p, .demo-scene[data-state="error"] .scene-caption p { color: var(--warning); }
+.demo-scene[data-state="success"] .scene-caption p { color: var(--success); }
+@media (prefers-reduced-motion: no-preference) { .scene-connector { transition: transform 300ms ease; } }
+@media (max-width: 850px) { .public-preview .workspace-grid { grid-template-columns: 1fr; } .scene-drawing { height: 190px; margin: 0; } .demo-scene { padding: 20px; } .demo-scene h2 { font-size: 20px; } }
+@media (max-width: 600px) { .scene-drawing { height: 160px; } }
+
+.public-preview .machine-visual { display: none; }
+.study-score { display: inline-block; min-width: 72px; }
+.study-score meter { display: block; width: 100%; height: 8px; margin-top: 8px; }
+.study-score meter::-webkit-meter-bar { background: var(--hairline); border: 0; }
+.study-score meter::-webkit-meter-optimum-value { background: var(--accent); }
+.study-score meter::-moz-meter-bar { background: var(--accent); }
+
+.scene-caption-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+@media (max-width: 600px) {
+  .public-preview main { padding-bottom: 88px; }
+  .public-preview #publish, .public-preview #match, .public-preview #recover { position: fixed; z-index: 20; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: calc(100% - 32px); min-height: 48px; box-shadow: 0 6px 24px var(--canvas); }
+}

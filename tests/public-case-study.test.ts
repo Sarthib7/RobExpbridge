@@ -21,8 +21,8 @@ test('V16: built public demo serves report-backed results, diagram and evidence 
   assert.equal(page.status, 200);
   const html = await page.text();
   const report = await loadReport();
-  assert.ok(html.includes(`<td>${report.retrieval.correct} / ${report.queryCount}</td><td>75%</td>`));
-  assert.ok(html.includes(`<td>${report.majorityBaseline.correct} / ${report.queryCount}</td><td>35%</td>`));
+  assert.ok(html.includes(`<td>${report.retrieval.correct} / ${report.queryCount}</td><td><span class="study-score">75%<meter min="0" max="${report.queryCount}" value="${report.retrieval.correct}"`));
+  assert.ok(html.includes(`<td>${report.majorityBaseline.correct} / ${report.queryCount}</td><td><span class="study-score">35%<meter min="0" max="${report.queryCount}" value="${report.majorityBaseline.correct}"`));
   assert.ok(html.includes(`${report.falseNormalCount} faulty traces were labeled normal.`));
   assert.ok(html.includes('aria-labelledby="case-study-heading"'));
   assert.ok(html.includes('<ol class="study-flow">'));

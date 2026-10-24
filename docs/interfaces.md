@@ -180,3 +180,15 @@ V27: The public demo's polite live notice includes the returned outcome and forc
 Bug record B27 | 2026-10-15 | Completion notices omitted measured values and the hardware rejection reason | V27.
 VERIFIED: live DOM inspection found `role="status"`, `aria-live="polite"` and the notice `No compatible lesson for this machine. Try Arm B for a matching recovery.`; the visible result separately contained `incompatible\ngripper mismatch`. Existing checks covered visible result text, but not these completion announcements. The fix uses values returned by the simulator and matcher. Local payment behavior and its notice remain unchanged.
 VERIFIED: the new test against the original source reported `tests 4`, `pass 3`, `fail 1`. Fixed frontend and guided-flow checks reported `tests 13`, `pass 13`, `fail 0`. The test covers notice semantics, pending work and restart, but does not verify speech output from a particular screen reader.
+
+## Shared simulator failure-memory contract
+
+Owner: implementer. Status: Completed.
+V28: Local failure lessons require context hashes, observed counts, expiry,
+rights and a digest. Altered bytes, missing context, incompatible models or
+actuators, duplicate scenarios and evaluation-case leakage are rejected.
+Every required reset family has observed attempts. Immutable writes refuse
+conflicting existing bytes. Hashing does not authenticate contributors.
+VERIFIED source: `experiments/microduck/memory.py`.
+VERIFIED checks: `test_memory.py` reported `Ran 10 tests` and `OK`.
+No trained policy or physical-robot result is claimed.

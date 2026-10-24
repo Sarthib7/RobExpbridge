@@ -203,3 +203,14 @@ the run. Reset clears controller and action history.
 VERIFIED source: `sim.py:EpisodeSimulator`, `recovered`.
 VERIFIED local physics and ONNX boundary checks: `test_sim.py` passed within
 the 21-test local suite. No learned-policy improvement is established.
+
+## Local CUDA worker contract
+
+Owner: implementer. Status: In Progress.
+V31: CUDA is required before a worker creates a run directory. A missing device
+returns `CUDA_TRAINING_UNAVAILABLE`. Trusted local artifacts bind policy and
+checkpoint bytes to context hashes and the measured interaction budget.
+The worker saves optimizer, normalizer and RNG state and delegates PPO/export
+to upstream. UNKNOWN runtime: actual PPO updates and a newly trained export.
+VERIFIED boundary checks reject changed checkpoint bytes and exercise the
+no-CUDA error without producing a success artifact.

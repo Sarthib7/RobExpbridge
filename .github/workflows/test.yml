@@ -80,6 +80,7 @@ jobs:
           git -C "$MICRODUCK_SOURCE" checkout --detach FETCH_HEAD
       - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_memory.py -v
       - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_sim.py -v
+      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_run.py -v
       - name: Run real CPU physics smoke
         run: |
           uv run --frozen --project experiments/microduck --group test python - <<'PY'

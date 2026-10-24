@@ -148,3 +148,12 @@ VERIFIED source audit: a fresh UCI archive download matched SHA-256 `cdfbe0b260f
 
 Remaining limits: local checksums trust the committed manifest. Missing robot, site and session metadata prevents evaluation across those groups. Recorded diagnosis does not establish recovery success or safety.
 Follow-up: no remaining CLI coverage fix. AGUNG funding and separately approved peaqOS activation remain outside this review. No dataset, wallet, payment or deployment change occurred.
+
+## Microduck failure-memory publication, 2026-10-24
+
+Owner: implementer. Status: In Progress.
+VERIFIED source: this slice adds the local failure-memory contract and its
+standard-library behavior checks. Existing app and payment code are unchanged.
+VERIFIED local checks: `Ran 10 tests`, `OK`. Fixtures are synthetic validator
+inputs, not observations from a trained robot. CUDA learning remains paused
+by the user's selection. Publication and exact-head CI are in progress.

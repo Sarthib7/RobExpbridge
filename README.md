@@ -196,3 +196,19 @@ tests/*.test.ts
 ## License / rights
 
 Demo experiences use `license: "demo-only"` with `redistribution: false`. Do not treat fixtures as redistributable factory data.
+
+## Shared simulator failure memory
+
+VERIFIED source: `experiments/microduck/memory.py` provides immutable local
+failure lessons and frozen learning-round snapshots. It rejects incompatible
+context, expired or altered records, and evaluation-case leakage. A digest
+detects changes; it does not authenticate a contributor.
+
+Run the deterministic behavior checks from the repository root:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=experiments/microduck python3.12 -m unittest discover -s experiments/microduck/tests -p test_memory.py -v
+```
+
+VERIFIED local checks: `Ran 10 tests` and `OK`. Inputs are explicitly synthetic
+test fixtures. This module alone does not train a policy or execute a robot.

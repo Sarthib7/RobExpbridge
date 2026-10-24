@@ -149,19 +149,82 @@ VERIFIED source audit: a fresh UCI archive download matched SHA-256 `cdfbe0b260f
 Remaining limits: local checksums trust the committed manifest. Missing robot, site and session metadata prevents evaluation across those groups. Recorded diagnosis does not establish recovery success or safety.
 Follow-up: no remaining CLI coverage fix. AGUNG funding and separately approved peaqOS activation remain outside this review. No dataset, wallet, payment or deployment change occurred.
 
-## Microduck failure-memory publication, 2026-10-24
+## Microduck experiment, 2026-10-24
 
-Owner: implementer. Status: In Progress.
-VERIFIED source: this slice adds the local failure-memory contract and its
-standard-library behavior checks. Existing app and payment code are unchanged.
-VERIFIED local checks: `Ran 10 tests`, `OK`. Fixtures are synthetic validator
-inputs, not observations from a trained robot. CUDA learning remains paused
-by the user's selection. Publication and exact-head CI are in progress.
+Owner: implementer. Status: Blocked.
+VERIFIED approval: the user approved architecture revision R1 before implementation.
+VERIFIED checkout: `feat/microduck-shared-failures`, based on `096e2bf`.
 
-VERIFIED CPU slice: pinned Python dependencies, actual MuJoCo/BAM episodes
-and observation/action guards are included. Local rendered probes completed
-300 control steps each without claiming learned recovery. CUDA training and
-any learning benefit remain unverified and paused.
+VERIFIED source: `experiments/microduck/` adds an isolated Python 3.12 environment,
+immutable failure lessons, strict compatibility and partition checks, actual
+MuJoCo/BAM episodes, an upstream PPO worker and explicit comparison commands.
+The connector schema, HTTP routes, public UI, wallets and payment code are unchanged.
+`README.md` and `docs/interfaces.md` contain the commands and V28-V31 contracts.
+`.github/workflows/test.yml` adds a CPU job without GPU spending or deployment.
 
-VERIFIED worker slice: CUDA preflight and artifact validation are implemented.
-The local CLI returned `CUDA_TRAINING_UNAVAILABLE`. No GPU execution is claimed.
+VERIFIED local command:
+`uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -v`
+with `MICRODUCK_SOURCE` set to the pinned checkout reported `Ran 21 tests` and `OK`.
+The suite exercised real physics resets, ONNX shape/action rejection, memory
+integrity, expiry, incompatible actuators, held-out-case leakage and comparison
+failure paths. Test fixtures labeled as validator or untrained boundary probes
+are not learning evidence.
+
+VERIFIED negative controls: disabling digest comparison, the sustained-hold
+requirement or pair rejection in separate disposable copies each reported
+`Ran 21 tests`, `FAILED (failures=1)`, exit 1. Repository source was not mutated
+by those controls. The disposable copies were removed afterward.
+
+VERIFIED `run.py setup`: fetched upstream
+`b02fdea4902c2b93b7d34a83a6f05da4ececb7d3`.
+VERIFIED `run.py smoke --render`: wrote four real episode traces and PNGs under
+`data/local/microduck/final-smoke/`. Each episode recorded 300 control steps and
+`simulatedSeconds: 5.999999999999894`. All hold-home probes returned
+`not-recovered`; `learningMeasured` was `false`.
+VERIFIED additional untrained ONNX runtime probe: 300 control steps,
+`outcome: "not-recovered"`. No recovery or learning gain is claimed.
+VERIFIED preserved connector smoke: `npm run demo` exited 0 and retained the
+constructed slip/recovery, incompatible-hardware rejection and simulated receipt.
+
+Blocked: the real CUDA learning comparison has not run. The CPU guard returned
+`CUDA_TRAINING_UNAVAILABLE` and created no run directory. No NVIDIA worker or
+paid compute budget is selected. No trained donor was fabricated, no hosted
+job was submitted, and this branch has not been pushed.
+UNKNOWN runtime: PPO updates, a newly trained normalizer-preserving ONNX export,
+CPU/CUDA agreement and donor-to-receiver learning improvement.
+The GitHub workflow has not run on this change.
+
+Next: select an approved NVIDIA CUDA worker and its interaction/time budget.
+Run the documented donor and matched receiver experiment, then record every
+paired outcome, including unchanged or worse results. Robot STL assets use
+CC BY-NC-SA 4.0; commercial use needs a separate rights decision.
+
+VERIFIED user decision: selected `Pause after local verification`.
+The CUDA comparison is paused by request, not completed. No GPU job is queued.
+Keep local code and CPU evidence. Resume only after the user selects compute.
+
+## Microduck publication checkpoint, 2026-10-24
+
+VERIFIED user authorization: commit, push and merge small PRs, then wrap up.
+Correction: the local-only and unrun-CI statements above describe the earlier
+verification checkpoint. The source is now published through sequential PRs.
+
+VERIFIED merged slices and their passing exact-head CI runs:
+
+- PR #45, failure memory: head `8926fe41c8111526635ad1994d24fd839264553a`,
+  CI `40135642282`, merge `c7fdc7c52c6778c747ab2ef07190d9199cf08075`.
+- PR #46, CPU simulation: head `b9352e94c57884bc4689261482d9171f900df795`,
+  CI `40135806206`, merge `79e7682f59797dbc6ee81335ac3740563d73bbc1`.
+- PR #47, CUDA worker: head `5694143163baba96ece9e2f7235ebea1a7f2b958`,
+  CI `40135932293`, merge `46671f1b0db3049f920941a7481956d537eda955`.
+
+VERIFIED post-merge checks used a checkout of the merged source.
+The memory smoke rejected a changed record. The CPU simulator completed all
+four starting families at 300 control steps each. The worker returned
+`CUDA_TRAINING_UNAVAILABLE`, exit 1, without creating its output directory.
+None of those checks establishes a learning gain.
+
+This entry precedes the final orchestration PR. GitHub records its exact-head
+CI and merge outcome; this source document does not claim a future merge.
+CUDA learning remains paused by request. No paid job, physical-robot command,
+peaq activation or application deployment is included in publication.

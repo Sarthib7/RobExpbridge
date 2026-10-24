@@ -72,23 +72,6 @@ jobs:
         with:
           version: "0.9.21"
       - run: uv sync --frozen --project experiments/microduck --group test
-      - name: Fetch pinned Microduck model source
-        run: |
-          git init "$MICRODUCK_SOURCE"
-          git -C "$MICRODUCK_SOURCE" remote add origin https://github.com/pollen-robotics/microduck_rl.git
-          git -C "$MICRODUCK_SOURCE" fetch --depth 1 origin b02fdea4902c2b93b7d34a83a6f05da4ececb7d3
-          git -C "$MICRODUCK_SOURCE" checkout --detach FETCH_HEAD
-      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_memory.py -v
-      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_sim.py -v
-      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_run.py -v
-      - name: Run real CPU physics smoke
-        run: |
-          uv run --frozen --project experiments/microduck --group test python - <<'PY'
-          import json, os
-          from pathlib import Path
-          from memory import FAMILIES
-          from sim import EpisodeSimulator, scenario
-          simulator = EpisodeSimulator(Path(os.environ["MICRODUCK_SOURCE"]), smoke=True)
-          rows = [simulator.episode(scenario(family, index, "evaluation")) for index, family in enumerate(FAMILIES)]
-          print(json.dumps({"kind": "physics-smoke", "learningMeasured": False, "outcomes": [{"family": row["scenario"]["family"], "outcome": row["outcome"], "steps": row["controlSteps"]} for row in rows]}))
-          PY
+      - run: uv run --frozen --project experiments/microduck --group test python experiments/microduck/run.py setup --source "$MICRODUCK_SOURCE"
+      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -v
+      - run: uv run --frozen --project experiments/microduck --group test python experiments/microduck/run.py smoke --source "$MICRODUCK_SOURCE" --output data/local/microduck/ci-smoke

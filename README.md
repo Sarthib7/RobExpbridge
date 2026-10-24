@@ -197,28 +197,15 @@ tests/*.test.ts
 
 Demo experiences use `license: "demo-only"` with `redistribution: false`. Do not treat fixtures as redistributable factory data.
 
-## Shared simulator failure memory
+## Microduck shared-failure experiment
 
-VERIFIED source: `experiments/microduck/memory.py` provides immutable local
-failure lessons and frozen learning-round snapshots. It rejects incompatible
-context, expired or altered records, and evaluation-case leakage. A digest
-detects changes; it does not authenticate a contributor.
+VERIFIED source: `experiments/microduck/` is separate from the connector API.
+It uses Pollen Robotics' pinned Microduck model, CPU MuJoCo and BAM actuator physics.
+The existing arm demo and payment adapters are unchanged.
 
-Run the deterministic behavior checks from the repository root:
+### Run the CPU simulation
 
-```bash
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=experiments/microduck python3.12 -m unittest discover -s experiments/microduck/tests -p test_memory.py -v
-```
-
-VERIFIED local checks: `Ran 10 tests` and `OK`. Inputs are explicitly synthetic
-test fixtures. This module alone does not train a policy or execute a robot.
-
-## Microduck CPU simulation
-
-VERIFIED source: `experiments/microduck/sim.py` runs the pinned Pollen Robotics
-Microduck model with MuJoCo and BAM. The environment is isolated from Node.
-The source checkout must be revision `b02fdea4902c2b93b7d34a83a6f05da4ececb7d3`.
-The simulator API accepts an explicit local policy or an explicit hold-home smoke.
+From the repository root, with `uv` installed:
 
 ```bash
 export UV_PROJECT_ENVIRONMENT="$PWD/data/local/microduck/venv"
@@ -226,46 +213,90 @@ export MICRODUCK_SOURCE="$PWD/data/local/microduck/upstream"
 export PYTHONDONTWRITEBYTECODE=1
 export PYTHONPATH="$PWD/experiments/microduck"
 uv sync --frozen --project experiments/microduck --python 3.12 --group test
-# If this source directory does not exist, fetch the pinned revision once:
-git init "$MICRODUCK_SOURCE"
-git -C "$MICRODUCK_SOURCE" remote add origin https://github.com/pollen-robotics/microduck_rl.git
-git -C "$MICRODUCK_SOURCE" fetch --depth 1 origin b02fdea4902c2b93b7d34a83a6f05da4ececb7d3
-git -C "$MICRODUCK_SOURCE" checkout --detach FETCH_HEAD
-"$UV_PROJECT_ENVIRONMENT/bin/python" -c 'import os,json; from pathlib import Path; from sim import EpisodeSimulator,scenario; s=EpisodeSimulator(Path(os.environ["MICRODUCK_SOURCE"]),smoke=True); r=s.episode(scenario("face_up",42,"evaluation")); print(json.dumps({"outcome":r["outcome"],"steps":r["controlSteps"],"learningMeasured":False}))'
-"$UV_PROJECT_ENVIRONMENT/bin/python" -m unittest discover -s experiments/microduck/tests -p test_sim.py -v
+PY="$UV_PROJECT_ENVIRONMENT/bin/python"
+"$PY" experiments/microduck/run.py setup --source "$MICRODUCK_SOURCE"
+"$PY" experiments/microduck/run.py smoke \
+  --source "$MICRODUCK_SOURCE" --output data/local/microduck/smoke-demo --render
+"$PY" -m unittest discover -s experiments/microduck/tests -v
 ```
 
-VERIFIED local simulation: four hold-home starting families ran for 300 control
-steps each. All returned `not-recovered`. These are physics probes, not learned
-recovery. Wrong ONNX dimensions and non-finite actions stop before physics.
-VERIFIED upstream rights: code is Apache 2.0; the robot STL meshes use
-CC BY-NC-SA 4.0. Keep this experiment local and non-commercial unless separate
-permission covers your use. Downloaded source and assets stay under ignored
-`data/local/`; no hardware commands or public policy downloads are added.
+VERIFIED command behavior: `setup` fetches source revision
+`b02fdea4902c2b93b7d34a83a6f05da4ececb7d3`. It does not download policies.
+The smoke command writes four episode traces and PNGs to its new output directory.
+Each episode runs 300 control steps, or six simulated seconds.
+Use a new output path for another run. Existing output is never overwritten.
 
-## Explicit local CUDA worker
+VERIFIED local run: `Ran 21 tests` and `OK`.
+The hold-home smoke returned `not-recovered` for all four starting families.
+An additional untrained ONNX probe exercised inference and physics for 300 steps.
+These checks establish CPU execution, not learned recovery or a training speedup.
 
-VERIFIED source: `experiments/microduck/train.py` delegates policy learning and
-normalizer-preserving export to pinned upstream PPO. It accepts explicit seed,
-environment count, iteration budget and output directory. It can consume a
-validated frozen snapshot to change only reset-family sampling.
+### Run learning on an approved NVIDIA worker
 
-UNKNOWN runtime: CUDA training and learned export have not run. No worker or
-compute budget is selected. The CPU preflight returns
-`CUDA_TRAINING_UNAVAILABLE` without creating a run directory. Only trusted
-locally generated artifacts are accepted; do not load remote `.pt` files,
-because upstream checkpoint loading uses pickle.
+VERIFIED source: the learning path delegates to upstream PPO.
+Shared lessons change reset-family probabilities; they do not replay old trajectories into PPO.
+Each round freezes its lesson hashes and evaluation cases.
+The comparison starts both receiver arms from the same locally generated checkpoint,
+including the optimizer, normalizer and saved random-number state.
+It alternates which arm runs first across seed pairs.
+
+UNKNOWN runtime: CUDA training and the paired learning comparison have not run.
+The Mac has no selected NVIDIA worker. No cloud job or paid compute was started.
+An unavailable CUDA device returns `CUDA_TRAINING_UNAVAILABLE` without a success artifact.
+
+On the approved Linux worker, repeat the environment exports above, then choose the
+compute limits before running these commands:
 
 ```bash
-"$UV_PROJECT_ENVIRONMENT/bin/python" experiments/microduck/train.py --help
-# On an explicitly approved NVIDIA Linux worker:
-: "${NUM_ENVS:?Choose the approved environment count}"
-: "${ITERATIONS:?Choose the approved iteration budget}"
-uv sync --frozen --project experiments/microduck --group test --extra training
-"$UV_PROJECT_ENVIRONMENT/bin/python" experiments/microduck/train.py \
-  --source "$MICRODUCK_SOURCE" --output data/local/microduck/donor-a \
-  --seed 7 --num-envs "$NUM_ENVS" --iterations "$ITERATIONS"
+: "${NUM_ENVS:?Set the approved parallel environment count}"
+: "${DONOR_ITERATIONS:?Set the donor training budget}"
+: "${ITERATIONS:?Set the equal receiver training budget}"
+: "${WORKER_TIMEOUT:?Set the per-worker timeout in seconds}"
+uv sync --frozen --project experiments/microduck --python 3.12 --group test --extra training
+PY="$UV_PROJECT_ENVIRONMENT/bin/python"
+EXPIRES_AT=$("$PY" -c 'from datetime import datetime,timedelta,timezone; print((datetime.now(timezone.utc)+timedelta(days=30)).isoformat())')
+
+"$PY" experiments/microduck/run.py setup --source "$MICRODUCK_SOURCE"
+"$PY" experiments/microduck/train.py --source "$MICRODUCK_SOURCE" \
+  --output data/local/microduck/donor-a --seed 7 \
+  --num-envs "$NUM_ENVS" --iterations "$DONOR_ITERATIONS"
+"$PY" experiments/microduck/run.py cases --source "$MICRODUCK_SOURCE" \
+  --output data/local/microduck/train-cases.json --split train --per-family 8 --seed 1000
+"$PY" experiments/microduck/run.py cases --source "$MICRODUCK_SOURCE" \
+  --output data/local/microduck/evaluation-cases.json --split evaluation --per-family 8 --seed 1000000
+"$PY" experiments/microduck/run.py donor --source "$MICRODUCK_SOURCE" \
+  --artifact data/local/microduck/donor-a --cases data/local/microduck/train-cases.json \
+  --output data/local/microduck/donor-evaluation.json --donor-id donor-a \
+  --expires-at "$EXPIRES_AT" --lessons data/local/microduck/lessons-a
+"$PY" experiments/microduck/run.py snapshot --source "$MICRODUCK_SOURCE" \
+  --cases data/local/microduck/evaluation-cases.json \
+  --lessons data/local/microduck/lessons-a/*.json --output data/local/microduck/round-1.json
+"$PY" experiments/microduck/run.py compare --source "$MICRODUCK_SOURCE" \
+  --snapshot data/local/microduck/round-1.json --cases data/local/microduck/evaluation-cases.json \
+  --seeds 11 12 13 --num-envs "$NUM_ENVS" --iterations "$ITERATIONS" --alpha 0.25 \
+  --worker-timeout-seconds "$WORKER_TIMEOUT" --output data/local/microduck/comparison-1
+"$PY" experiments/microduck/run.py report --run data/local/microduck/comparison-1
 ```
 
-No cloud job submission, paid compute, policy publication, or physical execution
-is part of this worker. The user paused before CUDA execution.
+PROPOSED protocol example: eight cases per family, three paired seeds and alpha 0.25.
+These values are not a measured or tuned recipe. Freeze choices before running.
+A report may say `better`, `same` or `worse`. Standing stability is separate from recovery.
+The report includes new interactions, donor cost, initialization and comparison wall time.
+Worker time includes setup, checkpoint loading, learning and export.
+Preflight time includes source, context, snapshot and CUDA checks.
+No result automatically replaces a policy.
+
+### Evidence and rights boundaries
+
+VERIFIED source: lessons reject altered bytes, expiry, missing context, incompatible
+models or actuators, and evaluation-case leakage. Hashes do not authenticate contributors.
+Only trusted local simulator artifacts are supported.
+Do not load untrusted `.pt` checkpoints: upstream uses pickle-based loading.
+The explicit physics smoke and untrained-policy probes cannot become donor lessons.
+Artifacts have an 8 MiB JSON limit; use smaller evaluation batches if needed.
+
+VERIFIED upstream license: code is Apache 2.0, but robot STL meshes are
+[CC BY-NC-SA 4.0](https://github.com/pollen-robotics/microduck_rl/blob/b02fdea4902c2b93b7d34a83a6f05da4ececb7d3/LICENSE-MODELS.md).
+Keep the experiment local and non-commercial unless separate permission covers your use.
+Do not redistribute the downloaded meshes as project assets.
+No physical robot commands, peaq activation, or TEE confidentiality are part of this experiment.

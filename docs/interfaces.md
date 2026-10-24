@@ -181,36 +181,78 @@ Bug record B27 | 2026-10-15 | Completion notices omitted measured values and the
 VERIFIED: live DOM inspection found `role="status"`, `aria-live="polite"` and the notice `No compatible lesson for this machine. Try Arm B for a matching recovery.`; the visible result separately contained `incompatible\ngripper mismatch`. Existing checks covered visible result text, but not these completion announcements. The fix uses values returned by the simulator and matcher. Local payment behavior and its notice remain unchanged.
 VERIFIED: the new test against the original source reported `tests 4`, `pass 3`, `fail 1`. Fixed frontend and guided-flow checks reported `tests 13`, `pass 13`, `fail 0`. The test covers notice semantics, pending work and restart, but does not verify speech output from a particular screen reader.
 
-## Shared simulator failure-memory contract
-
-Owner: implementer. Status: Completed.
-V28: Local failure lessons require context hashes, observed counts, expiry,
-rights and a digest. Altered bytes, missing context, incompatible models or
-actuators, duplicate scenarios and evaluation-case leakage are rejected.
-Every required reset family has observed attempts. Immutable writes refuse
-conflicting existing bytes. Hashing does not authenticate contributors.
-VERIFIED source: `experiments/microduck/memory.py`.
-VERIFIED checks: `test_memory.py` reported `Ran 10 tests` and `OK`.
-No trained policy or physical-robot result is claimed.
-
-## Microduck CPU episode contract
-
-Owner: implementer. Status: Completed.
-V29: Success requires a complete six-second episode and a continuous final
-second within 0.015 m of 0.115 m trunk height, at most 15 degrees of tilt,
-and floor contact at both feet. Invalid state or action values invalidate
-the run. Reset clears controller and action history.
-VERIFIED source: `sim.py:EpisodeSimulator`, `recovered`.
-VERIFIED local physics and ONNX boundary checks: `test_sim.py` passed within
-the 21-test local suite. No learned-policy improvement is established.
-
-## Local CUDA worker contract
+## Microduck shared-failure experiment
 
 Owner: implementer. Status: In Progress.
-V31: CUDA is required before a worker creates a run directory. A missing device
-returns `CUDA_TRAINING_UNAVAILABLE`. Trusted local artifacts bind policy and
-checkpoint bytes to context hashes and the measured interaction budget.
-The worker saves optimizer, normalizer and RNG state and delegates PPO/export
-to upstream. UNKNOWN runtime: actual PPO updates and a newly trained export.
-VERIFIED boundary checks reject changed checkpoint bytes and exercise the
-no-CUDA error without producing a success artifact.
+Interface ID: microduck-round-v1.
+VERIFIED source: `experiments/microduck/` is an isolated Python slice.
+The connector API, its schema and its evidence replay remain unchanged.
+
+V28: A local lesson contains observed simulator failures, exact context hashes,
+expiry, rights and a digest. Missing context, altered bytes, incompatible models
+or actuators, and evaluation-case leakage stop snapshot creation. Each required
+reset family has observed attempts. The digest detects changes; it does not
+authenticate a contributor. Lesson files are immutable and content-addressed.
+Provider: `memory.py:validate_lesson`, `freeze_lessons`, `publish_lesson`.
+Consumers: explicit donor, snapshot and CUDA worker commands.
+
+V29: A recovery requires a complete six-second episode. During its final
+continuous second, trunk height stays within 0.015 m of 0.115 m, tilt stays
+within 15 degrees, and both foot geometries contact the floor. Non-finite
+observations or actions invalidate the run. The explicit hold-home smoke is
+not a trained policy and cannot become donor learning evidence.
+Provider: `sim.py:EpisodeSimulator`, `recovered`; consumer: `run.py:evaluate`.
+VERIFIED smoke command: `run.py smoke --render` returned four episode traces
+with `controlSteps: 300`, `simulatedSeconds: 5.999999999999894`, and
+`outcome: "not-recovered"`. `learningMeasured` was `false`.
+
+V30: Each receiver pair uses the same starting checkpoint, seed, environment
+count and new-interaction budget. The checkpoint includes optimizer, observation
+normalizer and random-number state. Shared failure counts change only the
+reset-family mixture; PPO collects fresh rollouts. Evaluation cases are frozen
+before training. Standing stability is separate from recovery. A complete
+comparison may report worse results; partial work cannot produce a success
+receipt or replace a policy. Existing run directories are never restarted
+automatically. `report` reads and checks completed outputs without launching jobs.
+Providers: `train.py:worker`; `run.py:compare`, `paired_summary`, `read_completed_run`.
+VERIFIED source timing scope: worker timing includes setup, learning and export.
+The report records initialization, preflight and donor time separately.
+The receiver execution order alternates across seed pairs.
+
+V31: CUDA is required before a learning worker can create a run directory.
+No command submits a cloud job, publishes a policy, sends robot commands or
+changes a payment network. Missing CUDA returns `CUDA_TRAINING_UNAVAILABLE`.
+Provider: `train.py:cuda_device`; consumer: worker and comparison commands.
+VERIFIED check: `test_no_cuda_is_an_error_not_a_success_receipt` observed a
+nonzero process exit, that error code, and no created output directory.
+
+VERIFIED CPU checks: the locked CI test command reported `Ran 21 tests` and `OK`.
+It exercised the real MuJoCo/BAM loop and rejected wrong ONNX input dimensions
+and non-finite ONNX actions before advancing physics.
+Three disposable negative controls each collected 21 tests and returned
+`FAILED (failures=1)`, exit 1:
+
+- Disabled digest comparison: `test_tampered_counts_are_rejected`.
+- Checked only the final sample: `test_success_requires_both_feet_height_and_upright_hold`.
+- Disabled pair rejection: `test_mismatched_checkpoint_seed_and_budget_fail_closed`.
+
+VERIFIED source: `.github/workflows/test.yml` includes a Python 3.12 CPU job.
+It installs the frozen environment, fetches the pinned source, runs the suite
+and exercises the real smoke command. Node checks remain in place.
+Correction: published slice PRs supersede the earlier local-only CI note.
+GitHub records each PR's exact-head execution result.
+
+UNKNOWN runtime: the CUDA worker, PPO update loop, export from a newly trained
+checkpoint, and donor-to-receiver learning comparison have not run.
+CPU smoke and validator checks do not establish a learning gain or hardware safety.
+The local untrained ONNX runtime probe also returned `not-recovered` after
+300 steps; it is boundary evidence, not a trained result.
+
+### Least confident decisions
+
+1. INFERRED: failure counts grouped by starting family may be too coarse to
+   improve learning. The paired CUDA experiment must test this.
+2. UNKNOWN: CPU evaluator agreement with the CUDA training backend requires a
+   comparison on the selected worker.
+3. VERIFIED upstream license: robot STL assets use CC BY-NC-SA 4.0. Commercial
+   use requires a separate rights decision.

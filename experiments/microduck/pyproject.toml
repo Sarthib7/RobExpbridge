@@ -1,0 +1,39 @@
+[project]
+name = "experiencebridge-microduck"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "numpy==2.4.1",
+  "mujoco==3.10.0",
+  "onnxruntime==1.24.4",
+  "better-actuator-models",
+]
+
+[project.optional-dependencies]
+training = [
+  "mjlab-microduck; sys_platform == 'linux'",
+  "torch==2.9.1; sys_platform == 'linux'",
+  "onnx>=1.20.1; sys_platform == 'linux'",
+]
+
+[dependency-groups]
+test = ["onnx==1.20.1"]
+
+[tool.uv]
+package = false
+override-dependencies = [
+  "better-actuator-models @ git+https://github.com/Rhoban/bam.git@62bd8ce12154340be97e06f7f41a0ca8f116d967",
+  "protobuf>=4.0,<7.0",
+  "onnx==1.20.1",
+  "zmq ; python_version < '3.0'",
+]
+
+[tool.uv.sources]
+better-actuator-models = { git = "https://github.com/Rhoban/bam.git", rev = "62bd8ce12154340be97e06f7f41a0ca8f116d967" }
+mjlab-microduck = { git = "https://github.com/pollen-robotics/microduck_rl.git", rev = "b02fdea4902c2b93b7d34a83a6f05da4ececb7d3" }
+torch = [{ index = "pytorch-cu129", marker = "sys_platform == 'linux' and platform_machine == 'aarch64'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
+explicit = true

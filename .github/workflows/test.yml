@@ -51,12 +51,16 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm audit --omit=dev --audit-level=high
-  microduck-memory:
+  microduck-cpu:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     env:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONPATH: experiments/microduck
+      UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/data/local/microduck/venv
+      MICRODUCK_SOURCE: ${{ github.workspace }}/data/local/microduck/upstream
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      DO_NOT_TRACK: "1"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -64,4 +68,26 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.12"
-      - run: python -m unittest discover -s experiments/microduck/tests -p test_memory.py -v
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: "0.9.21"
+      - run: uv sync --frozen --project experiments/microduck --group test
+      - name: Fetch pinned Microduck model source
+        run: |
+          git init "$MICRODUCK_SOURCE"
+          git -C "$MICRODUCK_SOURCE" remote add origin https://github.com/pollen-robotics/microduck_rl.git
+          git -C "$MICRODUCK_SOURCE" fetch --depth 1 origin b02fdea4902c2b93b7d34a83a6f05da4ececb7d3
+          git -C "$MICRODUCK_SOURCE" checkout --detach FETCH_HEAD
+      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_memory.py -v
+      - run: uv run --frozen --project experiments/microduck --group test python -m unittest discover -s experiments/microduck/tests -p test_sim.py -v
+      - name: Run real CPU physics smoke
+        run: |
+          uv run --frozen --project experiments/microduck --group test python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from memory import FAMILIES
+          from sim import EpisodeSimulator, scenario
+          simulator = EpisodeSimulator(Path(os.environ["MICRODUCK_SOURCE"]), smoke=True)
+          rows = [simulator.episode(scenario(family, index, "evaluation")) for index, family in enumerate(FAMILIES)]
+          print(json.dumps({"kind": "physics-smoke", "learningMeasured": False, "outcomes": [{"family": row["scenario"]["family"], "outcome": row["outcome"], "steps": row["controlSteps"]} for row in rows]}))
+          PY

@@ -157,3 +157,8 @@ standard-library behavior checks. Existing app and payment code are unchanged.
 VERIFIED local checks: `Ran 10 tests`, `OK`. Fixtures are synthetic validator
 inputs, not observations from a trained robot. CUDA learning remains paused
 by the user's selection. Publication and exact-head CI are in progress.
+
+VERIFIED CPU slice: pinned Python dependencies, actual MuJoCo/BAM episodes
+and observation/action guards are included. Local rendered probes completed
+300 control steps each without claiming learned recovery. CUDA training and
+any learning benefit remain unverified and paused.

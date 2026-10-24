@@ -212,3 +212,33 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=experiments/microduck python3.12 -m unittes
 
 VERIFIED local checks: `Ran 10 tests` and `OK`. Inputs are explicitly synthetic
 test fixtures. This module alone does not train a policy or execute a robot.
+
+## Microduck CPU simulation
+
+VERIFIED source: `experiments/microduck/sim.py` runs the pinned Pollen Robotics
+Microduck model with MuJoCo and BAM. The environment is isolated from Node.
+The source checkout must be revision `b02fdea4902c2b93b7d34a83a6f05da4ececb7d3`.
+The simulator API accepts an explicit local policy or an explicit hold-home smoke.
+
+```bash
+export UV_PROJECT_ENVIRONMENT="$PWD/data/local/microduck/venv"
+export MICRODUCK_SOURCE="$PWD/data/local/microduck/upstream"
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONPATH="$PWD/experiments/microduck"
+uv sync --frozen --project experiments/microduck --python 3.12 --group test
+# If this source directory does not exist, fetch the pinned revision once:
+git init "$MICRODUCK_SOURCE"
+git -C "$MICRODUCK_SOURCE" remote add origin https://github.com/pollen-robotics/microduck_rl.git
+git -C "$MICRODUCK_SOURCE" fetch --depth 1 origin b02fdea4902c2b93b7d34a83a6f05da4ececb7d3
+git -C "$MICRODUCK_SOURCE" checkout --detach FETCH_HEAD
+"$UV_PROJECT_ENVIRONMENT/bin/python" -c 'import os,json; from pathlib import Path; from sim import EpisodeSimulator,scenario; s=EpisodeSimulator(Path(os.environ["MICRODUCK_SOURCE"]),smoke=True); r=s.episode(scenario("face_up",42,"evaluation")); print(json.dumps({"outcome":r["outcome"],"steps":r["controlSteps"],"learningMeasured":False}))'
+"$UV_PROJECT_ENVIRONMENT/bin/python" -m unittest discover -s experiments/microduck/tests -p test_sim.py -v
+```
+
+VERIFIED local simulation: four hold-home starting families ran for 300 control
+steps each. All returned `not-recovered`. These are physics probes, not learned
+recovery. Wrong ONNX dimensions and non-finite actions stop before physics.
+VERIFIED upstream rights: code is Apache 2.0; the robot STL meshes use
+CC BY-NC-SA 4.0. Keep this experiment local and non-commercial unless separate
+permission covers your use. Downloaded source and assets stay under ignored
+`data/local/`; no hardware commands or public policy downloads are added.

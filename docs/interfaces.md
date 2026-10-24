@@ -192,3 +192,14 @@ conflicting existing bytes. Hashing does not authenticate contributors.
 VERIFIED source: `experiments/microduck/memory.py`.
 VERIFIED checks: `test_memory.py` reported `Ran 10 tests` and `OK`.
 No trained policy or physical-robot result is claimed.
+
+## Microduck CPU episode contract
+
+Owner: implementer. Status: Completed.
+V29: Success requires a complete six-second episode and a continuous final
+second within 0.015 m of 0.115 m trunk height, at most 15 degrees of tilt,
+and floor contact at both feet. Invalid state or action values invalidate
+the run. Reset clears controller and action history.
+VERIFIED source: `sim.py:EpisodeSimulator`, `recovered`.
+VERIFIED local physics and ONNX boundary checks: `test_sim.py` passed within
+the 21-test local suite. No learned-policy improvement is established.

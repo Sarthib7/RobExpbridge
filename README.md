@@ -242,3 +242,30 @@ VERIFIED upstream rights: code is Apache 2.0; the robot STL meshes use
 CC BY-NC-SA 4.0. Keep this experiment local and non-commercial unless separate
 permission covers your use. Downloaded source and assets stay under ignored
 `data/local/`; no hardware commands or public policy downloads are added.
+
+## Explicit local CUDA worker
+
+VERIFIED source: `experiments/microduck/train.py` delegates policy learning and
+normalizer-preserving export to pinned upstream PPO. It accepts explicit seed,
+environment count, iteration budget and output directory. It can consume a
+validated frozen snapshot to change only reset-family sampling.
+
+UNKNOWN runtime: CUDA training and learned export have not run. No worker or
+compute budget is selected. The CPU preflight returns
+`CUDA_TRAINING_UNAVAILABLE` without creating a run directory. Only trusted
+locally generated artifacts are accepted; do not load remote `.pt` files,
+because upstream checkpoint loading uses pickle.
+
+```bash
+"$UV_PROJECT_ENVIRONMENT/bin/python" experiments/microduck/train.py --help
+# On an explicitly approved NVIDIA Linux worker:
+: "${NUM_ENVS:?Choose the approved environment count}"
+: "${ITERATIONS:?Choose the approved iteration budget}"
+uv sync --frozen --project experiments/microduck --group test --extra training
+"$UV_PROJECT_ENVIRONMENT/bin/python" experiments/microduck/train.py \
+  --source "$MICRODUCK_SOURCE" --output data/local/microduck/donor-a \
+  --seed 7 --num-envs "$NUM_ENVS" --iterations "$ITERATIONS"
+```
+
+No cloud job submission, paid compute, policy publication, or physical execution
+is part of this worker. The user paused before CUDA execution.

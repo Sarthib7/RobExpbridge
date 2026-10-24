@@ -162,3 +162,6 @@ VERIFIED CPU slice: pinned Python dependencies, actual MuJoCo/BAM episodes
 and observation/action guards are included. Local rendered probes completed
 300 control steps each without claiming learned recovery. CUDA training and
 any learning benefit remain unverified and paused.
+
+VERIFIED worker slice: CUDA preflight and artifact validation are implemented.
+The local CLI returned `CUDA_TRAINING_UNAVAILABLE`. No GPU execution is claimed.
